@@ -66,10 +66,12 @@ const BuildingApplicationListComponent: React.FC = () => {
             <option>Pending Records</option>
             <option>Completed Records</option>
           </select>
-          <input type="text" value={new Date().toLocaleDateString()} disabled />
-          <FontAwesomeIcon icon={faCalendarAlt} className="date-icon" />
-        </div>
+          <div className="date-input-container">
+            <input type="text" value={new Date().toLocaleDateString()} disabled />
+            <FontAwesomeIcon icon={faCalendarAlt} className="date-icon" />
+          </div>
       </div>
+    </div>
 
       <table>
         <thead>

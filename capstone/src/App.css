@@ -32,6 +32,14 @@ body {
   display: flex;
   align-items: center;
   margin-right: 20px;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
 }
 
 .search-container input[type="text"] {
@@ -72,9 +80,16 @@ body {
   margin-right: 5px;
 }
 
+.date-input-container {
+  position: relative;
+}
+
 .date-icon {
   color: #000000;
-  margin-left: 5px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
 }
 
 table {
