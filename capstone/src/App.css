@@ -1,3 +1,7 @@
+/* App.css */
+
+/* Rest of your CSS styles */
+
 body {
   background-color: #3C486B;
 }
@@ -117,6 +121,10 @@ tbody tr:nth-child(odd) {
   color: #ffffff;
 }
 
+tbody tr:not(:last-child) {
+  border-bottom: 1px solid white;
+}
+
 .next-button {
   background-color: transparent;
   border: none;
@@ -125,7 +133,7 @@ tbody tr:nth-child(odd) {
   padding: 0;
 }
 
-h1{
+h1 {
   color: white;
 }
 
