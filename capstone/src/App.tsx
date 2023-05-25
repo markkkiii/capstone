@@ -17,7 +17,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     {
       no: 1,
       buildingPermitNo: '123456789',
-      applicantName: 'John Doe',
+      applicantName: 'Jo March',
       projectName: 'My House',
       status: 'Pending',
       remarks: 'Printed'
@@ -25,7 +25,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     {
       no: 2,
       buildingPermitNo: '987654321',
-      applicantName: 'Jane Doe',
+      applicantName: 'Joe Mama',
       projectName: 'My Apartment',
       status: 'Approved',
       remarks: 'Not Printed'
@@ -33,17 +33,29 @@ const BuildingApplicationListComponent: React.FC = () => {
     {
       no: 3,
       buildingPermitNo: '567891234',
-      applicantName: 'Bob Smith',
+      applicantName: 'Laurrie',
       projectName: 'Commercial Building',
+      status: 'In Progress',
+      remarks: 'Printed'
+    },
+    {
+      no: 4,
+      buildingPermitNo: '21451512',
+      applicantName: 'Jamie',
+      projectName: 'Residencial',
       status: 'In Progress',
       remarks: 'Printed'
     }
   ];
 
-  const [selectedAction, setSelectedAction] = useState<string>('');
+  const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
 
-  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedAction(event.target.value);
+  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const value = event.target.value;
+    setSelectedAction((prevSelectedAction) => ({
+      ...prevSelectedAction,
+      [no]: value
+    }));
   };
 
   const handleNext = () => {
@@ -70,8 +82,8 @@ const BuildingApplicationListComponent: React.FC = () => {
             <input type="text" value={new Date().toLocaleDateString()} disabled />
             <FontAwesomeIcon icon={faCalendarAlt} className="date-icon" />
           </div>
+        </div>
       </div>
-    </div>
 
       <table>
         <thead>
@@ -82,11 +94,11 @@ const BuildingApplicationListComponent: React.FC = () => {
             <th>Project Name</th>
             <th>Status</th>
             <th>Remarks</th>
-            <th>Actions</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {buildingApplications.map(application => (
+          {buildingApplications.map((application) => (
             <tr key={application.no}>
               <td>{application.no}</td>
               <td>{application.buildingPermitNo}</td>
@@ -95,7 +107,10 @@ const BuildingApplicationListComponent: React.FC = () => {
               <td>{application.status}</td>
               <td>{application.remarks}</td>
               <td>
-                <select value={selectedAction} onChange={handleActionChange}>
+                <select
+                  value={selectedAction[application.no] || ''}
+                  onChange={(event) => handleActionChange(event, application.no)}
+                >
                   <option value="">Select Action</option>
                   <option value="View">View</option>
                   <option value="Update">Update</option>
