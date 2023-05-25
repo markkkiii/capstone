@@ -37,6 +37,14 @@ const BuildingApplicationListComponent: React.FC = () => {
       projectName: 'Commercial Building',
       status: 'In Progress',
       remarks: 'Printed'
+    },
+    {
+      no: 4,
+      buildingPermitNo: '21451512',
+      applicantName: 'Jamie',
+      projectName: 'Residencial',
+      status: 'In Progress',
+      remarks: 'Printed'
     }
   ];
 
