@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('https://fonts.gstatic.com/s/oswald/v35/Y_TKV6o8WovbUd3m_X9aAA.ttf') format('truetype');
+}
+.custom-paragraph {
+    font-family: Oswald;
+    font-size: 16px;
+  
+  }
