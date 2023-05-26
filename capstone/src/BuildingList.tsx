@@ -16,6 +16,7 @@ interface BuildingApplication {
 const BuildingApplicationListComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,12 +80,33 @@ const BuildingApplicationListComponent: React.FC = () => {
     // Perform logic for the "Next" button click here
   };
 
+  const handleSearch = () => {
+    // Perform search logic here based on the searchText value
+    // For example, you can filter the buildingApplications array based on the searchText
+  };
+
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleSearchInputKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="app-container">
       <div className="header">
         <div className="search-container">
-          <input type="text" placeholder="Search" />
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchText}
+            onChange={handleSearchInputChange}
+            onKeyPress={handleSearchInputKeyPress}
+          />
+          <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
         </div>
         <div className="title-container">
           <h1 className="title">Building Application List</h1>
@@ -123,6 +145,18 @@ const BuildingApplicationListComponent: React.FC = () => {
                 return application.status === 'Approved' || application.status === 'Disapproved';
               } else {
                 return true; // Show all records if no sortBy value is selected
+              }
+            })
+            .filter((application) => {
+              // Filter based on the searchText value
+              if (searchText === '') {
+                return true; // Show all records if no search text is entered
+              } else {
+                // Filter based on the buildingPermitNo or applicantName containing the searchText
+                return (
+                  application.buildingPermitNo.toLowerCase().includes(searchText.toLowerCase()) ||
+                  application.applicantName.toLowerCase().includes(searchText.toLowerCase())
+                );
               }
             })
             .map((application) => (
