@@ -28,7 +28,7 @@ const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, pro
 
     return (
         <div>
-            <Dialog open={open}>
+            <Dialog open={open} maxWidth = "sm" fullWidth>
                 <DialogContent>
                     <ViewPending
                         no={no}

@@ -14,6 +14,7 @@ interface BuildingApplication {
 }
 
 const BuildingApplicationListComponent: React.FC = () => {
+
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
 
@@ -21,10 +22,18 @@ const BuildingApplicationListComponent: React.FC = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleOpen = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: true,
+    }));
   };
-
+    const handleClose = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: false,
+    }));
+  };
   const buildingApplications: BuildingApplication[] = [
     {
       no: 1,
@@ -75,6 +84,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     if (selectedValue === 'View') {
       handleClickOpen();
     }
+
 
     // Perform logic for the "Next" button click here
   };
