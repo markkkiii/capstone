@@ -14,16 +14,20 @@ interface BuildingApplication {
 }
 
 const BuildingApplicationListComponent: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleOpen = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: true,
+    }));
   };
-
+    const handleClose = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: false,
+    }));
+  };
   const buildingApplications: BuildingApplication[] = [
     {
       no: 1,
@@ -70,12 +74,12 @@ const BuildingApplicationListComponent: React.FC = () => {
     console.log(selectedAction)
   };
 
-  const handleNext = (value : number) => {
+  const handleNext = (value: number) => {
     const selectedValue = selectedAction[value];
-    if(selectedValue === 'View'){
-      handleClickOpen()
+    if (selectedValue === 'View') {
+      handleOpen(value)
     }
-   
+
 
     // Perform logic for the "Next" button click here
   };
@@ -135,18 +139,18 @@ const BuildingApplicationListComponent: React.FC = () => {
                   <option value="Print">Print</option>
                   <option value="Delete">Delete</option>
                 </select>
-                <button className="next-button" onClick={() =>{handleNext(application.no)}}>
+                <button className="next-button" onClick={() => { handleNext(application.no) }}>
                   <FontAwesomeIcon icon={faChevronRight} />
                 </button>
-                <Popup 
-                no ={application.no} 
-                buildingPermitNo={application.buildingPermitNo} 
-                applicantName = {application.applicantName}
-                projectName={application.projectName}
-                open = {open}
-                handleClose = {handleClose}
-                /> 
               </td>
+              <Popup
+                no={application.no}
+                buildingPermitNo={application.buildingPermitNo}
+                applicantName={application.applicantName}
+                projectName={application.projectName}
+                open={openStates[application.no]}
+                handleClose={() =>handleClose(application.no)}
+              />
             </tr>
           ))}
         </tbody>
