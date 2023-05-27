@@ -6,9 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 
 import ViewPending from './ViewPending';
 
-
-
-
 export interface formdetails {
     no: number;
     buildingPermitNo: string;
