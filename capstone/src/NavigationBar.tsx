@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 const Navbar = styled(AppBar)({
   backgroundColor: 'white',
-  height: '55px', // Set the desired height of the navbar
+  height: '45px', // Set the desired height of the navbar
 });
 
 const ProfileAvatar = styled(Avatar)({
@@ -14,6 +14,7 @@ const ProfileAvatar = styled(Avatar)({
   width: '30px', // Set the desired width of the profile avatar
   fontSize: '20px', // Set the desired font size of the profile avatar
   cursor: 'pointer', // Add cursor pointer for hover effect
+  top: '-9px',
 });
 
 interface NavigationBarProps {

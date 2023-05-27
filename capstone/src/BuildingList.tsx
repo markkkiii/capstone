@@ -12,16 +12,16 @@ import NavigationBar from './NavigationBar';
 const AdditionalTab: React.FC = () => {
   return (
         <div className="additional-tab">
-          <img src="path/to/image" alt="Background IMG" className="background-image" />
+          <img src="../components/images/firefighter_img.jpg" alt="Background IMG" className="background-image" />
           <div className="content">
-          <img src="path/to/logo1" alt="Logo 1" className="logo" />
+          <img src="../components/images/BFP_logo" alt="BFP" className="logo" />
         <div className="text">
           <p>Bureau of Fire Protection</p>
           <p>(Region)</p>
           <p>(District/Provincial Office)</p>
           <p>(Station)</p>
         </div>
-        <img src="path/to/logo2" alt="Logo 2" className="logo" />
+        <img src="../components/images/DILG_logo.png" alt="DILG" className="logo" />
       </div>
     </div>
   );
