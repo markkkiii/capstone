@@ -3,19 +3,21 @@ import './AddApplicationForm.css'
 
 import { Button, Card, CardContent, Grid, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import { cp } from 'fs';
+
 const cardStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   maxWidth: 800,
   backgroundColor: 'lightgrey'
-};
+}; //Style Purposes
 
 export interface formdetails{
   no?: number;
   buildingPermitNo?: string;
   applicantName?: string;
   projectName?: string;
+  //Add remaining Values here later 
 
 }
 
@@ -36,19 +38,19 @@ const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split(
             <Grid item xs={10} sm={11}>
               <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                 <p className='custom-paragraph'>Building Permit Number</p>
-                  <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                  <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.buildingPermitNo}/>
              </Stack>
             </Grid>
             <Grid item xs={10} sm={11}>
               <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                 <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.applicantName}/>
              </Stack>
             </Grid>
             <Grid item xs={10} sm={11}>
               <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                  <p className='custom-paragraph'>Business Name</p>
-                 <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                 <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.projectName}/>
               </Stack>
             </Grid>
             <Grid item xs={10} sm={11}>

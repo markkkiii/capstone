@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCalendarAlt, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Popup from './ViewPopup';
+import ViewPopup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicatioPopup from './AddApplicationPopup';
+import UpdateApplicationPopup from './UpdateApplicationPopUp';
 
 
 interface BuildingApplication {
@@ -18,7 +19,9 @@ interface BuildingApplication {
 }
 
 const BuildingApplicationListComponent: React.FC = () => {
+  const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
+  const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
@@ -36,6 +39,20 @@ const BuildingApplicationListComponent: React.FC = () => {
       [no]: false,
     }));
   };
+
+  const handleOpenUpdate = (no: number) => {
+    setOpenUpdate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: true,
+    }));
+  };
+    const handleCloseUpdate = (no: number) => {
+    setOpenUpdate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: false,
+    }));
+  };
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -80,7 +97,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     }
   ];
 
-  const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+ 
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
@@ -94,6 +111,9 @@ const BuildingApplicationListComponent: React.FC = () => {
     const selectedValue = selectedAction[value];
     if (selectedValue === 'View') {
       handleOpen(value);
+    }
+    else if(selectedValue === 'Update'){
+      handleOpenUpdate(value);
     }
 
     // Perform logic for the "Next" button click here
@@ -208,7 +228,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   <button className="next-button" onClick={() => handleNext(application.no)}>
                     <FontAwesomeIcon icon={faChevronRight} />
                   </button>
-                  <Popup
+                  <ViewPopup
                     no={application.no} 
                     buildingPermitNo={application.buildingPermitNo}
                     applicantName={application.applicantName}
@@ -217,6 +237,14 @@ const BuildingApplicationListComponent: React.FC = () => {
                     handleClose={() =>handleClose(application.no)}
                   />
                   <AddApplicatioPopup open = {open} handleClose={handleClickClose}/>
+                  <UpdateApplicationPopup
+                    no={application.no} 
+                    buildingPermitNo={application.buildingPermitNo}
+                    applicantName={application.applicantName}
+                    projectName={application.projectName}
+                    open={openUpdate[application.no]}
+                    handleClose={() =>handleCloseUpdate(application.no)}
+                  />
                 </td>
               </tr>
             ))}

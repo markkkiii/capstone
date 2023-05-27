@@ -9,11 +9,6 @@ import { DialogTitle } from '@mui/material';
 
 
 
-export interface DialogTitleProps {
-    id: string;
-    children?: React.ReactNode;
-    onClose: () => void;
-}
 
 export interface formdetails {
     no: number;
@@ -38,7 +33,7 @@ const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, pro
                     />
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' color='error' onClick={handleClose}>Close</Button>
+                    <Button variant='contained'onClick={handleClose} sx={{backgroundColor:'red'}}>Close</Button>
                 </DialogActions>
             </Dialog>
 

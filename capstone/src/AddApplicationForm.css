@@ -1,21 +1,33 @@
 @font-face {
-    font-family: 'Oswald';
-    src: url('https://fonts.gstatic.com/s/oswald/v35/Y_TKV6o8WovbUd3m_X9aAA.ttf') format('truetype');
+  font-family: 'Oswald';
+  src: url('https://fonts.gstatic.com/s/oswald/v35/Y_TKV6o8WovbUd3m_X9aAA.ttf') format('truetype');
 }
+
 .custom-paragraph {
-    font-family: Oswald;
-    font-size: 16px;
-    padding-left: 15px;
-  
+  font-family: Oswald;
+  font-size: 16px;
+  padding-left: 15px;
+
 }
 
 .custom-outlined-input {
-    height: 30px;
-    border-radius: 20px;
-  }
-  
-  .custom-outlined-input .MuiOutlinedInput-notchedOutline {
-    border-width: 2px;
-  }
+  height: 30px;
+  border-radius: 20px;
+}
 
+.custom-outlined-input .MuiOutlinedInput-notchedOutline {
+  border-width: 2px;
+}
 
+.custom-outlined-input-multiline {
+  height: auto;
+  max-height: 300px;
+  /* Adjust the maximum height as needed */
+  border-radius: 20px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-y: auto;
+  align-items: flex-start;
+}
