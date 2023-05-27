@@ -9,6 +9,24 @@ import AddApplicatioPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 
+const AdditionalTab: React.FC = () => {
+  return (
+        <div className="additional-tab">
+          <img src="path/to/image" alt="Background Image" className="background-image" />
+          <div className="content">
+          <img src="path/to/logo1" alt="Logo 1" className="logo" />
+        <div className="text">
+          <p>Bureau of Fire Protection</p>
+          <p>(Region)</p>
+          <p>(District/Provincial Office)</p>
+          <p>(Station)</p>
+        </div>
+        <img src="path/to/logo2" alt="Logo 2" className="logo" />
+      </div>
+    </div>
+  );
+};
+
 interface BuildingApplication {
   no: number;
   buildingPermitNo: string;
@@ -138,6 +156,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   return (
     <>
+      <AdditionalTab />
       <NavigationBar onLogout={handleLogout} />
       <div className="app-container">
         <div className="header">
