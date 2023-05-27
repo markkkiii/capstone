@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCalendarAlt, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Popup from './Popup';
+import Popup from './ViewPopup';
+import { Button } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 
 interface BuildingApplication {
   no: number;
@@ -14,16 +17,21 @@ interface BuildingApplication {
 }
 
 const BuildingApplicationListComponent: React.FC = () => {
-  const [open, setOpen] = useState(false);
+  const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleOpen = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: true,
+    }));
   };
-
-  const handleClose = () => {
-    setOpen(false);
+    const handleClose = (no: number) => {
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [no]: false,
+    }));
   };
 
   const buildingApplications: BuildingApplication[] = [
@@ -74,7 +82,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   const handleNext = (value: number) => {
     const selectedValue = selectedAction[value];
     if (selectedValue === 'View') {
-      handleClickOpen();
+      handleOpen(value);
     }
 
     // Perform logic for the "Next" button click here
@@ -118,8 +126,15 @@ const BuildingApplicationListComponent: React.FC = () => {
             <option value="Completed Records">Completed Records</option>
           </select>
           <div className="date-input-container">
-            <input type="text" value={new Date().toLocaleDateString()} disabled />
-            <FontAwesomeIcon icon={faCalendarAlt} className="date-icon" />
+            <Button variant="outlined" startIcon={<AddCircleOutlineIcon/>}
+            disableElevation 
+            sx={{
+              color:'lightgrey',
+              outlineColor: 'lightgrey',
+              borderWidth:'3px',
+              borderColor: 'lightgray',
+            }}
+              >Add Application</Button>
           </div>
         </div>
       </div>
@@ -182,12 +197,12 @@ const BuildingApplicationListComponent: React.FC = () => {
                     <FontAwesomeIcon icon={faChevronRight} />
                   </button>
                   <Popup
-                    no={application.no}
+                    no={application.no} 
                     buildingPermitNo={application.buildingPermitNo}
                     applicantName={application.applicantName}
                     projectName={application.projectName}
-                    open={open}
-                    handleClose={handleClose}
+                    open={openStates[application.no]}
+                    handleClose={() =>handleClose(application.no)}
                   />
                 </td>
               </tr>

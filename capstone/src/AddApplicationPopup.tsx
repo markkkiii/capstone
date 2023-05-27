@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -16,26 +15,17 @@ export interface DialogTitleProps {
 }
 
 export interface formdetails {
-    no: number;
-    buildingPermitNo: string;
-    applicantName: string;
-    projectName: string;
     open: boolean;
     handleClose: () => void;
 }
 
-const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, projectName, open, handleClose }) => {
+const Popup: React.FC<formdetails> = ({open, handleClose }) => {
 
     return (
         <div>
             <Dialog open={open} maxWidth = "sm" fullWidth>
                 <DialogContent>
-                    <ViewPending
-                        no={no}
-                        buildingPermitNo={buildingPermitNo}
-                        applicantName={applicantName}
-                        projectName={projectName}
-                    />
+                    <ViewPending/>
                 </DialogContent>
                 <DialogActions>
                     <Button variant='contained' color='error' onClick={handleClose}>Close</Button>
