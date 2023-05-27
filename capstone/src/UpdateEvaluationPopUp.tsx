@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './AddApplicationForm.css'
 
 import { Button, Card, CardContent, Grid, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
-import { cp } from 'fs';
 
 const cardStyle = {
     display: 'flex',
@@ -11,7 +10,6 @@ const cardStyle = {
     maxWidth: 800,
     backgroundColor: 'lightgrey',
     flexGrow: 1,
-    borderRadius: '10px',
 }; //Style Purposes
 
 export interface formdetails {
@@ -34,7 +32,7 @@ export default function EvaluateApplicationForm(props: formdetails) {
 
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '190vh' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '150vh' }}>
                 <Card style={cardStyle}>
                     <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                         <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
@@ -140,11 +138,10 @@ export default function EvaluateApplicationForm(props: formdetails) {
                                       },
                                     }
                                     } multiline 
-                                    rows={2}
+                                    rows={4}
                                     />
                                 </Stack>
                             </Grid>
-                            
                         </Grid>
                     </CardContent>
                 </Card>

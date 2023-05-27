@@ -5,7 +5,7 @@ const cardStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   maxWidth: 800,
-  
+  backgroundColor: 'lightgrey'
 };
 
 export interface formdetails{
@@ -61,13 +61,13 @@ export default function ViewPending(props: formdetails){
                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
             </Stack>
           </Grid>
-          <Grid item xs={10} sm={11}>
+          <Grid item xs={10} sm={5}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Date Received</p>
                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
             </Stack>
           </Grid>
-          <Grid item xs={10} sm={11}>
+          <Grid item xs={10} sm={6}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Received By</p>
                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>

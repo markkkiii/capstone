@@ -30,7 +30,7 @@ const UpdateApplicationPopup: React.FC<formdetails> = ({no, buildingPermitNo, ap
     return (
         <div>
             <Dialog open={open} maxWidth = "md" fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey' } }}>
-                <DialogTitle sx={{height: '10px'}}>
+                <DialogTitle sx={{height: '0px'}}>
                     <IconButton  sx={{ marginTop: '-25px', marginLeft: '-25px' }} onClick={handleClose}>
                         <CancelIcon sx={{color:'red'}}/>
                     </IconButton>

@@ -26,13 +26,14 @@ const AddApplicatioPopup: React.FC<formdetails> = ({open, handleClose }) => {
     return (
         <div>
             <Dialog open={open} maxWidth = "md" fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey' } }}>
-                <DialogTitle sx={{height: '10px'}}>
+                <DialogTitle sx={{height: '0px'}}>
                     <IconButton  sx={{ marginTop: '-25px', marginLeft: '-25px' }} onClick={handleClose}>
                         <CancelIcon sx={{color:'red'}}/>
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} style={{ paddingTop: '5rem' }} >
-                    <AddApplicationForm/>
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                    <AddApplicationForm
+                    />
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
                     <Button variant='contained' onClick={handleClose} sx={{backgroundColor:'grey', borderRadius:'13px', height:'30px'}}>Add Application</Button>
