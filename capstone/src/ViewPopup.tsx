@@ -5,6 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
 import ViewPending from './ViewPending';
+import { DialogTitle } from '@mui/material';
 
 
 
@@ -27,8 +28,8 @@ const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, pro
 
     return (
         <div>
-            <Dialog open={open} maxWidth = "sm" fullWidth>
-                <DialogContent>
+            <Dialog open={open} maxWidth = "md" fullWidth >
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <ViewPending
                         no={no}
                         buildingPermitNo={buildingPermitNo}
@@ -36,7 +37,7 @@ const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, pro
                         projectName={projectName}
                     />
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ justifyContent: 'center' }}>
                     <Button variant='contained' color='error' onClick={handleClose}>Close</Button>
                 </DialogActions>
             </Dialog>

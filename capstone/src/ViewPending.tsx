@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
 
-import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
-import { cp } from 'fs';
+import {Card, CardContent, Grid, OutlinedInput, Stack } from '@mui/material';
 const cardStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  maxWidth: 750,
+  maxWidth: 800,
   
 };
 
@@ -25,39 +24,62 @@ export default function ViewPending(props: formdetails){
 
   return (
     <>
-   
-      <Card style= {cardStyle}>
-        <CardContent style={{ marginLeft: 35, textAlign:'center' }} >
-          <Grid container spacing={1}>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Building Permit Number" variant='outlined' fullWidth disabled defaultValue={props.buildingPermitNo}/>
-            </Grid>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Name of Owner/Permitee" variant='outlined' fullWidth disabled defaultValue={props.applicantName} />
-            </Grid>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Business Name" variant='outlined' fullWidth disabled defaultValue={props.projectName}/>
-            </Grid>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Address" variant='outlined' fullWidth disabled/>
-            </Grid>
-            <Grid item xs={10} sm={6}>
-              <TextField label="Type of Occupancy" variant='outlined' fullWidth disabled/>
-            </Grid>
-            <Grid item xs={10} sm={5}>
-              <TextField label="Contact Number" variant='outlined' fullWidth disabled/>
-            </Grid>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Date Received" variant='outlined' fullWidth disabled/>
-            </Grid>
-            <Grid item xs={10} sm={11}>
-              <TextField label="Received By" variant='outlined' fullWidth disabled/>
-            </Grid>
+    <Card style= {cardStyle}>
+      <CardContent style={{ marginLeft: 35, textAlign:'center' }} >
+        <Grid container >
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+              <p className='custom-paragraph'>Building Permit Number</p>
+                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.buildingPermitNo} readOnly/>
+           </Stack>
           </Grid>
-        </CardContent>
-      </Card>
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+              <p className='custom-paragraph'>Name of Owner/Permitee</p>
+              <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.applicantName} readOnly/>
+           </Stack>
+          </Grid>
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Business Name</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.projectName} readOnly/>
+            </Stack>
+          </Grid>
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Address</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+            </Stack>
+          </Grid>
+          <Grid item xs={10} sm={6}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Type of Occupancy</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+            </Stack>
+          </Grid>
+          <Grid item xs={10} sm={5}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Contact Number</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+            </Stack>
+          </Grid>
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Date Received</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+            </Stack>
+          </Grid>
+          <Grid item xs={10} sm={11}>
+            <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+               <p className='custom-paragraph'>Received By</p>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+            </Stack>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
 
-    </>
+  </>
   );
 }
 

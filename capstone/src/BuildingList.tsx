@@ -5,6 +5,7 @@ import { faSearch, faCalendarAlt, faChevronRight } from '@fortawesome/free-solid
 import Popup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddApplicatioPopup from './AddApplicationPopup';
 
 
 interface BuildingApplication {
@@ -18,8 +19,10 @@ interface BuildingApplication {
 
 const BuildingApplicationListComponent: React.FC = () => {
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
+  const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
+
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -32,6 +35,14 @@ const BuildingApplicationListComponent: React.FC = () => {
       ...prevOpenStates,
       [no]: false,
     }));
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClickClose = () => {
+    setOpen(false);
   };
 
   const buildingApplications: BuildingApplication[] = [
@@ -127,6 +138,7 @@ const BuildingApplicationListComponent: React.FC = () => {
           </select>
           <div className="date-input-container">
             <Button variant="outlined" startIcon={<AddCircleOutlineIcon/>}
+            onClick={handleClickOpen}
             disableElevation 
             sx={{
               color:'lightgrey',
@@ -204,6 +216,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                     open={openStates[application.no]}
                     handleClose={() =>handleClose(application.no)}
                   />
+                  <AddApplicatioPopup open = {open} handleClose={handleClickClose}/>
                 </td>
               </tr>
             ))}

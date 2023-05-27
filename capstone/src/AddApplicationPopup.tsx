@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
-import ViewPending from './ViewPending';
+import AddApplicationForm from './AddApplicationForm';
 
 
 
@@ -19,20 +19,20 @@ export interface formdetails {
     handleClose: () => void;
 }
 
-const Popup: React.FC<formdetails> = ({open, handleClose }) => {
+const AddApplicatioPopup: React.FC<formdetails> = ({open, handleClose }) => {
 
     return (
         <div>
-            <Dialog open={open} maxWidth = "sm" fullWidth>
-                <DialogContent>
-                    <ViewPending/>
+            <Dialog open={open} maxWidth = "md" fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey' } }}>
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <AddApplicationForm/>
                 </DialogContent>
-                <DialogActions>
-                    <Button variant='contained' color='error' onClick={handleClose}>Close</Button>
+                <DialogActions style={{ justifyContent: 'center' }}>
+                    <Button variant='contained' onClick={handleClose}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
         </div>
     );
 };
-export default Popup;
+export default AddApplicatioPopup;

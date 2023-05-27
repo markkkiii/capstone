@@ -5,5 +5,17 @@
 .custom-paragraph {
     font-family: Oswald;
     font-size: 16px;
+    padding-left: 15px;
   
+}
+
+.custom-outlined-input {
+    height: 30px;
+    border-radius: 20px;
   }
+  
+  .custom-outlined-input .MuiOutlinedInput-notchedOutline {
+    border-width: 2px;
+  }
+
+
