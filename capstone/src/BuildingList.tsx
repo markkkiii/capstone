@@ -12,7 +12,7 @@ import NavigationBar from './NavigationBar';
 const AdditionalTab: React.FC = () => {
   return (
         <div className="additional-tab">
-          <img src="path/to/image" alt="Background Image" className="background-image" />
+          <img src="path/to/image" alt="Background IMG" className="background-image" />
           <div className="content">
           <img src="path/to/logo1" alt="Logo 1" className="logo" />
         <div className="text">

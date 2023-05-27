@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AddApplicationForm.css'
 
-import {Card, CardContent, Grid, OutlinedInput, Stack } from '@mui/material';
+import { Button, Card, CardContent, Grid, OutlinedInput, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 
 const cardStyle = {
@@ -22,6 +22,11 @@ export interface formdetails {
     //Add remaining Values here later 
 
 }
+interface TableData {
+    natureOfCollection: string;
+    accountCode: string;
+    amount: string;
+  }
 
 
 export default function EvaluateApplicationForm(props: formdetails) {
@@ -31,6 +36,19 @@ export default function EvaluateApplicationForm(props: formdetails) {
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
     };
+    const [tableData, setTableData] = useState<TableData[]>([
+        { natureOfCollection: '', accountCode: '', amount: '' },
+      ]);
+    
+      const handleAddRow = () => {
+        setTableData([...tableData, { natureOfCollection: '', accountCode: '', amount: '' }]);
+      };
+    
+      const handleChange = (index: number, field: keyof TableData, value: string) => {
+        const updatedTableData = [...tableData];
+        updatedTableData[index][field] = value;
+        setTableData(updatedTableData);
+      };
 
     return (
         <>
@@ -125,26 +143,68 @@ export default function EvaluateApplicationForm(props: formdetails) {
                             <Grid item xs={10} sm={5}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph'>Remarks</p>
-                                    <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }}  defaultValue={"Not Printed"} readOnly/>
+                                    <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={"Not Printed"} readOnly />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={11}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph'>Defects/Deficiencies</p>
-                                    <OutlinedInput fullWidth className='custom-outlined-input-multiline' 
-                                    sx={{ borderRadius: '11px', 
-                                    height:'100px',
-                                    paddingTop: '0',
-                                    '& textarea': {
-                                        paddingTop: '20px', // Adjust the value as needed
-                                      },
-                                    }
-                                    } multiline 
-                                    rows={2}
+                                    <OutlinedInput fullWidth className='custom-outlined-input-multiline'
+                                        sx={{
+                                            borderRadius: '11px',
+                                            height: '100px',
+                                            paddingTop: '0',
+                                            '& textarea': {
+                                                paddingTop: '20px', // Adjust the value as needed
+                                            },
+                                        }
+                                        } multiline
+                                        rows={2}
                                     />
                                 </Stack>
                             </Grid>
-                            
+                            <Grid item xs={10} sm={11} sx={{marginTop:'10px'}}>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Nature of Collection</TableCell>
+                                                <TableCell>Account Code</TableCell>
+                                                <TableCell>Amount</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {tableData.map((row, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>
+                                                        <input
+                                                            type="text"
+                                                            value={row.natureOfCollection}
+                                                            onChange={(e) => handleChange(index, 'natureOfCollection', e.target.value)}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input
+                                                            type="text"
+                                                            value={row.accountCode}
+                                                            onChange={(e) => handleChange(index, 'accountCode', e.target.value)}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <input
+                                                            type="text"
+                                                            value={row.amount}
+                                                            onChange={(e) => handleChange(index, 'amount', e.target.value)}
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                    <Button variant="contained" onClick={handleAddRow}>Add Row</Button>
+                                </TableContainer>
+                            </Grid>
+
                         </Grid>
                     </CardContent>
                 </Card>
