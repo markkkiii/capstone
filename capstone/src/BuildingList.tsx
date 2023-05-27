@@ -190,6 +190,11 @@ const BuildingApplicationListComponent: React.FC = () => {
                   outlineColor: 'lightgrey',
                   borderWidth: '3px',
                   borderColor: 'lightgray',
+                  '&:hover': {
+                    borderWidth: '3px',
+                    borderColor: 'blueviolet',
+                    color: 'white'
+                  },
                 }}
               >
                 Add Application

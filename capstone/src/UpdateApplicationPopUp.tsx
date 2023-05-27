@@ -35,7 +35,7 @@ const UpdateApplicationPopup: React.FC<formdetails> = ({no, buildingPermitNo, ap
                         <CancelIcon sx={{color:'red'}}/>
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} style={{ paddingTop: '5rem' }} >
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} style={{ paddingTop: '2rem' }} >
                     <AddApplicationForm
                     no={no}
                     buildingPermitNo={buildingPermitNo}
