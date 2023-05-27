@@ -113,8 +113,6 @@ const BuildingApplicationListComponent: React.FC = () => {
               borderColor: 'lightgray',
             }}
               >Add Application</Button>
-           {/* <input type="text" value={new Date().toLocaleDateString()} disabled />
-            <FontAwesomeIcon icon={faCalendarAlt} className="date-icon" >*/}
           </div>
         </div>
       </div>
