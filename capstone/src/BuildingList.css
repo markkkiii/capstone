@@ -1,0 +1,147 @@
+/* BuildingList.css */
+
+/* Rest of your CSS styles */
+
+body {
+    background-color: #3C486B;
+  }
+  
+  
+  .app-container {
+    font-family: 'Oswald', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  
+  .search-container input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #FFFFFF;
+    margin-right: 5px;
+  }
+  
+  .title-container {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .title {
+    margin: 0;
+  }
+  
+  .sort-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sort-container select {
+    margin-right: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #FFFFFF;
+  }
+  
+  .sort-container input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #FFFFFF;
+    margin-right: 5px;
+  }
+  
+  .date-input-container {
+    position: relative;
+  }
+  
+  .date-icon {
+    color: #000000;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th {
+    background-color: #D9D9D9;
+    color: #000000;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  td {
+    background-color: #8B91A3;
+    color: #000000;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  tbody {
+    max-height: 300px; /* Adjust the height as per your requirements */
+    overflow-y: auto;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #8B91A3;
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: #3C486B;
+    color: #ffffff;
+  }
+  
+  tbody tr:not(:last-child) {
+    border-bottom: 1px solid white;
+  }
+  
+  .next-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+  }
+  
+  h1 {
+    color: white;
+  }
+  
+  /* Rest of your CSS styles */
+  
