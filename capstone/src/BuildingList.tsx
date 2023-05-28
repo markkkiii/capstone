@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import './BuildingList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import ViewPopup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicatioPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import IconButton from '@mui/material/IconButton';
 import Print from './Print';
 
 const AdditionalTab: React.FC = () => {
@@ -258,9 +260,9 @@ const BuildingApplicationListComponent: React.FC = () => {
                       <option value="Print">Print</option>
                       <option value="Delete">Delete</option>
                     </select>
-                    <button className="next-button" onClick={() => handleNext(application.no)}>
-                      <FontAwesomeIcon icon={faChevronRight} />
-                    </button>
+                    <IconButton className="next-button" onClick={() => handleNext(application.no)}>
+                      <ArrowForwardIcon />
+                    </IconButton>
                     <ViewPopup
                       no={application.no}
                       buildingPermitNo={application.buildingPermitNo}

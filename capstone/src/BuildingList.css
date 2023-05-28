@@ -214,4 +214,16 @@
   .text p {
     margin: 2px 0;
   }
+
+  .next-button {
+    background-color: blueviolet;
+    border-radius: 50%;
+    color: white;
+    padding: 5px;
+  }
+  
+  .next-button:hover {
+    background-color: #D02D2D;
+  }
+  
   
