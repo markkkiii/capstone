@@ -43,9 +43,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ onLogout }) => {
         <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Building Application
-        </Typography>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>        </Typography>
         <div>
           <ProfileAvatar onClick={handleProfileClick} />
           <Menu

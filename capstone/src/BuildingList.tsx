@@ -13,16 +13,16 @@ import Print from './Print';
 const AdditionalTab: React.FC = () => {
   return (
         <div className="additional-tab">
-          <img src="../components/images/firefighter_img.jpg" alt="Background IMG" className="background-image" />
+          <img src="/images/redfirefighter.jpg" alt="Background IMG" className="background-image" />
           <div className="content">
-          <img src="../components/images/BFP_logo" alt="BFP" className="logo" />
+          <img src="/images/DILG_logo.png" alt="DILG" className="logo" />
         <div className="text">
           <p>Bureau of Fire Protection</p>
           <p>(Region)</p>
           <p>(District/Provincial Office)</p>
           <p>(Station)</p>
         </div>
-        <img src="../components/images/DILG_logo.png" alt="DILG" className="logo" />
+        <img src="/images/BFP_logo.png" alt="BFP" className="logo" />
       </div>
     </div>
   );
@@ -252,7 +252,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       value={selectedAction[application.no] || ''}
                       onChange={(event) => handleActionChange(event, application.no)}
                     >
-                      <option value="">Select Action</option>
+                      <option value="">-select-</option>
                       <option value="View">View</option>
                       <option value="Update">Update</option>
                       <option value="Print">Print</option>
