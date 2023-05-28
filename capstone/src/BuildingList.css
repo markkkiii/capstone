@@ -1,7 +1,7 @@
 .building-list-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
   }
   
   .tab-container {
@@ -15,7 +15,7 @@
     display: flex;
     align-items: center;
     background-color: red;
-    padding: 10px;
+    padding: 20px;
   }
   
   .tab img {
@@ -119,11 +119,6 @@
     min-width: 100px;
   }
   
-  .action-select {
-    padding: 5px;
-    font-size: 14px;
-  }
-  
   .popup-container {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
@@ -223,7 +218,7 @@
   }
   
   .next-button:hover {
-    background-color: #D02D2D;
+    background-color: red;
   }
   
   
