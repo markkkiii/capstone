@@ -10,6 +10,8 @@ import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import IconButton from '@mui/material/IconButton';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+
 import Print from './Print';
 
 const AdditionalTab: React.FC = () => {
@@ -254,15 +256,17 @@ const BuildingApplicationListComponent: React.FC = () => {
                     <select
                       value={selectedAction[application.no] || ''}
                       onChange={(event) => handleActionChange(event, application.no)}
+                      style={{height:'35px', width:'120px', borderRadius:'8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                     >
                       <option value="">-select-</option>
                       <option value="View">View</option>
                       <option value="Update">Update</option>
+                      <option value="Evaluate">Evaluate</option>
                       <option value="Print">Print</option>
                       <option value="Delete">Delete</option>
                     </select>
                     <IconButton className="next-button" onClick={() => handleNext(application.no)}>
-                      <ArrowForwardIcon />
+                      <ArrowCircleRightIcon sx={{color : '#3C486B'}} />
                     </IconButton>
                     <ViewPopup
                       no={application.no}
