@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import BuildingList from './BuildingList';
 import EvaluateApplicationForm from './EvaluateApplcationForm';
-
+import ViewEvaluateApplicationForm from './ViewEvaluateApplcationForm';
 
 export default function App(){
 
@@ -10,7 +10,8 @@ export default function App(){
     <BrowserRouter>
         <Routes>
           <Route path = "/dashboard" element={<BuildingList/>}/>
-          <Route path = "/test" element={<EvaluateApplicationForm/>}/>
+          <Route path = "/evaluate" element={<EvaluateApplicationForm />}/>
+          <Route path = "/viewevaluate" element={<ViewEvaluateApplicationForm />}/>
         </Routes>
     </BrowserRouter>
 
