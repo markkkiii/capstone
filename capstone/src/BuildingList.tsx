@@ -8,6 +8,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicatioPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
+import Print from './Print';
 
 const AdditionalTab: React.FC = () => {
   return (
@@ -283,6 +284,7 @@ const BuildingApplicationListComponent: React.FC = () => {
           </tbody>
         </table>
       </div>
+                
     </>
   );
 };
