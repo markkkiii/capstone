@@ -8,7 +8,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicatioPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
@@ -130,7 +129,17 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleNext = (value: number) => {
     const selectedValue = selectedAction[value];
-    if (selectedValue === 'View') {
+    if (selectedValue === 'Delete') {
+      const confirmed = window.confirm('Are you sure you want to delete this application?');
+
+      if (confirmed) {
+        // Perform delete logic here
+        console.log('Deleting application:', value);
+      } else {
+        // User canceled the delete operation
+        return;
+      }
+    } else if (selectedValue === 'View') {
       handleOpen(value);
     } else if (selectedValue === 'Update') {
       handleOpenUpdate(value);
