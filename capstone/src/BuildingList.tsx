@@ -193,6 +193,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   outlineColor: 'lightgrey',
                   borderWidth: '3px',
                   borderColor: 'lightgray',
+                  borderRadius:'15px',
                   '&:hover': {
                     borderWidth: '3px',
                     borderColor: 'blueviolet',

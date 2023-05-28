@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import './AddApplicationForm.css'
-
-import { Button, Card, CardContent, Grid, OutlinedInput, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import './Form.css'
+import { Button, Card, CardContent, Grid, OutlinedInput, Paper, Select, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 
 
 const cardStyle = {
@@ -26,7 +25,7 @@ interface TableData {
     natureOfCollection: string;
     accountCode: string;
     amount: string;
-  }
+}
 
 
 export default function EvaluateApplicationForm(props: formdetails) {
@@ -38,17 +37,17 @@ export default function EvaluateApplicationForm(props: formdetails) {
     };
     const [tableData, setTableData] = useState<TableData[]>([
         { natureOfCollection: '', accountCode: '', amount: '' },
-      ]);
-    
-      const handleAddRow = () => {
+    ]);
+
+    const handleAddRow = () => {
         setTableData([...tableData, { natureOfCollection: '', accountCode: '', amount: '' }]);
-      };
-    
-      const handleChange = (index: number, field: keyof TableData, value: string) => {
+    };
+
+    const handleChange = (index: number, field: keyof TableData, value: string) => {
         const updatedTableData = [...tableData];
         updatedTableData[index][field] = value;
         setTableData(updatedTableData);
-      };
+    };
 
     return (
         <>
@@ -163,48 +162,51 @@ export default function EvaluateApplicationForm(props: formdetails) {
                                     />
                                 </Stack>
                             </Grid>
-                            <Grid item xs={10} sm={11} sx={{marginTop:'10px'}}>
-                                <TableContainer component={Paper} sx = {{backgroundColor: 'lightgrey'}}>
+                            <Grid item xs={10} sm={11} sx={{ marginTop: '10px' }}>
+                                <TableContainer component={Paper} sx={{ backgroundColor: 'lightgrey' }}>
                                     <Table style={{ borderCollapse: 'separate', borderSpacing: '0 8px' }}>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Nature of Collection</TableCell>
-                                                <TableCell>Account Code</TableCell>
-                                                <TableCell>Amount</TableCell>
+                                        <TableHead >
+                                            <TableRow >
+                                                <TableCell align="center" style={{ backgroundColor: 'grey', fontFamily:'Oswald' }} >Nature of Collection</TableCell>
+                                                <TableCell align="center" style={{ backgroundColor: 'grey', fontFamily:'Oswald' }}>Account Code</TableCell>
+                                                <TableCell align="center" style={{ backgroundColor: 'grey', fontFamily:'Oswald' }}>Amount</TableCell>
                                             </TableRow>
                                         </TableHead>
-                                        <TableBody>
+                                        <TableBody >
                                             {tableData.map((row, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>
-                                                        <input
-                                                            type="text"
-                                                            value={row.natureOfCollection}
-                                                            onChange={(e) => handleChange(index, 'natureOfCollection', e.target.value)}
-                                                        />
+                                                    <TableCell align="center" style={{ backgroundColor: 'lightgrey' }}>
+                                                        <Select sx={{ width: '200px', height: '40px' }}>
+                                                        </Select>
                                                     </TableCell>
-                                                    <TableCell>
-                                                        <input
+                                                    <TableCell align="center" style={{ backgroundColor: 'lightgrey' }}>
+                                                        <TextField
+                                                            sx={{ width: '9rem'}}
                                                             type="text"
                                                             value={row.accountCode}
                                                             onChange={(e) => handleChange(index, 'accountCode', e.target.value)}
+                                                            inputProps={{ style: { height: '10px' } }}
                                                         />
                                                     </TableCell>
-                                                    <TableCell>
-                                                        <input
+                                                    <TableCell align="center" style={{ backgroundColor: 'lightgrey' }}>
+                                                        <TextField
+                                                            sx={{ width: '9rem'}}
                                                             type="text"
                                                             value={row.amount}
                                                             onChange={(e) => handleChange(index, 'amount', e.target.value)}
+                                                            inputProps={{ style: { height: '10px' } }}
                                                         />
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
                                     </Table>
-                                    <Button variant="contained" onClick={handleAddRow}>Add Row</Button>
+                                    <Button variant="contained" onClick={handleAddRow} style={{ marginBottom: '8px', backgroundColor: 'blueviolet'}}>Add Row</Button>
                                 </TableContainer>
                             </Grid>
-
+                            <Grid item xs={10} sm={11} sx={{ marginTop: '10px' }}>
+                                <Button variant='contained' style={{  backgroundColor: 'blueviolet'}}>Add Evaluation</Button>
+                            </Grid>
                         </Grid>
                     </CardContent>
                 </Card>
