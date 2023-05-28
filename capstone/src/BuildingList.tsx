@@ -259,7 +259,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   borderRadius:'15px',
                   '&:hover': {
                     borderWidth: '3px',
-                    borderColor: 'blueviolet',
+                    borderColor: '#D02D2D',
                     color: 'white'
                   },
                 }}
