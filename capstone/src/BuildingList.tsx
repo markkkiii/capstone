@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 import Print from './Print';
+import { useNavigate } from 'react-router-dom';
 
 const AdditionalTab: React.FC = () => {
   return (
@@ -40,6 +41,17 @@ interface BuildingApplication {
   remarks: string;
 }
 
+interface EvaluateProps{
+  update:boolean;
+  buildingno: string;
+  testvalue?:string;
+}
+interface ViewEvaluateProps{
+  buildingno: string;
+ 
+}
+
+
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
@@ -47,6 +59,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -83,6 +96,21 @@ const BuildingApplicationListComponent: React.FC = () => {
   const handleClickClose = () => {
     setOpen(false);
   };
+
+ 
+
+  const handleEvaluateClick = (buildingnoval:string, updateval:boolean, testval?:string) => {
+    // Navigate to the EvaluateApplicationForm with props
+    const state: EvaluateProps = { update: updateval, buildingno: buildingnoval, testvalue: testval};
+    navigate('/evaluate',{ state });
+  };
+
+  const handleViewEvaluateClick = (buildingnoval:string) => {
+    // Navigate to the EvaluateApplicationForm with props
+    const state: ViewEvaluateProps = {  buildingno: buildingnoval};
+    navigate('/viewevaluate',{ state });
+  };
+
 
   const buildingApplications: BuildingApplication[] = [
     {
@@ -127,7 +155,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
   };
 
-  const handleNext = (value: number) => {
+  const handleNext = (value: number, status:string, buildingno:string) => {
     const selectedValue = selectedAction[value];
     if (selectedValue === 'Delete') {
       const confirmed = window.confirm('Are you sure you want to delete this application?');
@@ -139,14 +167,38 @@ const BuildingApplicationListComponent: React.FC = () => {
         // User canceled the delete operation
         return;
       }
-    } else if (selectedValue === 'View') {
-      handleOpen(value);
-    } else if (selectedValue === 'Update') {
-      handleOpenUpdate(value);
+    } else if (status ==='Pending') {
+        //Pending function condition goes here
+        if(selectedValue ==='View'){
+          handleOpen(value)
+        }
+        else if(selectedValue === 'Update'){
+          handleOpenUpdate(value);
+        }
+        else if (selectedValue === 'Evaluate'){
+          handleEvaluateClick(buildingno,false, 'test')
+        }
+        else if (selectedValue === 'Print'){
+          alert("Evaluate Application First!")
+        }
+    } else if (status === 'Approved' || status ==='Disapproved') {
+        //Completed function condition goes here
+        if(selectedValue === 'Evaluate'){
+          alert('Application already Evaluated');
+        }
+        else if(selectedValue === 'Update'){
+          handleEvaluateClick(buildingno,true, 'test')
+        }
+        else if(selectedValue ==='View'){
+          handleViewEvaluateClick(buildingno)
+        }
+
     }
 
     // Perform logic for the "Next" button click here
   };
+
+
 
   const handleSearch = () => {
     // Perform search logic here based on the searchText value
@@ -274,7 +326,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       <option value="Print">Print</option>
                       <option value="Delete">Delete</option>
                     </select>
-                    <IconButton className="next-button" onClick={() => handleNext(application.no)}>
+                    <IconButton className="next-button" onClick={() => handleNext(application.no ,application.status,application.buildingPermitNo)}>
                       <ArrowCircleRightIcon sx={{color : '#3C486B'}} />
                     </IconButton>
                     <ViewPopup
