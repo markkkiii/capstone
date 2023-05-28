@@ -164,8 +164,8 @@ export default function EvaluateApplicationForm(props: formdetails) {
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={11} sx={{marginTop:'10px'}}>
-                                <TableContainer component={Paper}>
-                                    <Table>
+                                <TableContainer component={Paper} sx = {{backgroundColor: 'lightgrey'}}>
+                                    <Table style={{ borderCollapse: 'separate', borderSpacing: '0 8px' }}>
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell>Nature of Collection</TableCell>
