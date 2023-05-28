@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AddApplicationForm.css'
+import './Form.css'
 
 import { Card, CardContent, Grid, OutlinedInput, Stack} from '@mui/material';
 
