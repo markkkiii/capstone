@@ -52,7 +52,7 @@ export default function EvaluateApplicationForm(props: formdetails) {
 
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200vh' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200vh' }}>
                 <Card style={cardStyle}>
                     <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                         <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
