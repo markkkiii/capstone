@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Form.css'
-
+import axios from 'axios';
 import { Card, CardContent, Grid, OutlinedInput, Stack} from '@mui/material';
 
 
@@ -21,8 +21,36 @@ export interface formdetails{
 
 }
 
-
 export default function AddApplication(props: formdetails){
+
+  const NEW_URL = 'http://localhost:8080/BFP/insertPermit';
+
+  const AddForm = async (buildingPermitNo:any, namePermitee:string, businessName:string, address:string, typeofOccupancy:string, contactNo:string, dateReceived:Date, receivedBy:string) => {
+
+    axios
+        .post(NEW_URL,{
+          buildingPermitNo,
+          namePermitee,
+          businessName,
+          address,
+          typeofOccupancy,
+          contactNo,
+          dateReceived,
+          receivedBy,
+        })
+        .then(res => {
+
+          if(res.data){
+
+            console.log("Successfully Added!"+JSON.stringify(res.data));
+
+          }
+
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+    }
 
 const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
