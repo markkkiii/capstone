@@ -10,7 +10,6 @@ import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-
 import Print from './Print';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ const AdditionalTab: React.FC = () => {
           <img src="/images/DILG_logo.png" alt="DILG" className="logo" />
         <div className="text">
           <p>Bureau of Fire Protection</p>
-          <p>(Region)</p>
+          <p>Region VII</p>
           <p>(District/Provincial Office)</p>
           <p>(Station)</p>
         </div>
@@ -37,6 +36,7 @@ interface BuildingApplication {
   buildingPermitNo: string;
   applicantName: string;
   projectName: string;
+  dateReceived: Date;
   status: string;
   remarks: string;
 }
@@ -118,6 +118,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       buildingPermitNo: '123456789',
       applicantName: 'Jo March',
       projectName: 'My House',
+      dateReceived: new Date('2023-05-28'),
       status: 'Pending',
       remarks: 'Printed'
     },
@@ -126,6 +127,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       buildingPermitNo: '987654321',
       applicantName: 'Joe Mama',
       projectName: 'My Apartment',
+      dateReceived: new Date('2023-05-26'),
       status: 'Approved',
       remarks: 'Not Printed'
     },
@@ -134,6 +136,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       buildingPermitNo: '567891234',
       applicantName: 'Laurrie',
       projectName: 'Commercial Building',
+      dateReceived: new Date('2023-04-28'),
       status: 'Disapproved',
       remarks: 'Printed'
     },
@@ -142,6 +145,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       buildingPermitNo: '21451512',
       applicantName: 'Jamie',
       projectName: 'Residential',
+      dateReceived: new Date('2022-05-28'),
       status: 'Pending',
       remarks: 'Printed'
     }
@@ -277,6 +281,7 @@ const BuildingApplicationListComponent: React.FC = () => {
               <th>Building Permit #</th>
               <th>Applicant's Name</th>
               <th>Project Name</th>
+              <th>Date Received</th>
               <th>Status</th>
               <th>Remarks</th>
               <th></th>
@@ -311,6 +316,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   <td>{application.buildingPermitNo}</td>
                   <td>{application.applicantName}</td>
                   <td>{application.projectName}</td>
+                  <td>{application.dateReceived.toLocaleDateString()}</td>
                   <td>{application.status}</td>
                   <td>{application.remarks}</td>
                   <td>
