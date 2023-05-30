@@ -11,11 +11,16 @@ export interface formdetails {
     buildingPermitNo: string;
     applicantName: string;
     projectName: string;
+    address:string;
+    typeofoccupancy:string;
+    contactno:string;
+    datereceived:string;
+    receivedby:string;
     open: boolean;
     handleClose: () => void;
 }
 
-const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, projectName, open, handleClose }) => {
+const Popup: React.FC<formdetails> = ({ no,address,typeofoccupancy,contactno,datereceived,receivedby, buildingPermitNo, applicantName, projectName, open, handleClose }) => {
 
     return (
         <div>
@@ -26,6 +31,11 @@ const Popup: React.FC<formdetails> = ({ no, buildingPermitNo, applicantName, pro
                         buildingPermitNo={buildingPermitNo}
                         applicantName={applicantName}
                         projectName={projectName}
+                        address = {address}
+                        typeofoccupancy={typeofoccupancy}
+                        contactno={contactno}
+                        datereceived={datereceived}
+                        receivedby={receivedby}
                     />
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>

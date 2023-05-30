@@ -368,14 +368,19 @@ const BuildingApplicationListComponent: React.FC = () => {
                     <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno ,applicationform.status,applicationform.buildingpermitno)}>
                       <ArrowCircleRightIcon sx={{color : '#3C486B'}} />
                     </IconButton>
-                    {/*<ViewPopup
-                      no={application.no}
-                      buildingPermitNo={application.buildingPermitNo}
-                      applicantName={application.applicantName}
-                      projectName={application.projectName}
-                      open={openStates[application.no]}
-                      handleClose={() => handleClose(application.no)}
-                    />
+                    {<ViewPopup
+                      no={applicationform.controlno}
+                      buildingPermitNo={applicationform.buildingpermitno}
+                      applicantName={applicationform.namepermitee}
+                      projectName={applicationform.businessname}
+                      address={applicationform.address}
+                      typeofoccupancy={applicationform.typeofoccupancy}
+                      contactno={applicationform.contactno}
+                      datereceived={applicationform.datereceived}
+                      receivedby={applicationform.receivedby}
+                      open={openStates[applicationform.controlno]}
+                      handleClose={() => handleClose(applicationform.controlno)}
+                    />/*
                     <AddApplicatioPopup open={open} handleClose={handleClickClose} />
                     <UpdateApplicationPopup
                       no={application.no}
