@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BuildingList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch} from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Print from './Print';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AdditionalTab: React.FC = () => {
   return (
@@ -60,6 +61,38 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
+
+  const[applicationform,SetApplicationForm] = useState([{
+    controlno:100,
+    buildingpermitno: '100',
+    namepermitee: "default",
+    businessname: "don default",
+    address: "default",
+    typeofoccupancy: "default ",
+    contactno: "default",
+    datereceived: "2023-05-27T16:00:00.000+00:00",
+    receivedby: "default",
+    status: "default",
+    evaluator: "default",
+    nostorey: 2,
+    constructrenovate: "default ",
+    structureconstructed: false,
+    remarks: "default",
+    defects: "default"
+  }])
+
+  useEffect(() => {
+    getApplications();
+  }, []); 
+
+
+  const getApplications = async () =>{
+      axios.get('http://localhost:8080/BFP/displayAllPermits').then(res =>{
+          SetApplicationForm(res.data)
+          console.log(res.data)
+      }).catch(err => console.log(err))
+  }
+
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -288,41 +321,41 @@ const BuildingApplicationListComponent: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {buildingApplications
-              .filter((application) => {
+            {applicationform
+              .filter((applicationform) => {
                 if (sortBy === 'Pending Records') {
-                  return application.status === 'Pending';
+                  return applicationform.status === 'Pending';
                 } else if (sortBy === 'Completed Records') {
-                  return application.status === 'Approved' || application.status === 'Disapproved';
+                  return applicationform.status === 'Approved' || applicationform.status === 'Disapproved';
                 } else {
                   return true; // Show all records if no sortBy value is selected
                 }
               })
-              .filter((application) => {
+              .filter((applicationform) => {
                 // Filter based on the searchText value
                 if (searchText === '') {
                   return true; // Show all records if no search text is entered
                 } else {
                   // Filter based on the buildingPermitNo or applicantName containing the searchText
                   return (
-                    application.buildingPermitNo.toLowerCase().includes(searchText.toLowerCase()) ||
-                    application.applicantName.toLowerCase().includes(searchText.toLowerCase())
+                    applicationform.buildingpermitno.toLowerCase().includes(searchText.toLowerCase()) ||
+                    applicationform.namepermitee.toLowerCase().includes(searchText.toLowerCase())
                   );
                 }
               })
-              .map((application) => (
-                <tr key={application.no}>
-                  <td>{application.no}</td>
-                  <td>{application.buildingPermitNo}</td>
-                  <td>{application.applicantName}</td>
-                  <td>{application.projectName}</td>
-                  <td>{application.dateReceived.toLocaleDateString()}</td>
-                  <td>{application.status}</td>
-                  <td>{application.remarks}</td>
+              .map((applicationform) => (
+                <tr key={applicationform.controlno}>
+                  <td>{applicationform.controlno}</td>
+                  <td>{applicationform.buildingpermitno}</td>
+                  <td>{applicationform.namepermitee}</td>
+                  <td>{applicationform.businessname}</td>
+                  <td>{new Date(applicationform.datereceived).toISOString().split('T')[0]}</td>
+                  <td>{applicationform.status}</td>
+                  <td>{applicationform.remarks}</td>
                   <td>
                     <select
-                      value={selectedAction[application.no] || ''}
-                      onChange={(event) => handleActionChange(event, application.no)}
+                      value={selectedAction[applicationform.controlno] || ''}
+                      onChange={(event) => handleActionChange(event, applicationform.controlno)}
                       style={{height:'35px', width:'120px', borderRadius:'8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                     >
                       <option value="">-select-</option>
@@ -332,17 +365,22 @@ const BuildingApplicationListComponent: React.FC = () => {
                       <option value="Print">Print</option>
                       <option value="Delete">Delete</option>
                     </select>
-                    <IconButton className="next-button" onClick={() => handleNext(application.no ,application.status,application.buildingPermitNo)}>
+                    <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno ,applicationform.status,applicationform.buildingpermitno)}>
                       <ArrowCircleRightIcon sx={{color : '#3C486B'}} />
                     </IconButton>
-                    <ViewPopup
-                      no={application.no}
-                      buildingPermitNo={application.buildingPermitNo}
-                      applicantName={application.applicantName}
-                      projectName={application.projectName}
-                      open={openStates[application.no]}
-                      handleClose={() => handleClose(application.no)}
-                    />
+                    {<ViewPopup
+                      no={applicationform.controlno}
+                      buildingPermitNo={applicationform.buildingpermitno}
+                      applicantName={applicationform.namepermitee}
+                      projectName={applicationform.businessname}
+                      address={applicationform.address}
+                      typeofoccupancy={applicationform.typeofoccupancy}
+                      contactno={applicationform.contactno}
+                      datereceived={applicationform.datereceived}
+                      receivedby={applicationform.receivedby}
+                      open={openStates[applicationform.controlno]}
+                      handleClose={() => handleClose(applicationform.controlno)}
+                    />/*
                     <AddApplicatioPopup open={open} handleClose={handleClickClose} />
                     <UpdateApplicationPopup
                       no={application.no}
@@ -351,7 +389,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       projectName={application.projectName}
                       open={openUpdate[application.no]}
                       handleClose={() => handleCloseUpdate(application.no)}
-                    />
+                    />*/}
                   </td>
                 </tr>
               ))}
@@ -364,3 +402,4 @@ const BuildingApplicationListComponent: React.FC = () => {
 };
 
 export default BuildingApplicationListComponent;
+

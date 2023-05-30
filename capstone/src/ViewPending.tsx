@@ -10,10 +10,14 @@ const cardStyle = {
 
 export interface formdetails{
   no?: number;
-  buildingPermitNo?: string;
-  applicantName?: string;
-  projectName?: string;
-
+  buildingPermitNo: string;
+  applicantName: string;
+  projectName: string;
+  address:string;
+  typeofoccupancy:string;
+  contactno:string;
+  datereceived:string;
+  receivedby:string;
 }
 
 
@@ -46,31 +50,31 @@ export default function ViewPending(props: formdetails){
           <Grid item xs={10} sm={11}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Address</p>
-               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.address} readOnly/>
             </Stack>
           </Grid>
           <Grid item xs={10} sm={6}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Type of Occupancy</p>
-               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.typeofoccupancy} readOnly/>
             </Stack>
           </Grid>
           <Grid item xs={10} sm={5}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Contact Number</p>
-               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.contactno} readOnly/>
             </Stack>
           </Grid>
           <Grid item xs={10} sm={5}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Date Received</p>
-               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''}readOnly/>
             </Stack>
           </Grid>
           <Grid item xs={10} sm={6}>
             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                <p className='custom-paragraph'>Received By</p>
-               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.buildingPermitNo} readOnly/>
+               <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}defaultValue={props.receivedby} readOnly/>
             </Stack>
           </Grid>
         </Grid>
