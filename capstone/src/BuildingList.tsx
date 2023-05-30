@@ -5,7 +5,7 @@ import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import ViewPopup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import AddApplicatioPopup from './AddApplicationPopup';
+import AddApplicationPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
@@ -195,12 +195,18 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleNext = (value: number, status:string, buildingno:string) => {
     const selectedValue = selectedAction[value];
+
     if (selectedValue === 'Delete') {
+      
       const confirmed = window.confirm('Are you sure you want to delete this application?');
 
       if (confirmed) {
         // Perform delete logic here
         console.log('Deleting application:', value);
+        axios.delete('http://localhost:8080/BFP/deletePermit/'+parseInt(selectedValue),).then(res => {
+          console.log(res.data);
+          alert("Delete Successful!");
+      }).catch(err => console.log(err))
       } else {
         // User canceled the delete operation
         return;
@@ -382,7 +388,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       open={openStates[applicationform.controlno]}
                       handleClose={() => handleClose(applicationform.controlno)}
                     />
-                    <AddApplicatioPopup open={open} handleClose={handleClickClose} />
+                    <AddApplicationPopup open={open} handleClose={handleClickClose} />
                     <UpdateApplicationPopup
                       no={applicationform.controlno}
                       buildingPermitNo={applicationform.buildingpermitno}

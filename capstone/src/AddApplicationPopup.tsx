@@ -1,14 +1,19 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
-import AddApplicationForm from './AddApplicationForm';
 import IconButton from '@mui/material/IconButton';
-import { DialogTitle } from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack} from '@mui/material';
+import { useRef, useState } from 'react';
+import axios from 'axios';
 
-
+const cardStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: 800,
+    backgroundColor: 'lightgrey'
+  }; //Style Purposes
 
 export interface DialogTitleProps {
     id: string;
@@ -21,7 +26,56 @@ export interface formdetails {
     handleClose: () => void;
 }
 
-const AddApplicatioPopup: React.FC<formdetails> = ({open, handleClose }) => {
+const AddApplicationPopup: React.FC<formdetails> = ({open, handleClose }) => {
+    const buildingpermRef = useRef<HTMLInputElement | null>(null);
+    const permiteeRef = useRef<HTMLInputElement | null>(null);
+    const businessnameRef = useRef<HTMLInputElement | null>(null);
+    const addressRef = useRef<HTMLInputElement | null>(null);
+    const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
+    const contactnoRef = useRef<HTMLInputElement | null>(null);
+    const dateReceivedRef = useRef<HTMLInputElement | null>(null);
+    const receivedbyRef = useRef<HTMLInputElement | null>(null);
+
+    const NEW_URL = 'http://localhost:8080/BFP/insertPermit';
+
+    const AddForm = async () => {
+  
+      axios
+          .post(NEW_URL,{
+            buildingpermitno: buildingpermRef.current?.value,
+            namepermitee: permiteeRef.current?.value,
+            businessname: businessnameRef.current?.value,
+            address: addressRef.current?.value,
+            typeofoccupancy: typeofoccupancyRef.current?.value,
+            contactno: contactnoRef.current?.value,
+            datereceived: dateReceivedRef.current?.value,
+            receivedby: receivedbyRef.current?.value,
+            status: "Pending",
+            evaluator: "Default",
+            nostorey: 2,
+            constructrenovate:"Default",
+            structureconstructed: false,
+            remarks: "Not Printed",
+            defects: "N/A"
+          })
+          .then(res => {
+  
+            if(res.data){
+              console.log("Successfully Added!"+JSON.stringify(res.data));
+              handleClose()
+            }
+  
+          })
+          .catch(err =>{
+              console.log(err)
+          })
+      }
+  
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedDate(event.target.value);
+    };
 
     return (
         <div>
@@ -32,15 +86,68 @@ const AddApplicatioPopup: React.FC<formdetails> = ({open, handleClose }) => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-                    <AddApplicationForm
-                    />
+                        <Card style= {cardStyle}>
+                <CardContent style={{ marginLeft: 35, textAlign:'center' }} >
+                <Grid container >
+                    <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Building Permit Number</p>
+                        <OutlinedInput inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Name of Owner/Permitee</p>
+                        <OutlinedInput inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Business Name</p>
+                        <OutlinedInput inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Address</p>
+                        <OutlinedInput inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Type of Occupancy</p>
+                        <OutlinedInput inputRef={typeofoccupancyRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={5}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Contact Number</p>
+                        <OutlinedInput inputRef={contactnoRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={5}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Date Received</p>
+                        <OutlinedInput inputRef={dateReceivedRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
+                        <p className='custom-paragraph'>Received By</p>
+                        <OutlinedInput inputRef={receivedbyRef} fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}}/>
+                    </Stack>
+                    </Grid>
+                </Grid>
+                </CardContent>
+            </Card>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={handleClose} sx={{backgroundColor:'grey', borderRadius:'13px', height:'30px'}}>Add Application</Button>
+
+                    <Button variant='contained' onClick={AddForm} sx={{backgroundColor:'red', borderRadius:'13px', height:'30px'}}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
         </div>
     );
 };
-export default AddApplicatioPopup;
+export default AddApplicationPopup;

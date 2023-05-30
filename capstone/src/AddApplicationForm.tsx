@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Form.css'
 import axios from 'axios';
-import { Card, CardContent, Grid, OutlinedInput, Stack} from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, Grid, OutlinedInput, Stack} from '@mui/material';
 
 
 const cardStyle = {
@@ -13,12 +13,22 @@ const cardStyle = {
 }; //Style Purposes
 
 export interface formdetails{
-  no?: number;
-  buildingPermitNo?: string;
-  applicantName?: string;
-  projectName?: string;
-  //Add remaining Values here later 
+  no: number;
+    buildingPermitNo: string;
+    applicantName: string;
+    projectName: string;
+    address:string;
+    typeofoccupancy:string;
+    contactno:string;
+    datereceived:string;
+    receivedby:string;
+    open: boolean;
+    handleClose: () => void;
+}
 
+export interface formdetails {
+  open: boolean;
+  handleClose: () => void;
 }
 
 export default function AddApplication(props: formdetails){
@@ -117,6 +127,6 @@ const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split(
 
     </>
   );
-}
+};
 
 

@@ -50,7 +50,7 @@ export default function UpdateApplicationPopup(props:formdetails){
     const addressRef = useRef<HTMLInputElement | null>(null);
     const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
     const contactnoRef = useRef<HTMLInputElement | null>(null);
-    const dateRecivedRef = useRef<HTMLInputElement | null>(null);
+    const dateReceivedRef = useRef<HTMLInputElement | null>(null);
     const receivedbyRef = useRef<HTMLInputElement | null>(null);
 
     const [inputValues, setInputValues] = useState({
@@ -68,7 +68,7 @@ export default function UpdateApplicationPopup(props:formdetails){
       const testRef = () => {
        console.log(buildingpermRef.current?.value)
        console.log(permiteeRef.current?.value)
-       console.log(dateRecivedRef.current?.value)
+       console.log(dateReceivedRef.current?.value)
       };
 
      
@@ -90,7 +90,7 @@ export default function UpdateApplicationPopup(props:formdetails){
                 address: addressRef.current?.value,
                 typeofoccupancy: typeofoccupancyRef.current?.value,
                 contactno: contactnoRef.current?.value,
-                datereceived: dateRecivedRef.current?.value,
+                datereceived: dateReceivedRef.current?.value,
                 receivedby: receivedbyRef.current?.value,
                 status: "Pending",
                 evaluator: "Default",
@@ -102,7 +102,7 @@ export default function UpdateApplicationPopup(props:formdetails){
             }
             ).then(res => {
                 console.log(res.data);
-                alert("An Item has been succesfully updated");
+                alert("Update Successful!");
                 props.handleClose()
             }).catch(err => console.log(err))
            
@@ -160,7 +160,7 @@ export default function UpdateApplicationPopup(props:formdetails){
                             <Grid item xs={10} sm={5}>
                             <Stack spacing={-1} sx={{alignItems:'flex-start'}}>
                                 <p className='custom-paragraph'>Date Received</p>
-                                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''}  inputRef={dateRecivedRef}/>
+                                <OutlinedInput fullWidth className='custom-outlined-input' sx={{borderRadius: '11px'}} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''}  inputRef={dateReceivedRef}/>
                             </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
