@@ -54,7 +54,7 @@ export default function EvaluateApplicationForm() {
     const handleStatus = (event: SelectChangeEvent<string>) => {
         const value = event.target.value as string;
         setSelectedValue(value === 'true');
-      };
+    };
     const location = useLocation();
     const { buildingno, update } = location.state;
 
@@ -143,8 +143,8 @@ export default function EvaluateApplicationForm() {
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph'>Status</p>
                                     <Select value={selectedValue.toString()} onChange={handleStatus}
-                                        sx={{height:'30px', width:'200px', borderRadius:'14px', borderWidth: '20px'}}
-                                     
+                                        sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
+
                                     >
                                         <MenuItem value="false">Approved</MenuItem>
                                         <MenuItem value="true">Disaproved</MenuItem>
@@ -193,7 +193,7 @@ export default function EvaluateApplicationForm() {
                                     />
                                 </Stack>
                             </Grid>
-                            <Grid item xs={10} sm={11} sx={{ marginTop: '10px' }}>
+                           {/* <Grid item xs={10} sm={11} sx={{ marginTop: '10px' }}>
                                 <TableContainer component={Paper} sx={{ backgroundColor: 'lightgrey' }}>
                                     <Table style={{ borderCollapse: 'separate', borderSpacing: '0 8px' }}>
                                         <TableHead >
@@ -234,7 +234,7 @@ export default function EvaluateApplicationForm() {
                                     </Table>
                                     <Button variant="contained" onClick={handleAddRow} style={{ marginBottom: '8px', backgroundColor: 'blueviolet' }}>Add Row</Button>
                                 </TableContainer>
-                            </Grid>
+                          </Grid>*/}
                             <Grid item xs={10} sm={11} sx={{ marginTop: '10px' }}>
                                 <Button variant='contained' style={{ backgroundColor: 'blueviolet' }}>
                                     {update ? 'Update Evaluation' : 'Add Evaluation'}</Button>
