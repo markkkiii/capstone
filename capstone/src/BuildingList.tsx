@@ -213,7 +213,7 @@ const BuildingApplicationListComponent: React.FC = () => {
         console.log('Deleting application:', value);
         axios.delete('http://localhost:8080/BFP/deletePermit/'+value).then(res => {
           console.log(res.data);
-          alert("Delete Successful!");
+          alert("Deleted Successfully!");
       }).catch(err => console.log(err))
       } else {
         // User canceled the delete operation
