@@ -62,6 +62,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
 
   const[applicationform,SetApplicationForm] = useState([{
     controlno:100,
@@ -82,23 +83,25 @@ const BuildingApplicationListComponent: React.FC = () => {
     defects: "default"
   }])
 
-  useEffect(() => {
-    if (isInitialRender) {
-      // Run code only on the initial render
-      console.log('Initial render');
-      // Additional logic or side effects here
-      setIsInitialRender(false);
-      getApplications()
-    } 
-  }, [applicationform,isInitialRender]); 
-
-
   const getApplications = async () =>{
       axios.get('http://localhost:8080/BFP/displayAllPermits').then(res =>{
           SetApplicationForm(res.data)
           console.log(res.data)
       }).catch(err => console.log(err))
   }
+
+  useEffect(() => {
+    const interval = setInterval(getApplications, 1000); // Fetch data every 5 seconds
+    setPollingInterval(interval);
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+    };
+  }, []);
+
 
 
   const handleOpen = (no: number) => {
@@ -246,7 +249,7 @@ const BuildingApplicationListComponent: React.FC = () => {
         }
 
     }
-
+    getApplications();
     // Perform logic for the "Next" button click here
   };
 
