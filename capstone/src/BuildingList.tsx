@@ -57,6 +57,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
@@ -82,8 +83,14 @@ const BuildingApplicationListComponent: React.FC = () => {
   }])
 
   useEffect(() => {
-    getApplications();
-  }, []); 
+    if (isInitialRender) {
+      // Run code only on the initial render
+      console.log('Initial render');
+      // Additional logic or side effects here
+      setIsInitialRender(false);
+      getApplications()
+    } 
+  }, [applicationform,isInitialRender]); 
 
 
   const getApplications = async () =>{
@@ -195,7 +202,8 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleNext = (value: number, status:string, buildingno:string) => {
     const selectedValue = selectedAction[value];
-
+    const deletedval = parseInt(selectedAction[value],10)
+    
     if (selectedValue === 'Delete') {
       
       const confirmed = window.confirm('Are you sure you want to delete this application?');
@@ -203,7 +211,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       if (confirmed) {
         // Perform delete logic here
         console.log('Deleting application:', value);
-        axios.delete('http://localhost:8080/BFP/deletePermit/'+parseInt(selectedValue),).then(res => {
+        axios.delete('http://localhost:8080/BFP/deletePermit/'+value).then(res => {
           console.log(res.data);
           alert("Delete Successful!");
       }).catch(err => console.log(err))
