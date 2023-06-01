@@ -23,11 +23,11 @@ export interface formdetails {
     //Add remaining Values here later 
 
 }
-interface TableData {
-    natureOfCollection: string;
-    accountCode: string;
-    amount: string;
-}
+// interface TableData {
+//     natureOfCollection: string;
+//     accountCode: string;
+//     amount: string;
+// }
 
 
 export default function EvaluateApplicationForm() {
@@ -37,19 +37,20 @@ export default function EvaluateApplicationForm() {
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
     };
-    const [tableData, setTableData] = useState<TableData[]>([
-        { natureOfCollection: '', accountCode: '', amount: '' },
-    ]);
+    // const [tableData, setTableData] = useState<TableData[]>([
+    //     { natureOfCollection: '', accountCode: '', amount: '' },
+    // ]);
 
-    const handleAddRow = () => {
-        setTableData([...tableData, { natureOfCollection: '', accountCode: '', amount: '' }]);
-    };
+    // FOR PRINT AND CREATE PAYMENT PURPOSES
+    // const handleAddRow = () => {
+    //     setTableData([...tableData, { natureOfCollection: '', accountCode: '', amount: '' }]);
+    // };
 
-    const handleChange = (index: number, field: keyof TableData, value: string) => {
-        const updatedTableData = [...tableData];
-        updatedTableData[index][field] = value;
-        setTableData(updatedTableData);
-    };
+    // const handleChange = (index: number, field: keyof TableData, value: string) => {
+    //     const updatedTableData = [...tableData];
+    //     updatedTableData[index][field] = value;
+    //     setTableData(updatedTableData);
+    // };
 
     const handleStatus = (event: SelectChangeEvent<string>) => {
         const value = event.target.value as string;
@@ -58,20 +59,20 @@ export default function EvaluateApplicationForm() {
     const location = useLocation();
     const { buildingno, update } = location.state;
 
-    const updateFunction = () => {
-        //Update Later once there is backend
-    }
-    const evaluateFunction = () => {
-        //Update Later once there is backend
-    }
+    // const updateFunction = () => {
+    //     //Update Later once there is backend
+    // }
+    // const evaluateFunction = () => {
+    //     //Update Later once there is backend
+    // }
 
-    const handleClick = () => {
-        if (update) {
-            updateFunction();
-        } else {
-            evaluateFunction();
-        }
-    };
+    // const handleClick = () => {
+    //     if (update) {
+    //         updateFunction();
+    //     } else {
+    //         evaluateFunction();
+    //     }
+    // };
 
     return (
         <>

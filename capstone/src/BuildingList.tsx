@@ -31,16 +31,6 @@ const AdditionalTab: React.FC = () => {
   );
 };
 
-interface BuildingApplication {
-  no: number;
-  buildingPermitNo: string;
-  applicantName: string;
-  projectName: string;
-  dateReceived: Date;
-  status: string;
-  remarks: string;
-}
-
 interface EvaluateProps{
   update:boolean;
   buildingno: string;
@@ -62,7 +52,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
 
   const[applicationform,SetApplicationForm] = useState([{
     controlno:100,
