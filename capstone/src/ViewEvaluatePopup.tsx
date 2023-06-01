@@ -198,7 +198,7 @@ export default function ViewEvaluatePopup(props: formdetails) {
                                                     '& textarea': {
                                                         paddingTop: '20px', // Adjust the value as needed
                                                     },
-                                                }
+                                                }//
                                                 } multiline
                                                 disabled={selectedValue !== "Disapproved"}
                                                 readOnly
