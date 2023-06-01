@@ -56,9 +56,11 @@ interface ViewEvaluateProps{
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
+
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [open, setOpen] = useState(false);
+  const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
@@ -91,10 +93,16 @@ const BuildingApplicationListComponent: React.FC = () => {
   }
 
   useEffect(() => {
+    getApplications()
+  }, [test]);
 
-  }, [applicationform]);
+  const handleRender = () => {
+    setTest(prevTest => !prevTest);
+  };
 
-
+  useEffect(() => {
+    console.log(test); // This will output the updated value of `test` (after the state update)
+  }, [test]);  
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -123,6 +131,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       ...prevOpenUpdate,
       [no]: false,
     }));
+    handleRender()
   };
 
   const handleClickOpen = () => {
@@ -131,6 +140,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleClickClose = () => {
     setOpen(false);
+    handleRender()
   };
 
  
@@ -147,45 +157,6 @@ const BuildingApplicationListComponent: React.FC = () => {
     navigate('/viewevaluate',{ state });
   };
 
-
-  const buildingApplications: BuildingApplication[] = [
-    {
-      no: 1,
-      buildingPermitNo: '123456789',
-      applicantName: 'Jo March',
-      projectName: 'My House',
-      dateReceived: new Date('2023-05-28'),
-      status: 'Pending',
-      remarks: 'Printed'
-    },
-    {
-      no: 2,
-      buildingPermitNo: '987654321',
-      applicantName: 'Joe Mama',
-      projectName: 'My Apartment',
-      dateReceived: new Date('2023-05-26'),
-      status: 'Approved',
-      remarks: 'Not Printed'
-    },
-    {
-      no: 3,
-      buildingPermitNo: '567891234',
-      applicantName: 'Laurrie',
-      projectName: 'Commercial Building',
-      dateReceived: new Date('2023-04-28'),
-      status: 'Disapproved',
-      remarks: 'Printed'
-    },
-    {
-      no: 4,
-      buildingPermitNo: '21451512',
-      applicantName: 'Jamie',
-      projectName: 'Residential',
-      dateReceived: new Date('2022-05-28'),
-      status: 'Pending',
-      remarks: 'Printed'
-    }
-  ];
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
@@ -209,6 +180,7 @@ const BuildingApplicationListComponent: React.FC = () => {
         axios.delete('http://localhost:8080/BFP/deletePermit/'+value).then(res => {
           console.log(res.data);
           alert("Deleted Successfully!");
+          handleRender();
       }).catch(err => console.log(err))
       } else {
         // User canceled the delete operation
@@ -220,7 +192,10 @@ const BuildingApplicationListComponent: React.FC = () => {
           handleOpen(value)
         }
         else if(selectedValue === 'Update'){
-          handleOpenUpdate(value);
+          console.log('Before Upadte: ',test)
+          handleOpenUpdate(value)
+          console.log('After Upadte: ',test)
+          handleRender()
         }
         else if (selectedValue === 'Evaluate'){
           handleEvaluateClick(buildingno,false, 'test')
@@ -403,7 +378,8 @@ const BuildingApplicationListComponent: React.FC = () => {
                       datereceived={applicationform.datereceived}
                       receivedby={applicationform.receivedby}
                       open={openUpdate[applicationform.controlno]}
-                      handleClose={() => handleCloseUpdate(applicationform.controlno)}
+                      handleClose={() => handleCloseUpdate(applicationform.controlno)
+                      }
                     />
                   </td>
                 </tr>
