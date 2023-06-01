@@ -47,7 +47,6 @@ interface ViewEvaluateProps{
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-  const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
   const [openEvaluate, setOpenEvaluate] = useState<Record<number, boolean>>({});
   const [print, setPrint] = useState(false);
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
