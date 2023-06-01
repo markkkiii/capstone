@@ -10,7 +10,6 @@ import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import Print from './Print';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -58,7 +57,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
 
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
-  const [isInitialRender, setIsInitialRender] = useState(true);
   const [open, setOpen] = useState(false);
   const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
@@ -74,7 +72,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     address: "default",
     typeofoccupancy: "default ",
     contactno: "default",
-    datereceived: "2023-05-27T16:00:00.000+00:00",
+    datereceived: "2023-05-27",
     receivedby: "default",
     status: "default",
     evaluator: "default",
@@ -99,10 +97,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   const handleRender = () => {
     setTest(prevTest => !prevTest);
   };
-
-  useEffect(() => {
-    console.log(test); // This will output the updated value of `test` (after the state update)
-  }, [test]);  
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -157,7 +151,6 @@ const BuildingApplicationListComponent: React.FC = () => {
     navigate('/viewevaluate',{ state });
   };
 
-
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
     setSelectedAction((prevSelectedAction) => ({
@@ -168,7 +161,6 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleNext = (value: number, status:string, buildingno:string) => {
     const selectedValue = selectedAction[value];
-    const deletedval = parseInt(selectedAction[value],10)
     
     if (selectedValue === 'Delete') {
       
