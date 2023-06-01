@@ -48,15 +48,9 @@ export interface formdetails {
 
 export default function ViewEvaluatePopup(props: formdetails) {
 
-
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const [selectedValue, setSelectedValue] = useState(props.status);
-    const [selectedConsReno, setSelectedConsReno] = useState(props.newconsreno);
-    const [selectedCons, setSelectedCons] = useState<boolean>(false)
-    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedDate(event.target.value);
-    };
-
+    const [selectedValue] = useState(props.status);
+    const [selectedConsReno] = useState(props.newconsreno);
+    const [selectedCons] = useState<boolean>(false)
 
     return (
         <div>
