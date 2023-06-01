@@ -7,6 +7,8 @@ import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicationPopup from './AddApplicationPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
+import PrintPopup from './PrintPopup';
+import DeletePopup from './DeletePopup';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
@@ -41,12 +43,12 @@ interface ViewEvaluateProps{
  
 }
 
-
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-
+  const [print, setPrint] = useState(false);
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
+  const [deleteit, setDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
@@ -126,7 +128,22 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
 
- 
+  const handlePrintOpen = () => {
+    setPrint(true);
+  };
+
+  const handlePrintClose = () => {
+    setPrint(false);
+  };
+
+  const handleDeleteOpen = () => {
+    setDelete(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDelete(false);
+    handleRender()
+  };
 
   const handleEvaluateClick = (buildingnoval:string, updateval:boolean, testval?:string) => {
     // Navigate to the EvaluateApplicationForm with props
@@ -152,30 +169,17 @@ const BuildingApplicationListComponent: React.FC = () => {
     const selectedValue = selectedAction[value];
     
     if (selectedValue === 'Delete') {
-      
-      const confirmed = window.confirm('Are you sure you want to delete this application?');
-
-      if (confirmed) {
         // Perform delete logic here
-        console.log('Deleting application:', value);
-        axios.delete('http://localhost:8080/BFP/deletePermit/'+value).then(res => {
-          console.log(res.data);
-          alert("Deleted Successfully!");
-          handleRender();
-      }).catch(err => console.log(err))
-      } else {
-        // User canceled the delete operation
-        return;
-      }
+        handleDeleteOpen();
     } else if (status ==='Pending') {
         //Pending function condition goes here
         if(selectedValue ==='View'){
           handleOpen(value)
         }
         else if(selectedValue === 'Update'){
-          console.log('Before Upadte: ',test)
+          console.log('Before Update: ',test)
           handleOpenUpdate(value)
-          console.log('After Upadte: ',test)
+          console.log('After Update: ',test)
           handleRender()
         }
         else if (selectedValue === 'Evaluate'){
@@ -194,6 +198,9 @@ const BuildingApplicationListComponent: React.FC = () => {
         }
         else if(selectedValue ==='View'){
           handleViewEvaluateClick(buildingno)
+        }
+        else if (selectedValue === 'Print'){
+          handlePrintOpen()
         }
 
     }
@@ -362,6 +369,15 @@ const BuildingApplicationListComponent: React.FC = () => {
                       handleClose={() => handleCloseUpdate(applicationform.controlno)
                       }
                     />
+                    <PrintPopup
+                      open={print}
+                      handleClose={() => handlePrintClose()}
+                    />
+                    <DeletePopup
+                      open={deleteit}
+                      value={applicationform.controlno}
+                      handleClose={() => handleDeleteClose()}
+                    />
                   </td>
                 </tr>
               ))}
@@ -374,4 +390,3 @@ const BuildingApplicationListComponent: React.FC = () => {
 };
 
 export default BuildingApplicationListComponent;
-
