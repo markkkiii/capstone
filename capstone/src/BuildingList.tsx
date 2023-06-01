@@ -12,7 +12,6 @@ import DeletePopup from './DeletePopup';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
 import ViewEvaluatePopup from './ViewEvaluatePopup';
@@ -35,16 +34,6 @@ const AdditionalTab: React.FC = () => {
   );
 };
 
-interface EvaluateProps {
-  update: boolean;
-  buildingno: string;
-  testvalue?: string;
-}
-interface ViewEvaluateProps {
-  buildingno: string;
-
-}
-
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
@@ -57,7 +46,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
-  const navigate = useNavigate();
 
   const [applicationform, SetApplicationForm] = useState([{
     controlno: 100,

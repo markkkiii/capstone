@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useState, useRef } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -71,27 +70,6 @@ export default function EvaluatePopup(props: formdetails) {
     const NumberStoreyRef = useRef<HTMLInputElement | null>(null);
     const DefectsRef = useRef<HTMLInputElement | null>(null);
 
-
-    const [inputValues, setInputValues] = useState({
-
-        buildingPermitNo: props.buildingPermitNo,
-        applicantName: props.applicantName,
-        projectName: props.projectName,
-        address: props.address,
-        typeofoccupancy: props.typeofoccupancy,
-        contactno: props.contactno,
-        datereceived: props.datereceived,
-        receivedby: props.receivedby,
-    });
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setInputValues((prevInputValues) => ({
-            ...prevInputValues,
-            [name]: value,
-        }));
-    };
-
     const handleConsReno = (event: SelectChangeEvent<string>) => {
         setSelectedConsReno(event.target.value); // Update the state variable with the new selected value
       };
@@ -151,49 +129,49 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Building Permit Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} inputRef={buildingpermRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} inputRef={buildingpermRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.applicantName} inputRef={permiteeRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.applicantName} inputRef={permiteeRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Business Name</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} inputRef={businessnameRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} inputRef={businessnameRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Address</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} inputRef={addressRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} inputRef={addressRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={6}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Type of Occupancy</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} inputRef={typeofoccupancyRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} inputRef={typeofoccupancyRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={5}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Contact Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} inputRef={contactnoRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} inputRef={contactnoRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Date Received</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={dateReceivedRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={dateReceivedRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Received By</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} inputRef={receivedbyRef} readOnly={props.update != 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} inputRef={receivedbyRef} readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
