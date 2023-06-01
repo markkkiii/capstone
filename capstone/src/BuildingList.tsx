@@ -208,7 +208,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     } else if (status === 'Approved' || status ==='Disapproved') {
         //Completed function condition goes here
         if(selectedValue === 'Evaluate'){
-          alert('Application already Evaluated');
+          alert('Application already evaluated!');
         }
         else if(selectedValue === 'Update'){
          

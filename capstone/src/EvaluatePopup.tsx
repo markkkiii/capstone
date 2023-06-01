@@ -129,7 +129,7 @@ export default function EvaluatePopup(props: formdetails) {
             }
         ).then(res => {
             console.log(res.data);
-            alert("Update Successful!");
+            alert("Evaluation Successful!");
             props.handleClose()
         }).catch(err => console.log(err))
     }
