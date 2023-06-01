@@ -55,8 +55,10 @@ interface ViewEvaluateProps{
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
+
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
   const [open, setOpen] = useState(false);
+  const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
@@ -89,16 +91,12 @@ const BuildingApplicationListComponent: React.FC = () => {
   }
 
   useEffect(() => {
-    const interval = setInterval(getApplications, 1000); // Fetch data every 5 seconds
-    setPollingInterval(interval);
+    getApplications()
+  }, [test]);
 
-    // Clean up the interval when the component unmounts
-    return () => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
-    };
-  }, []);
+  const handleRender = () => {
+    setTest(prevTest => !prevTest);
+  };
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -127,6 +125,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       ...prevOpenUpdate,
       [no]: false,
     }));
+    handleRender()
   };
 
   const handleClickOpen = () => {
@@ -135,6 +134,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleClickClose = () => {
     setOpen(false);
+    handleRender()
   };
 
  
@@ -172,6 +172,7 @@ const BuildingApplicationListComponent: React.FC = () => {
         axios.delete('http://localhost:8080/BFP/deletePermit/'+value).then(res => {
           console.log(res.data);
           alert("Deleted Successfully!");
+          handleRender();
       }).catch(err => console.log(err))
       } else {
         // User canceled the delete operation
@@ -183,7 +184,10 @@ const BuildingApplicationListComponent: React.FC = () => {
           handleOpen(value)
         }
         else if(selectedValue === 'Update'){
-          handleOpenUpdate(value);
+          console.log('Before Upadte: ',test)
+          handleOpenUpdate(value)
+          console.log('After Upadte: ',test)
+          handleRender()
         }
         else if (selectedValue === 'Evaluate'){
           handleEvaluateClick(buildingno,false, 'test')
@@ -366,7 +370,8 @@ const BuildingApplicationListComponent: React.FC = () => {
                       datereceived={applicationform.datereceived}
                       receivedby={applicationform.receivedby}
                       open={openUpdate[applicationform.controlno]}
-                      handleClose={() => handleCloseUpdate(applicationform.controlno)}
+                      handleClose={() => handleCloseUpdate(applicationform.controlno)
+                      }
                     />
                   </td>
                 </tr>
