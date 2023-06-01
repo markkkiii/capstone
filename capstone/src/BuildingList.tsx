@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BuildingList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import ViewPopup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -15,13 +15,14 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
+import ViewEvaluatePopup from './ViewEvaluatePopup';
 
 const AdditionalTab: React.FC = () => {
   return (
-        <div className="additional-tab">
-          <img src="/images/redfirefighter.jpg" alt="Background IMG" className="background-image" />
-          <div className="content">
-          <img src="/images/DILG_logo.png" alt="DILG" className="logo" />
+    <div className="additional-tab">
+      <img src="/images/redfirefighter.jpg" alt="Background IMG" className="background-image" />
+      <div className="content">
+        <img src="/images/DILG_logo.png" alt="DILG" className="logo" />
         <div className="text">
           <p>Bureau of Fire Protection</p>
           <p>Region VII</p>
@@ -34,20 +35,21 @@ const AdditionalTab: React.FC = () => {
   );
 };
 
-interface EvaluateProps{
-  update:boolean;
+interface EvaluateProps {
+  update: boolean;
   buildingno: string;
-  testvalue?:string;
+  testvalue?: string;
 }
-interface ViewEvaluateProps{
+interface ViewEvaluateProps {
   buildingno: string;
- 
+
 }
 
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
   const [openEvaluate, setOpenEvaluate] = useState<Record<number, boolean>>({});
+  const [openViewEvaluate, setOpenViewEvaluate] = useState<Record<number, boolean>>({});
   const [print, setPrint] = useState(false);
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
   const [deleteit, setDelete] = useState(false);
@@ -57,8 +59,8 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
 
-  const[applicationform,SetApplicationForm] = useState([{
-    controlno:100,
+  const [applicationform, SetApplicationForm] = useState([{
+    controlno: 100,
     buildingpermitno: '100',
     namepermitee: "default",
     businessname: "don default",
@@ -67,20 +69,20 @@ const BuildingApplicationListComponent: React.FC = () => {
     contactno: "default",
     datereceived: "2023-05-27",
     receivedby: "default",
-    status: "default",
-    evaluator: "default",
-    nostorey: 2,
-    constructrenovate: "default ",
+    status: "Approved",
+    evaluator: "-",
+    nostorey: 0,
+    constructrenovate: "New Construction",
     structureconstructed: false,
-    remarks: "default",
-    defects: "default"
+    remarks: "Not Printed",
+    defects: "-"
   }])
 
-  const getApplications = async () =>{
-      axios.get('http://localhost:8080/BFP/displayAllPermits').then(res =>{
-          SetApplicationForm(res.data)
-          console.log(res.data)
-      }).catch(err => console.log(err))
+  const getApplications = async () => {
+    axios.get('http://localhost:8080/BFP/displayAllPermits').then(res => {
+      SetApplicationForm(res.data)
+      console.log(res.data)
+    }).catch(err => console.log(err))
   }
 
   useEffect(() => {
@@ -136,6 +138,21 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
 
+  const handleOpenViewEvaluate = (no: number) => {
+    setOpenViewEvaluate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: true,
+    }));
+  };
+
+  const handleCloseViewEvaluate = (no: number) => {
+    setOpenViewEvaluate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: false,
+    }));
+    handleRender()
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -182,43 +199,45 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
   };
 
-  const handleNext = (value: number, status:string, buildingno:string) => {
+  const handleNext = (value: number, status: string, buildingno: string) => {
     const selectedValue = selectedAction[value];
-    
+
     if (selectedValue === 'Delete') {
-        // Perform delete logic here
-        handleDeleteOpen();
-    } else if (status ==='Pending') {
-        //Pending function condition goes here
-        if(selectedValue ==='View'){
-          handleOpen(value)
-        }
-        else if(selectedValue === 'Update'){
-          console.log('Before Update: ',test)
-          handleOpenUpdate(value)
-          console.log('After Update: ',test)
-          handleRender()
-        }
-        else if (selectedValue === 'Evaluate'){
-          handleOpenEvaluate(value)
-        }
-        else if (selectedValue === 'Print'){
-          alert("Evaluate Application First!")
-        }
-    } else if (status === 'Approved' || status ==='Disapproved') {
-        //Completed function condition goes here
-        if(selectedValue === 'Evaluate'){
-          alert('Application already evaluated!');
-        }
-        else if(selectedValue === 'Update'){
-         
-        }
-        else if(selectedValue ==='View'){
-          
-        }
-        else if (selectedValue === 'Print'){
-          handlePrintOpen()
-        }
+      // Perform delete logic here
+      handleDeleteOpen();
+    } else if (status === 'Pending') {
+      //Pending function condition goes here
+      if (selectedValue === 'View') {
+        handleOpen(value)
+      }
+      else if (selectedValue === 'Update') {
+        console.log('Before Update: ', test)
+        handleOpenUpdate(value)
+        console.log('After Update: ', test)
+        handleRender()
+      }
+      else if (selectedValue === 'Evaluate') {
+        handleOpenEvaluate(value)
+      }
+      else if (selectedValue === 'Print') {
+        alert("Evaluate Application First!")
+      }
+    } else if (status === 'Approved' || status === 'Disapproved') {
+      //Completed function condition goes here
+      if (selectedValue === 'Evaluate') {
+        alert('Application already Evaluated');
+      }
+      else if (selectedValue === 'Update') {
+        handleOpenEvaluate(value)
+
+      }
+      else if (selectedValue === 'View') {
+        handleOpenViewEvaluate(value)
+      }
+      else if (selectedValue === 'Print') {
+        handlePrintOpen()
+      }
+
 
     }
     getApplications();
@@ -283,7 +302,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   outlineColor: 'lightgrey',
                   borderWidth: '3px',
                   borderColor: 'lightgray',
-                  borderRadius:'15px',
+                  borderRadius: '15px',
                   '&:hover': {
                     borderWidth: '3px',
                     borderColor: '#D02D2D',
@@ -346,7 +365,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                     <select
                       value={selectedAction[applicationform.controlno] || ''}
                       onChange={(event) => handleActionChange(event, applicationform.controlno)}
-                      style={{height:'35px', width:'120px', borderRadius:'8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
+                      style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                     >
                       <option value="">-select-</option>
                       <option value="View">View</option>
@@ -355,8 +374,8 @@ const BuildingApplicationListComponent: React.FC = () => {
                       <option value="Print">Print</option>
                       <option value="Delete">Delete</option>
                     </select>
-                    <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno ,applicationform.status,applicationform.buildingpermitno)}>
-                      <ArrowCircleRightIcon sx={{color : '#3C486B'}} />
+                    <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.buildingpermitno)}>
+                      <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                     </IconButton>
                     <ViewPopup
                       no={applicationform.controlno}
@@ -396,11 +415,40 @@ const BuildingApplicationListComponent: React.FC = () => {
                       contactno={applicationform.contactno}
                       datereceived={applicationform.datereceived}
                       receivedby={applicationform.receivedby}
+                      evaluator={applicationform.evaluator}
+                      status={applicationform.status}
+                      numberstorey={applicationform.nostorey}
+                      newconsreno={applicationform.constructrenovate}
+                      buildcons={applicationform.structureconstructed}
+                      defects={applicationform.defects}
                       update={selectedAction[applicationform.controlno]}
+
                       open={openEvaluate[applicationform.controlno]}
                       handleClose={() => handleCloseEvaluate(applicationform.controlno)
                       }
-                      />
+                    />
+                    <ViewEvaluatePopup
+                      no={applicationform.controlno}
+                      buildingPermitNo={applicationform.buildingpermitno}
+                      applicantName={applicationform.namepermitee}
+                      projectName={applicationform.businessname}
+                      address={applicationform.address}
+                      typeofoccupancy={applicationform.typeofoccupancy}
+                      contactno={applicationform.contactno}
+                      datereceived={applicationform.datereceived}
+                      receivedby={applicationform.receivedby}
+                      evaluator={applicationform.evaluator}
+                      status={applicationform.status}
+                      numberstorey={applicationform.nostorey}
+                      newconsreno={applicationform.constructrenovate}
+                      buildcons={applicationform.structureconstructed}
+                      defects={applicationform.defects}
+                      update={selectedAction[applicationform.controlno]}
+                      open={openViewEvaluate[applicationform.controlno]}
+                      handleClose={() => handleCloseViewEvaluate(applicationform.controlno)
+                      }
+                    />
+
                     <PrintPopup
                       open={print}
                       handleClose={() => handlePrintClose()}
@@ -416,7 +464,7 @@ const BuildingApplicationListComponent: React.FC = () => {
           </tbody>
         </table>
       </div>
-                
+
     </>
   );
 };
