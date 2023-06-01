@@ -91,16 +91,8 @@ const BuildingApplicationListComponent: React.FC = () => {
   }
 
   useEffect(() => {
-    const interval = setInterval(getApplications, 1000); // Fetch data every 5 seconds
-    setPollingInterval(interval);
 
-    // Clean up the interval when the component unmounts
-    return () => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
-    };
-  }, []);
+  }, [applicationform]);
 
 
 
