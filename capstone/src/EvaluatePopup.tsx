@@ -85,8 +85,9 @@ export default function EvaluatePopup(props: formdetails) {
     };
 
     const handleCons = (event: SelectChangeEvent<boolean>) => {
-        setSelectedCons(event.target.value);
-      };
+        setSelectedCons(event.target.value as boolean);
+        console.log(selectedCons)
+    };
 
     const handleApproved = (event: SelectChangeEvent<string>) => {
         setSelectedValue(event.target.value);
@@ -104,13 +105,13 @@ export default function EvaluatePopup(props: formdetails) {
                 contactno: props.contactno,
                 datereceived: props.datereceived,
                 receivedby: props.receivedby,
-                status: "Pending",
-                evaluator: "Default",
-                nostorey: 2,
-                constructrenovate: "Default",
-                structureconstructed: false,
+                status: selectedValue,
+                evaluator: EvaluatorRef.current?.value,
+                nostorey: NumberStoreyRef.current?.value,
+                constructrenovate: selectedConsReno,
+                structureconstructed: selectedCons,
                 remarks: "Not Printed",
-                defects: "N/A"
+                defects: DefectsRef.current?.value
             }
         ).then(res => {
             console.log(res.data);
@@ -192,7 +193,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Evaluator</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={EvaluatorRef}/>
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
@@ -211,7 +212,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={5}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Number of Storey</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={NumberStoreyRef}/>
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={6}>
@@ -233,8 +234,8 @@ export default function EvaluatePopup(props: formdetails) {
                                                 onChange={handleCons}
                                                 sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
                                             >
-                                                <MenuItem value={true}>Yes</MenuItem>
-                                                <MenuItem value={false}>No</MenuItem>
+                                                <MenuItem value="true">Yes</MenuItem>
+                                                <MenuItem value="false">No</MenuItem>
                                             </Select>
                                         </Stack>
                                     </Grid>
@@ -258,6 +259,7 @@ export default function EvaluatePopup(props: formdetails) {
                                                 }
                                                 } multiline
                                                 disabled={selectedValue !== "Disapproved"}
+                                                inputRef={DefectsRef}
                                                 rows={2}
                                             />
                                         </Stack>
