@@ -30,6 +30,12 @@ export interface formdetails {
     contactno: string;
     datereceived: string;
     receivedby: string;
+    evaluator?:string;
+    status?:string;
+    numberstorey?:number;
+    newconsreno?:string;
+    buildcons?:boolean;
+    defects?:string;
     open: boolean;
     update: string;
     handleClose: () => void;
@@ -53,6 +59,14 @@ export default function EvaluatePopup(props: formdetails) {
         setSelectedDate(event.target.value);
     };
 
+    const buildingpermRef = useRef<HTMLInputElement | null>(null);
+    const permiteeRef = useRef<HTMLInputElement | null>(null);
+    const businessnameRef = useRef<HTMLInputElement | null>(null);
+    const addressRef = useRef<HTMLInputElement | null>(null);
+    const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
+    const contactnoRef = useRef<HTMLInputElement | null>(null);
+    const dateReceivedRef = useRef<HTMLInputElement | null>(null);
+    const receivedbyRef = useRef<HTMLInputElement | null>(null);
     const EvaluatorRef = useRef<HTMLInputElement | null>(null);
     const NumberStoreyRef = useRef<HTMLInputElement | null>(null);
     const DefectsRef = useRef<HTMLInputElement | null>(null);
@@ -97,14 +111,14 @@ export default function EvaluatePopup(props: formdetails) {
     const updatePermit = async () => {
         axios.put('http://localhost:8080/BFP/updatePermit?id=' + props.no,
             {
-                buildingpermitno: props.buildingPermitNo,
-                namepermitee: props.applicantName,
-                businessname: props.projectName,
-                address: props.address,
-                typeofoccupancy: props.typeofoccupancy,
-                contactno: props.contactno,
-                datereceived: props.datereceived,
-                receivedby: props.receivedby,
+                buildingpermitno: buildingpermRef.current?.value,
+                namepermitee: permiteeRef.current?.value,
+                businessname: businessnameRef.current?.value,
+                address: addressRef.current?.value,
+                typeofoccupancy: typeofoccupancyRef.current?.value,
+                contactno: contactnoRef.current?.value,
+                datereceived: dateReceivedRef.current?.value,
+                receivedby: receivedbyRef.current?.value,
                 status: selectedValue,
                 evaluator: EvaluatorRef.current?.value,
                 nostorey: NumberStoreyRef.current?.value,
@@ -139,37 +153,37 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Building Permit Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} inputRef={buildingpermRef} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.applicantName} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.applicantName} inputRef={permiteeRef} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Business Name</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} inputRef={businessnameRef} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Address</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} inputRef={addressRef}  readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={6}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Type of Occupancy</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} inputRef={typeofoccupancyRef}  readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={5}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Contact Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} inputRef={contactnoRef}  readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
@@ -181,7 +195,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Received By</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} readOnly />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} inputRef={receivedbyRef}  readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
