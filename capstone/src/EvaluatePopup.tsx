@@ -46,9 +46,9 @@ export default function EvaluatePopup(props: formdetails) {
 
 
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const [selectedValue, setSelectedValue] = React.useState<String>("Disapproved");
-    const [selectedConsReno, setSelectedConsReno] = React.useState<String>("Renovation");
-    const [selectedCons, setSelectedCons] = React.useState<boolean>(false);
+    const [selectedValue, setSelectedValue] = useState('Approved');
+    const [selectedConsReno, setSelectedConsReno] = useState("Renovation");
+    const [selectedCons, setSelectedCons] = useState<boolean>(false)
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
     };
@@ -84,16 +84,12 @@ export default function EvaluatePopup(props: formdetails) {
         console.log(selectedConsReno)
     };
 
-    const handleCons = (event: SelectChangeEvent<string>) => {
-        const value = event.target.value as unknown as boolean
-        setSelectedCons(value);
-        console.log(selectedCons)
-    };
-
+    const handleCons = (event: SelectChangeEvent<boolean>) => {
+        setSelectedCons(event.target.value);
+      };
 
     const handleApproved = (event: SelectChangeEvent<string>) => {
-        const value = event.target.value as string;
-        setSelectedValue(value);
+        setSelectedValue(event.target.value);
         console.log(selectedValue)
     };
 
@@ -142,7 +138,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Building Permit Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.buildingPermitNo} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
@@ -154,25 +150,25 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Business Name</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.projectName} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Address</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={6}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Type of Occupancy</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={5}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Contact Number</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.contactno} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
@@ -184,7 +180,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Received By</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} readOnly/>
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.receivedby} readOnly />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>
@@ -202,10 +198,13 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Status</p>
-                                            <Select value={selectedValue.toString()} onChange={handleApproved}
-                                                sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}>
+                                            <Select
+                                                value={selectedValue}
+                                                onChange={handleApproved}
+                                                sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
+                                            >
                                                 <MenuItem value="Approved">Approved</MenuItem>
-                                                <MenuItem value="Disapprved">Disapproved</MenuItem>
+                                                <MenuItem value="Disapproved">Disapproved</MenuItem>
                                             </Select>
                                         </Stack>
                                     </Grid>
@@ -218,7 +217,7 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={6}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>New Construction/Renovation</p>
-                                            <Select value={selectedValue.toString()} onChange={handleConsReno}
+                                            <Select value={selectedConsReno} onChange={handleConsReno}
                                                 sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
                                             >
                                                 <MenuItem value="New Construction">New Construction</MenuItem>
@@ -229,11 +228,13 @@ export default function EvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Building/Structure Already Constructed?</p>
-                                            <Select value={selectedValue.toString()} onChange={handleCons}
+                                            <Select
+                                                value={selectedCons}
+                                                onChange={handleCons}
                                                 sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
                                             >
-                                                <MenuItem value="true">Yes</MenuItem>
-                                                <MenuItem value="false">No</MenuItem>
+                                                <MenuItem value={true}>Yes</MenuItem>
+                                                <MenuItem value={false}>No</MenuItem>
                                             </Select>
                                         </Stack>
                                     </Grid>
@@ -256,7 +257,7 @@ export default function EvaluatePopup(props: formdetails) {
                                                     },
                                                 }
                                                 } multiline
-                                                disabled={!selectedValue}
+                                                disabled={selectedValue !== "Disapproved"}
                                                 rows={2}
                                             />
                                         </Stack>
