@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import EvaluatePopup from './EvaluatePopup';
 
 const AdditionalTab: React.FC = () => {
   return (
@@ -45,8 +46,8 @@ interface ViewEvaluateProps{
 const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
+  const [openEvaluate, setOpenEvaluate] = useState<Record<number, boolean>>({});
   const [open, setOpen] = useState(false);
   const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('');
@@ -117,6 +118,21 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
 
+  const handleOpenEvaluate = (no: number) => {
+    setOpenEvaluate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: true,
+    }));
+  };
+
+  const handleCloseEvaluate = (no: number) => {
+    setOpenEvaluate((prevOpenUpdate) => ({
+      ...prevOpenUpdate,
+      [no]: false,
+    }));
+    handleRender()
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -128,17 +144,17 @@ const BuildingApplicationListComponent: React.FC = () => {
 
  
 
-  const handleEvaluateClick = (buildingnoval:string, updateval:boolean, testval?:string) => {
-    // Navigate to the EvaluateApplicationForm with props
-    const state: EvaluateProps = { update: updateval, buildingno: buildingnoval, testvalue: testval};
-    navigate('/evaluate',{ state });
-  };
+  // const handleEvaluateClick = (buildingnoval:string, updateval:boolean, testval?:string) => {
+  //   // Navigate to the EvaluateApplicationForm with props
+  //   const state: EvaluateProps = { update: updateval, buildingno: buildingnoval, testvalue: testval};
+  //   navigate('/evaluate',{ state });
+  // };
 
-  const handleViewEvaluateClick = (buildingnoval:string) => {
-    // Navigate to the EvaluateApplicationForm with props
-    const state: ViewEvaluateProps = {  buildingno: buildingnoval};
-    navigate('/viewevaluate',{ state });
-  };
+  // const handleViewEvaluateClick = (buildingnoval:string) => {
+  //   // Navigate to the EvaluateApplicationForm with props
+  //   const state: ViewEvaluateProps = {  buildingno: buildingnoval};
+  //   navigate('/viewevaluate',{ state });
+  // };
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
@@ -179,7 +195,7 @@ const BuildingApplicationListComponent: React.FC = () => {
           handleRender()
         }
         else if (selectedValue === 'Evaluate'){
-          handleEvaluateClick(buildingno,false, 'test')
+          handleOpenEvaluate(value)
         }
         else if (selectedValue === 'Print'){
           alert("Evaluate Application First!")
@@ -190,10 +206,10 @@ const BuildingApplicationListComponent: React.FC = () => {
           alert('Application already Evaluated');
         }
         else if(selectedValue === 'Update'){
-          handleEvaluateClick(buildingno,true, 'test')
+         
         }
         else if(selectedValue ==='View'){
-          handleViewEvaluateClick(buildingno)
+          
         }
 
     }
@@ -362,6 +378,21 @@ const BuildingApplicationListComponent: React.FC = () => {
                       handleClose={() => handleCloseUpdate(applicationform.controlno)
                       }
                     />
+                    <EvaluatePopup
+                      no={applicationform.controlno}
+                      buildingPermitNo={applicationform.buildingpermitno}
+                      applicantName={applicationform.namepermitee}
+                      projectName={applicationform.businessname}
+                      address={applicationform.address}
+                      typeofoccupancy={applicationform.typeofoccupancy}
+                      contactno={applicationform.contactno}
+                      datereceived={applicationform.datereceived}
+                      receivedby={applicationform.receivedby}
+                      update={selectedAction[applicationform.controlno]}
+                      open={openEvaluate[applicationform.controlno]}
+                      handleClose={() => handleCloseEvaluate(applicationform.controlno)
+                      }
+                      />
                   </td>
                 </tr>
               ))}
