@@ -238,6 +238,7 @@ const BuildingApplicationListComponent: React.FC = () => {
         handlePrintOpen()
       }
 
+
     }
     getApplications();
     // Perform logic for the "Next" button click here
