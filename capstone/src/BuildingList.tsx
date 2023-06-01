@@ -10,7 +10,6 @@ import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import Print from './Print';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -57,7 +56,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
-  const [isInitialRender, setIsInitialRender] = useState(true);
   const [open, setOpen] = useState(false);
   const [sortBy, setSortBy] = useState('');
   const [searchText, setSearchText] = useState('');
@@ -72,7 +70,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     address: "default",
     typeofoccupancy: "default ",
     contactno: "default",
-    datereceived: "2023-05-27T16:00:00.000+00:00",
+    datereceived: "2023-05-27",
     receivedby: "default",
     status: "default",
     evaluator: "default",
@@ -101,8 +99,6 @@ const BuildingApplicationListComponent: React.FC = () => {
       }
     };
   }, []);
-
-
 
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -155,46 +151,6 @@ const BuildingApplicationListComponent: React.FC = () => {
     navigate('/viewevaluate',{ state });
   };
 
-
-  const buildingApplications: BuildingApplication[] = [
-    {
-      no: 1,
-      buildingPermitNo: '123456789',
-      applicantName: 'Jo March',
-      projectName: 'My House',
-      dateReceived: new Date('2023-05-28'),
-      status: 'Pending',
-      remarks: 'Printed'
-    },
-    {
-      no: 2,
-      buildingPermitNo: '987654321',
-      applicantName: 'Joe Mama',
-      projectName: 'My Apartment',
-      dateReceived: new Date('2023-05-26'),
-      status: 'Approved',
-      remarks: 'Not Printed'
-    },
-    {
-      no: 3,
-      buildingPermitNo: '567891234',
-      applicantName: 'Laurrie',
-      projectName: 'Commercial Building',
-      dateReceived: new Date('2023-04-28'),
-      status: 'Disapproved',
-      remarks: 'Printed'
-    },
-    {
-      no: 4,
-      buildingPermitNo: '21451512',
-      applicantName: 'Jamie',
-      projectName: 'Residential',
-      dateReceived: new Date('2022-05-28'),
-      status: 'Pending',
-      remarks: 'Printed'
-    }
-  ];
-
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
     setSelectedAction((prevSelectedAction) => ({
@@ -205,7 +161,6 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleNext = (value: number, status:string, buildingno:string) => {
     const selectedValue = selectedAction[value];
-    const deletedval = parseInt(selectedAction[value],10)
     
     if (selectedValue === 'Delete') {
       
