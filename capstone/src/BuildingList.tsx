@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './BuildingList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import ViewPopup from './ViewPopup';
 import { Button } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddApplicationPopup from './AddApplicationPopup';
-import UpdateApplicationPopup from './UpdateApplicationPopUp';
-import PrintPopup from './PrintPopup';
 import DeletePopup from './DeletePopup';
-import NavigationBar from './NavigationBar';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
+import NavigationBar from './NavigationBar';
+import ViewPopup from './ViewPopup';
+import PrintPopup from './PrintPopup';
+import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import ViewEvaluatePopup from './ViewEvaluatePopup';
+
 
 const AdditionalTab: React.FC = () => {
   return (
