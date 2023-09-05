@@ -10,11 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
-import NavigationBar from './NavigationBar';
-import ViewPopup from './ViewPopup';
-import PrintPopup from './PrintPopup';
-import UpdateApplicationPopup from './UpdateApplicationPopUp';
-import ViewEvaluatePopup from './ViewEvaluatePopup';
+import NavigationBar from '../NavigationBar';
+import ViewPopup from '../ViewPopup';
+import PrintPopup from '../PrintPopup';
+import UpdateApplicationPopup from '../UpdateApplicationPopUp';
+import ViewEvaluatePopup from '../ViewEvaluatePopup';
 
 
 const AdditionalTab: React.FC = () => {
@@ -258,7 +258,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   return (
     <>
       <AdditionalTab />
-      <NavigationBar onLogout={handleLogout} />
       <div className="app-container">
         <div className="header">
           <div className="search-container">
