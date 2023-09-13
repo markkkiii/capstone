@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import ViewEvaluateApplicationForm from './ViewEvaluateApplcationForm';
-import BuildingList from './BuildingList';
-import EvaluateApplicationForm from './EvaluateApplcationForm';
+import BuildingList from './BuildingEvaluator/BuildingList';
+import EvaluateApplicationForm from './BuildingEvaluator/EvaluateApplcationForm';
 
 export default function App(){
 

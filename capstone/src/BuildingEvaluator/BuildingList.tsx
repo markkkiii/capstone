@@ -10,11 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
-import NavigationBar from './NavigationBar';
-import ViewPopup from './ViewPopup';
-import PrintPopup from './PrintPopup';
-import UpdateApplicationPopup from './UpdateApplicationPopUp';
-import ViewEvaluatePopup from './ViewEvaluatePopup';
+import NavigationBar from '../NavigationBar';
+import ViewPopup from '../ViewPopup';
+import PrintPopup from '../PrintPopup';
+import UpdateApplicationPopup from '../UpdateApplicationPopUp';
+import ViewEvaluatePopup from '../ViewEvaluatePopup';
 
 
 const AdditionalTab: React.FC = () => {
@@ -82,6 +82,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     setTest(prevTest => !prevTest);
   };
 
+  //VIEW Popup
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
@@ -89,6 +90,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
   };
 
+  //View Popup Close
   const handleClose = (no: number) => {
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
@@ -97,13 +99,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     getApplications()
   };
 
+  //Update Popup 
   const handleOpenUpdate = (no: number) => {
     setOpenUpdate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
-
+ //Update Popup
   const handleCloseUpdate = (no: number) => {
     setOpenUpdate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -111,14 +114,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
-
+ //Evaluate Popup
   const handleOpenEvaluate = (no: number) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
-
+//Evaluate Popup
   const handleCloseEvaluate = (no: number) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -126,14 +129,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
-
+//View Popup After Evaluation
   const handleOpenViewEvaluate = (no: number) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
-
+//View Popup After Evaluation
   const handleCloseViewEvaluate = (no: number) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -141,28 +144,28 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
-
+// Add Application
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+// Close Add Application
   const handleClickClose = () => {
     setOpen(false);
     handleRender()
   };
-
+// Print Popup 
   const handlePrintOpen = () => {
     setPrint(true);
   };
-
+// Print Popup
   const handlePrintClose = () => {
     setPrint(false);
   };
-
+// Delete Popup
   const handleDeleteOpen = () => {
     setDelete(true);
   };
-
+// Delete Popup
   const handleDeleteClose = () => {
     setDelete(false);
     handleRender()
@@ -180,6 +183,8 @@ const BuildingApplicationListComponent: React.FC = () => {
   //   navigate('/viewevaluate',{ state });
   // };
 
+
+  //Handles the selection of each Record, so that it doesnt change all the drop down option each change
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
     const value = event.target.value;
     setSelectedAction((prevSelectedAction) => ({
@@ -188,6 +193,8 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
   };
 
+
+  //Handles the button Logic 
   const handleNext = (value: number, status: string, buildingno: string) => {
     const selectedValue = selectedAction[value];
 
@@ -258,7 +265,6 @@ const BuildingApplicationListComponent: React.FC = () => {
   return (
     <>
       <AdditionalTab />
-      <NavigationBar onLogout={handleLogout} />
       <div className="app-container">
         <div className="header">
           <div className="search-container">
