@@ -52,7 +52,7 @@ const BuildingApplicationListComponent: React.FC = () => {
     controlno: 100,
     buildingpermitno: '100',
     namepermitee: "default",
-    businessname: "don default",
+    businessname: "veryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy longggggggggggggggggggggg nameeeeeeeeeeeeeeeeeeeeeeeeeeee",
     address: "default",
     typeofoccupancy: "default ",
     contactno: "default",

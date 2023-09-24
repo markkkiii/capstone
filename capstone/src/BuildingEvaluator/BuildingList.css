@@ -96,12 +96,12 @@
   
   th:nth-child(3),
   td:nth-child(3) {
-    min-width: 200px;
+    min-width: 150px;
   }
   
   th:nth-child(4),
   td:nth-child(4) {
-    min-width: 200px;
+    min-width: 150px;
   }
   
   th:nth-child(5),
@@ -111,7 +111,7 @@
   
   th:nth-child(6),
   td:nth-child(6) {
-    min-width: 150px;
+    min-width: 80px;
   }
   
   th:last-child,
@@ -141,7 +141,7 @@
   .popup-content {
     margin-bottom: 20px;
   }
-  
+
   .popup-buttons {
     display: flex;
     align-items: center;
