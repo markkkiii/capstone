@@ -9,8 +9,8 @@ const Navbar: React.FC = () => {
             {/*<AccountCircleIcon sx={{ display: { xs: 'none', md: 'flex', fontSize: '2rem' }, mr: 1 }}/>*/}
             <div className='navButtons'>
                 <Link to='/businessdashboard' className="navlink">New Business List</Link>
-                <Link to='/dashboard' className="navlink">Business Renewal List</Link>
-                <Link to='/dashboard' className="navlink">Occupancy List</Link>
+                <Link to='/renewaldashboard' className="navlink">Business Renewal List</Link>
+                <Link to='/disapprovedoccupancy' className="navlink">Occupancy List</Link>
             </div>
 
         </nav>

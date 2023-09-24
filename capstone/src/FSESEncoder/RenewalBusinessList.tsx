@@ -27,7 +27,7 @@ const AdditionalTab: React.FC = () => {
     );
 };
 
-const BusinessList: React.FC = () => {
+const RenewalBusinessList:React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
@@ -133,7 +133,7 @@ const BusinessList: React.FC = () => {
                         <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
                     </div>
                     <div className="title-container">
-                        <h1 className="title">Business Application List</h1>
+                        <h1 className="title">Business Renewal List</h1>
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
@@ -237,4 +237,5 @@ const BusinessList: React.FC = () => {
         </>
     )
 }
-export default BusinessList
+
+export default RenewalBusinessList
