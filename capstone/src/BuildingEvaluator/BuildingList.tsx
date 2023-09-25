@@ -11,10 +11,10 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
 import NavigationBar from '../NavigationBar';
-import ViewPopup from '../ViewPopup';
+import ViewPopup from '../BuildingEvaluator/ViewPopup';
 import PrintPopup from '../PrintPopup';
-import UpdateApplicationPopup from '../UpdateApplicationPopUp';
-import ViewEvaluatePopup from '../ViewEvaluatePopup';
+import UpdateApplicationPopup from './UpdateApplicationPopUp';
+import ViewEvaluatePopup from '../BuildingEvaluator/ViewEvaluatePopup';
 
 
 const AdditionalTab: React.FC = () => {

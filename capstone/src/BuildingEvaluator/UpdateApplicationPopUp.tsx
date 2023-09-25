@@ -34,14 +34,6 @@ export interface formdetails {
     handleClose: () => void;
 }
 
-
-
-
-export interface formdetails {
-    open: boolean;
-    handleClose: () => void;
-}
-
 export default function UpdateApplicationPopup(props:formdetails){
     
     const buildingpermRef = useRef<HTMLInputElement | null>(null);
