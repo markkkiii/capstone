@@ -12,21 +12,17 @@ const cardStyle = {
   backgroundColor: 'lightgrey'
 }; //Style Purposes
 
+//DATA VARIABLES required to add to database
 export interface formdetails{
   no: number;
-    buildingPermitNo: string;
-    applicantName: string;
-    projectName: string;
-    address:string;
-    typeofoccupancy:string;
-    contactno:string;
-    datereceived:string;
-    receivedby:string;
-    open: boolean;
-    handleClose: () => void;
-}
-
-export interface formdetails {
+  buildingPermitNo: string;
+  applicantName: string;
+  projectName: string;
+  address:string;
+  typeofoccupancy:string;
+  contactno:string;
+  datereceived:string;
+  receivedby:string;
   open: boolean;
   handleClose: () => void;
 }

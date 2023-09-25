@@ -6,6 +6,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import UpdateRenewalApplication from './UpdateRenewalApplication';
+import AddRenewalApplication from './AddRenewalApplication';
+import ViewRenewalApplication from './ViewRenewalApplication';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -27,11 +30,13 @@ const AdditionalTab: React.FC = () => {
     );
 };
 
-const RenewalBusinessList:React.FC = () => {
+const RenewalBusinessList: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+    const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
+    const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
 
     const [applicationform, SetApplicationForm] = useState([{
         controlno: 100,
@@ -43,7 +48,7 @@ const RenewalBusinessList:React.FC = () => {
         contactno: "default",
         datereceived: "2023-05-27",
         receivedby: "default",
-        status: "Approved",
+        status: "Pending",
         evaluator: "-",
         nostorey: 0,
         constructrenovate: "New Construction",
@@ -80,6 +85,41 @@ const RenewalBusinessList:React.FC = () => {
         setOpen(true);
     };
 
+    const handleClickClose = () => {
+        setOpen(false);
+    };
+
+    //VIEW Popup
+    const handleOpenView = (no: number) => {
+        setopenViewRenewal((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
+    };
+
+    //View Popup Close
+    const handleCloseView = (no: number) => {
+        setopenViewRenewal((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+    };
+    //Update Popup 
+    const handleOpenUpdate = (no: number) => {
+        setopenUpdateRenewal((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: true,
+        }));
+    };
+    //Update Popup
+
+    const handleCloseUpdate = (no: number) => {
+        setopenUpdateRenewal((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: false,
+        }));
+    };
+
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
@@ -90,10 +130,10 @@ const RenewalBusinessList:React.FC = () => {
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-
+                handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
-
+                handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
 
@@ -226,6 +266,9 @@ const RenewalBusinessList:React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <AddRenewalApplication open={open} handleClose={handleClickClose} />
+                                        <ViewRenewalApplication open={openViewRenewal[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
+                                        <UpdateRenewalApplication open={openUpdateRenewal[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
 
                                     </td>
                                 </tr>
