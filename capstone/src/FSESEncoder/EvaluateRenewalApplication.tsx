@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '@mui/material/Button';
+import './BusinessList.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,29 +15,23 @@ const cardStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   maxWidth: 800,
-  backgroundColor: 'lightgrey'
+  backgroundColor: 'lightgrey',
 }; //Style Purposes
 
 
 
 export interface formdetails {
-  no: number;
-  buildingPermitNo: string;
-  applicantName: string;
-  projectName: string;
+  /*no: number;
+  businessPermitNo: string;
+  nameofpermitee: string;
+  businessname: string;
   address: string;
+  natureofbusines:string;
   typeofoccupancy: string;
   contactno: string;
-  datereceived: string;
-  receivedby: string;
-  evaluator?: string;
-  status?: string;
-  numberstorey?: number;
-  newconsreno?: string;
-  buildcons?: boolean;
-  defects?: string;
+  email:string;
+  datereceived: string;*/
   open: boolean;
-  update: string;
   handleClose: () => void;
 }
 
@@ -51,8 +46,6 @@ export default function EvaluatePopup(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [selectedValue, setSelectedValue] = useState(props.status);
-  const [selectedConsReno, setSelectedConsReno] = useState(props.newconsreno);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
@@ -70,21 +63,14 @@ export default function EvaluatePopup(props: formdetails) {
   const NumberStoreyRef = useRef<HTMLInputElement | null>(null);
   const DefectsRef = useRef<HTMLInputElement | null>(null);
 
-  const handleConsReno = (event: SelectChangeEvent<string>) => {
-    setSelectedConsReno(event.target.value); // Update the state variable with the new selected value
-  };
 
   const handleCons = (event: SelectChangeEvent<boolean>) => {
     setSelectedCons(event.target.value as boolean);
     console.log(selectedCons)
   };
 
-  const handleApproved = (event: SelectChangeEvent<string>) => {
-    setSelectedValue(event.target.value);
-    console.log(selectedValue)
-  };
 
-  const updatePermit = async () => {
+  /*const updatePermit = async () => {
     axios.put('http://localhost:8080/BFP/updatePermit?id=' + props.no,
       {
         buildingpermitno: buildingpermRef.current?.value,
@@ -95,10 +81,8 @@ export default function EvaluatePopup(props: formdetails) {
         contactno: contactnoRef.current?.value,
         datereceived: dateReceivedRef.current?.value,
         receivedby: receivedbyRef.current?.value,
-        status: selectedValue,
         evaluator: EvaluatorRef.current?.value,
         nostorey: NumberStoreyRef.current?.value,
-        constructrenovate: selectedConsReno,
         structureconstructed: selectedCons,
         remarks: "Not Printed",
         defects: DefectsRef.current?.value
@@ -108,7 +92,7 @@ export default function EvaluatePopup(props: formdetails) {
       alert("Evaluation Successful!");
       props.handleClose()
     }).catch(err => console.log(err))
-  }
+  }*/
   return (
     <div>
       <Dialog open={props.open}
@@ -121,14 +105,14 @@ export default function EvaluatePopup(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent >
+        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '1250px' }} >
           <>
             <Card style={cardStyle}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Building Permit Number</p>
+                      <p className='custom-paragraph'>Business Permit Number</p>
                       <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly />
                     </Stack>
                   </Grid>
@@ -174,76 +158,97 @@ export default function EvaluatePopup(props: formdetails) {
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={6}>
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Date Received</p>
                       <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>------------------------------------------------------
-                        Evaluate Form-------------------------------------------------------</p>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Evaluator</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.evaluator} inputRef={EvaluatorRef} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Status</p>
-                      <Select
-                        value={selectedValue}
-                        onChange={handleApproved}
-                        sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
-                      >
-                        <MenuItem value="Approved">Approved</MenuItem>
-                        <MenuItem value="Disapproved">Disapproved</MenuItem>
-                      </Select>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={5}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Number of Storey</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.numberstorey} inputRef={NumberStoreyRef} />
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start', color: 'grey' }}>
+                      <p>
+                        -------------------------------------------------------------------------------------------------------------------------------</p>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>New Construction/Renovation</p>
-                      <Select value={selectedConsReno} onChange={handleConsReno}
-                        sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
-                      >
-                        <MenuItem value="New Construction">New Construction</MenuItem>
-                        <MenuItem value="Renovation">Renovation</MenuItem>
-                      </Select>
+                      <p className='custom-paragraph'>Date of Inspection</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Inspection Order Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>FSIC Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>FSIC Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
+                      <h2 className='custom-paragraph'>FSIC Payment</h2>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Building/Structure Already Constructed?</p>
-                      <Select
-                        value={selectedCons}
-                        onChange={handleCons}
-                        sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
-                      >
-                        <MenuItem value="true">Yes</MenuItem>
-                        <MenuItem value="false">No</MenuItem>
-                      </Select>
+                      <p className='custom-paragraph'>Amount</p>
+                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={5}>
+                  <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Remarks</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={"Not Printed"} readOnly />
+                      <p className='custom-paragraph'>O.R Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
+                      <h2 className='custom-paragraph'>Fire Safety Inspectors</h2>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
+                      <h3 className='custom-paragraph'>Team Leader</h3>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
+                      <h3 className='custom-paragraph'>1. FSI</h3>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px", }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
+                      <h3 className='custom-paragraph'>2. FSI</h3>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
+                      <h3 className='custom-paragraph'>3. FSI</h3>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Defects/Deficiencies</p>
+                      <p className='custom-paragraph'>Recommendations</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -252,11 +257,9 @@ export default function EvaluatePopup(props: formdetails) {
                           '& textarea': {
                             paddingTop: '20px', // Adjust the value as needed
                           },
-                        }
+                        }//
                         } multiline
-                        disabled={selectedValue !== "Disapproved"}
-                        inputRef={DefectsRef}
-                        defaultValue={props.defects}
+                        readOnly
                         rows={2}
                       />
                     </Stack>
@@ -267,8 +270,8 @@ export default function EvaluatePopup(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' onClick={updatePermit} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
-            {props.update === 'Update' ? 'Update Evaluation' : 'Add Evaluation'}
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
+            Add Evaluation
           </Button>
         </DialogActions>
       </Dialog>
