@@ -9,6 +9,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import AddRenewalApplication from './AddRenewalApplication';
 import ViewRenewalApplication from './ViewRenewalApplication';
 import UpdateRenewalApplication from './UpdateRenewalApplication';
+import EvaluateRenewalApplication from './EvaluateRenewalApplication';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -37,6 +38,7 @@ const BusinessList: React.FC = () => {
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
     const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
+    const [openEvaluateRenewal, setopenEvaluateRenewal] = useState<Record<number, boolean>>({});
 
     const [applicationform, SetApplicationForm] = useState([{
         controlno: 100,
@@ -111,11 +113,27 @@ const BusinessList: React.FC = () => {
       [no]: true,
     }));
   };
+  
  //Update Popup
-
  const handleCloseUpdate = (no: number) => {
     setopenUpdateRenewal((prevOpenUpdate) => ({
         ...prevOpenUpdate,
+        [no]: false,
+    }));
+};
+
+//Evaluate Popup
+const handleOpenEvaluate = (no: number) => {
+    setopenEvaluateRenewal((prevOpenEvaluate) => ({
+      ...prevOpenEvaluate,
+      [no]: true,
+    }));
+  };
+
+ //Update Popup
+ const handleCloseEvaluate = (no: number) => {
+    setopenEvaluateRenewal((prevOpenEvaluate) => ({
+        ...prevOpenEvaluate,
         [no]: false,
     }));
 };
@@ -136,7 +154,7 @@ const BusinessList: React.FC = () => {
                 handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
-
+                handleOpenEvaluate(value);
             }
             else if (selectedValue === 'Print') {
 
@@ -269,6 +287,7 @@ const BusinessList: React.FC = () => {
                                         <AddRenewalApplication open={open} handleClose={handleClickClose} />
                                         <ViewRenewalApplication open={openViewRenewal[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
                                         <UpdateRenewalApplication open={openUpdateRenewal[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
+                                        <EvaluateRenewalApplication  open={openEvaluateRenewal[applicationform.controlno]} handleClose={() => handleCloseEvaluate(applicationform.controlno)}/>
                                     </td>
                                 </tr>
                             ))}
