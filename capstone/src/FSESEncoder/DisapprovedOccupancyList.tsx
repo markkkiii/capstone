@@ -42,7 +42,7 @@ export interface formdetails {
 }
 
 
-export default function EvaluatePopup(props: formdetails) {
+export default function DisapprovedOccupancyList(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -105,144 +105,56 @@ export default function EvaluatePopup(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '1400px' }} >
+        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '1300px' }} >
           <>
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
-                  <Grid item xs={10} sm={11}>
+                  <Grid item xs={10} sm={8}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Business Permit Number</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Business Name</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Address</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
+                      <p className='custom-paragraph'>Inspection Order Number</p>
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Nature of Business</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} variant='standard' disabled/>
+                      <p className='custom-paragraph'>Control Number</p>
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Type of Occupancy</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
+                      <p className='custom-paragraph'>Building Permit Number</p>
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Applicant Name</p>
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Project Name</p>
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Address</p>
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Contact Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} variant='standard' disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Email</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} variant='standard' disabled/>
+                      <p className='custom-paragraph'>Contact Number</p>
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{paddingTop:'20px'}} >Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{paddingTop:'20px'}}>Inspection Order Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >FSIC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >FSIC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
-                      <h2 className='custom-paragraph' >FSIC Payment</h2>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Amount</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >O.R Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
-                      <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Fire Safety Inspectors</h2>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
-                      <h3 className='custom-paragraph'style={{marginTop: 0}}>Team Leader</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
-                      <h3 className='custom-paragraph' style={{paddingRight:'48px', marginTop: 0}} >1. FSI</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px", }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
-                      <h3 className='custom-paragraph' style={{paddingRight:'47px', marginTop: 0}}>2. FSI</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
-                      <h3 className='custom-paragraph' style={{paddingRight:'47px', marginTop: 0}}>3. FSI</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} readOnly />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Recommendations</p>
+                      <p className='custom-paragraph'>Assessment of Fees</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -256,6 +168,59 @@ export default function EvaluatePopup(props: formdetails) {
                         readOnly
                         rows={2}
                       />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>NOD Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>NOD Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' style={{paddingTop:'20px'}} >Deficiencies</p>
+                      <OutlinedInput fullWidth className='custom-outlined-input-multiline'
+                        sx={{
+                          borderRadius: '11px',
+                          height: '100px',
+                          paddingTop: '0',
+                          '& textarea': {
+                            paddingTop: '20px', // Adjust the value as needed
+                          },
+                        }//
+                        } multiline
+                        readOnly
+                        rows={2}
+                      />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
+                      <h2 className='custom-paragraph'>Received Notice of Disapproval</h2>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Name</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
                     </Stack>
                   </Grid>
                 </Grid>

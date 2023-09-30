@@ -46,55 +46,55 @@ const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => 
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Building Permit Number</p>
+                                        <p className='custom-paragraph' >Building Permit Number</p>
                                         <OutlinedInput inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Name of Owner/Permitee</p>
+                                        <p className='custom-paragraph' >Name of Owner/Permitee</p>
                                         <OutlinedInput inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Business Name</p>
+                                        <p className='custom-paragraph' >Business Name</p>
                                         <OutlinedInput inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Address</p>
+                                        <p className='custom-paragraph' >Address</p>
                                         <OutlinedInput inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Nature of Business</p>
+                                        <p className='custom-paragraph' >Nature of Business</p>
                                         <OutlinedInput inputRef={typeofoccupancyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={5}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Type of Occupancy</p>
+                                        <p className='custom-paragraph' >Type of Occupancy</p>
                                         <OutlinedInput inputRef={contactnoRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Contact Number</p>
+                                        <p className='custom-paragraph' >Contact Number</p>
                                         <OutlinedInput inputRef={dateReceivedRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Email</p>
+                                        <p className='custom-paragraph' >Email</p>
                                         <OutlinedInput inputRef={receivedbyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Date Received</p>
+                                        <p className='custom-paragraph' >Date Received</p>
                                         <OutlinedInput inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>

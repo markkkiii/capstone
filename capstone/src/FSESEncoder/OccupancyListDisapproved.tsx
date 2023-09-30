@@ -6,6 +6,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import DisapprovedOccupancyList from './DisapprovedOccupancyList';
+import ViewOccupancyPopup from './ViewOccupancyPopup';
+import UpdateOccupancyPopup from './UpdateOccupancyPopup';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -28,11 +31,14 @@ const AdditionalTab: React.FC = () => {
 };
 
 
-const OccupancyListDisapproved:React.FC = () => {
+const OccupancyListDisapproved: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+    const [openDisOccupancy, setopenDisOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
+    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
 
     const [applicationform, SetApplicationForm] = useState([{
         controlno: 100,
@@ -44,7 +50,7 @@ const OccupancyListDisapproved:React.FC = () => {
         contactno: "default",
         datereceived: "2023-05-27",
         receivedby: "default",
-        status: "Approved",
+        status: "Pending",
         evaluator: "-",
         nostorey: 0,
         constructrenovate: "New Construction",
@@ -52,6 +58,53 @@ const OccupancyListDisapproved:React.FC = () => {
         remarks: "Not Printed",
         defects: "-"
     }])
+
+    //Evaluate Popup Open
+    const handleOpenDisOccupancy = (no: number) => {
+        setopenDisOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: true,
+        }));
+    };
+
+    //Evaluate Popup Close
+    const handleCloseDisOccupancy = (no: number) => {
+        setopenDisOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: false,
+        }));
+    };
+    //View Popup Open
+    const handleOpenViewOccupancy = (no: number) => {
+        setopenViewOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: true,
+        }));
+    };
+
+    //View Popup Close
+    const handleCloseViewOccupancy = (no: number) => {
+        setopenViewOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: false,
+        }));
+    };
+
+     //Update Popup Open
+     const handleOpenUpdateOccupancy = (no: number) => {
+        setopenUpdateOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: true,
+        }));
+    };
+
+    //Update Popup Close
+    const handleCloseUpdateOccupancy = (no: number) => {
+        setopenUpdateOccupancy((prevOccu) => ({
+            ...prevOccu,
+            [no]: false,
+        }));
+    };
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
@@ -91,13 +144,14 @@ const OccupancyListDisapproved:React.FC = () => {
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
+                handleOpenViewOccupancy(value);
 
             }
             else if (selectedValue === 'Update') {
-
+                handleOpenUpdateOccupancy(value);
             }
             else if (selectedValue === 'Evaluate') {
-
+                handleOpenDisOccupancy(value);
             }
             else if (selectedValue === 'Print') {
 
@@ -120,7 +174,7 @@ const OccupancyListDisapproved:React.FC = () => {
     return (
         <>
             <AdditionalTab />
-            <Navbar/>
+            <Navbar />
             <div className="app-container">
                 <div className="header">
                     <div className="search-container">
@@ -142,28 +196,6 @@ const OccupancyListDisapproved:React.FC = () => {
                             <option value="Pending Records">Pending Records</option>
                             <option value="Completed Records">Completed Records</option>
                         </select>
-                        <div className="date-input-container">
-                            <Button
-                                variant="outlined"
-                                startIcon={<AddCircleOutlineIcon />}
-                                onClick={handleClickOpen}
-                                disableElevation
-                                sx={{
-                                    color: 'lightgrey',
-                                    outlineColor: 'lightgrey',
-                                    borderWidth: '3px',
-                                    borderColor: 'lightgray',
-                                    borderRadius: '15px',
-                                    '&:hover': {
-                                        borderWidth: '3px',
-                                        borderColor: '#D02D2D',
-                                        color: 'white'
-                                    },
-                                }}
-                            >
-                                Add Application
-                            </Button>
-                        </div>
                     </div>
                 </div>
                 <table>
@@ -227,7 +259,9 @@ const OccupancyListDisapproved:React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-
+                                        <DisapprovedOccupancyList open={openDisOccupancy[applicationform.controlno]} handleClose={() => handleCloseDisOccupancy(applicationform.controlno)} />
+                                        <ViewOccupancyPopup  open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseViewOccupancy(applicationform.controlno)}/>
+                                        <UpdateOccupancyPopup  open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdateOccupancy(applicationform.controlno)}/>
                                     </td>
                                 </tr>
                             ))}
