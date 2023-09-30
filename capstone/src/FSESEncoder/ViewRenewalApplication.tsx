@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack } from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 
@@ -46,56 +46,56 @@ const ViewRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) =>
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Building Permit Number</p>
-                                        <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly />
+                                        <p className='custom-paragraph' >Building Permit Number</p>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                                        <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly/>
+                                        <p className='custom-paragraph' >Name of Owner/Permitee</p>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }}variant='standard' disabled />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Business Name</p>
-                                        <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly/>
+                                        <p className='custom-paragraph' >Business Name</p>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Address</p>
-                                        <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly/>
+                                        <p className='custom-paragraph' >Address</p>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Nature of Business</p>
-                                        <OutlinedInput  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly/>
+                                        <p className='custom-paragraph' >Nature of Business</p>
+                                        <TextField  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={5}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Type of Occupancy</p>
-                                        <OutlinedInput  fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly/>
+                                        <p className='custom-paragraph' >Type of Occupancy</p>
+                                        <TextField  fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Contact Number</p>
-                                        <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly/>
+                                        <p className='custom-paragraph' >Contact Number</p>
+                                        <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Email</p>
-                                        <OutlinedInput  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly/>
+                                        <p className='custom-paragraph' >Email</p>
+                                        <TextField  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'>Date Received</p>
-                                        <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} readOnly/>
+                                        <p className='custom-paragraph' >Date Received</p>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled/>
                                     </Stack>
                                 </Grid>
                             </Grid>
