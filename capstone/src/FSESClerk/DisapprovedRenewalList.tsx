@@ -1,15 +1,13 @@
-import Navbar from './Navbar'
+import Navbar from '../FSESEncoder/Navbar'
 import React, { useEffect, useState } from 'react';
-import './BusinessList.css';
+import './ClerkCSS.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import AddRenewalApplication from './AddRenewalApplication';
-import ViewRenewalApplication from './ViewRenewalApplication';
-import UpdateRenewalApplication from './UpdateRenewalApplication';
-import EvaluateRenewalApplication from './EvaluateRenewalApplication';
+import ClerkNavbar from './ClerkNavbar';
+
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -31,14 +29,12 @@ const AdditionalTab: React.FC = () => {
     );
 };
 
-const BusinessList: React.FC = () => {
+const DisapprovedRenewalList: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
-    const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
-    const [openEvaluateRenewal, setopenEvaluateRenewal] = useState<Record<number, boolean>>({});
+
 
     const [applicationform, SetApplicationForm] = useState([{
         controlno: 100,
@@ -91,53 +87,7 @@ const BusinessList: React.FC = () => {
         setOpen(false);
     };
 
-    //VIEW Popup
-    const handleOpenView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
-            ...prevRenewal,
-            [no]: true,
-        }));
-    };
-
-    //View Popup Close
-    const handleCloseView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
-            ...prevRenewal,
-            [no]: false,
-        }));
-    };
-    //Update Popup 
-  const handleOpenUpdate = (no: number) => {
-    setopenUpdateRenewal((prevOpenUpdate) => ({
-      ...prevOpenUpdate,
-      [no]: true,
-    }));
-  };
-  
- //Update Popup
- const handleCloseUpdate = (no: number) => {
-    setopenUpdateRenewal((prevOpenUpdate) => ({
-        ...prevOpenUpdate,
-        [no]: false,
-    }));
-};
-
-//Evaluate Popup
-const handleOpenEvaluate = (no: number) => {
-    setopenEvaluateRenewal((prevOpenEvaluate) => ({
-      ...prevOpenEvaluate,
-      [no]: true,
-    }));
-  };
-
- //Evaluate Popup
- const handleCloseEvaluate = (no: number) => {
-    setopenEvaluateRenewal((prevOpenEvaluate) => ({
-        ...prevOpenEvaluate,
-        [no]: false,
-    }));
-};
-
+ 
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
@@ -148,13 +98,13 @@ const handleOpenEvaluate = (no: number) => {
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-                handleOpenView(value);
+       
             }
             else if (selectedValue === 'Update') {
-                handleOpenUpdate(value);
+            
             }
             else if (selectedValue === 'Evaluate') {
-                handleOpenEvaluate(value);
+                
             }
             else if (selectedValue === 'Print') {
 
@@ -177,7 +127,7 @@ const handleOpenEvaluate = (no: number) => {
     return (
         <>
             <AdditionalTab />
-            <Navbar />
+            <ClerkNavbar />
             <div className="app-container">
                 <div className="header">
                     <div className="search-container">
@@ -191,7 +141,7 @@ const handleOpenEvaluate = (no: number) => {
                         <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
                     </div>
                     <div className="title-container">
-                        <h1 className="title">Business Application List</h1>
+                        <h1 className="title">Renewal Business Permit List</h1>
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
@@ -199,28 +149,6 @@ const handleOpenEvaluate = (no: number) => {
                             <option value="Pending Records">Pending Records</option>
                             <option value="Completed Records">Completed Records</option>
                         </select>
-                        <div className="date-input-container">
-                            <Button
-                                variant="outlined"
-                                startIcon={<AddCircleOutlineIcon />}
-                                onClick={handleClickOpen}
-                                disableElevation
-                                sx={{
-                                    color: 'lightgrey',
-                                    outlineColor: 'lightgrey',
-                                    borderWidth: '3px',
-                                    borderColor: 'lightgray',
-                                    borderRadius: '15px',
-                                    '&:hover': {
-                                        borderWidth: '3px',
-                                        borderColor: '#D02D2D',
-                                        color: 'white'
-                                    },
-                                }}
-                            >
-                                Add Application
-                            </Button>
-                        </div>
                     </div>
                 </div>
                 <table>
@@ -284,10 +212,7 @@ const handleOpenEvaluate = (no: number) => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <AddRenewalApplication open={open} handleClose={handleClickClose} />
-                                        <ViewRenewalApplication open={openViewRenewal[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
-                                        <UpdateRenewalApplication open={openUpdateRenewal[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
-                                        <EvaluateRenewalApplication  open={openEvaluateRenewal[applicationform.controlno]} handleClose={() => handleCloseEvaluate(applicationform.controlno)}/>
+
                                     </td>
                                 </tr>
                             ))}
@@ -298,4 +223,4 @@ const handleOpenEvaluate = (no: number) => {
         </>
     )
 }
-export default BusinessList
+export default DisapprovedRenewalList

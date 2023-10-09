@@ -417,7 +417,6 @@ const BuildingApplicationListComponent: React.FC = () => {
                       buildcons={applicationform.structureconstructed}
                       defects={applicationform.defects}
                       update={selectedAction[applicationform.controlno]}
-
                       open={openEvaluate[applicationform.controlno]}
                       handleClose={() => handleCloseEvaluate(applicationform.controlno)
                       }
