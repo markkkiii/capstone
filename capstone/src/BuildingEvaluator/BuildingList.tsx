@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import EvaluatePopup from './EvaluatePopup';
-import NavigationBar from '../NavigationBar';
 import ViewPopup from '../BuildingEvaluator/ViewPopup';
 import PrintPopup from '../PrintPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
@@ -67,10 +66,11 @@ const BuildingApplicationListComponent: React.FC = () => {
     defects: "-"
   }])
 
+
+  // Gets Building Application List 
   const getApplications = async () => {
     axios.get('http://localhost:8080/BFP/displayAllPermits').then(res => {
       SetApplicationForm(res.data)
-      console.log(res.data)
     }).catch(err => console.log(err))
   }
 
@@ -257,10 +257,10 @@ const BuildingApplicationListComponent: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
+  /*const handleLogout = () => {
     // Implement your logout logic here
     console.log('Logout');
-  };
+  };*/
 
   return (
     <>

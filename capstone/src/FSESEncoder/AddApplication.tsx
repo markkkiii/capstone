@@ -17,11 +17,12 @@ const cardStyle = {
 
 export interface formdetails {
     open: boolean;
+    add: string;
     handleClose: () => void;
 }
 
 
-const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => {
+const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
     const buildingpermRef = useRef<HTMLInputElement | null>(null);
     const permiteeRef = useRef<HTMLInputElement | null>(null);
@@ -30,7 +31,44 @@ const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => 
     const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
     const contactnoRef = useRef<HTMLInputElement | null>(null);
     const dateReceivedRef = useRef<HTMLInputElement | null>(null);
-    const receivedbyRef = useRef<HTMLInputElement | null>(null);
+    const naturebusinessRef = useRef<HTMLInputElement | null>(null);
+    const emailRef = useRef<HTMLInputElement | null>(null);
+
+    const AddForm = async () => {
+        let NEW_URL = '';
+        if(add === 'New'){
+            NEW_URL = 'http://localhost:8080/BPPending/insertBPPermit';
+        }
+        else if (add === 'Renewal'){
+            NEW_URL = 'http://localhost:8080/Renewal/insertRenewalPermit';
+        }
+        axios
+            .post(NEW_URL, {
+                bspermit_no: buildingpermRef.current?.value,
+                permittee: permiteeRef.current?.value,
+                business_name: businessnameRef.current?.value,
+                address:addressRef.current?.value,
+                nature_business: naturebusinessRef.current?.value,
+                type_occupancy: typeofoccupancyRef.current?.value,
+                contact_no: contactnoRef.current?.value,
+                email: emailRef.current?.value,
+                date_received: dateReceivedRef.current?.value,
+                remarks: "Pending"  
+            })
+            .then(res => {
+
+                if (res.data) {
+                    console.log(buildingpermRef.current?.value)
+                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    handleClose()
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            
+    }
 
     return (
         <div>
@@ -71,31 +109,31 @@ const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => 
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Nature of Business</p>
-                                        <OutlinedInput inputRef={typeofoccupancyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput inputRef={naturebusinessRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={5}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Type of Occupancy</p>
-                                        <OutlinedInput inputRef={contactnoRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={typeofoccupancyRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Contact Number</p>
-                                        <OutlinedInput inputRef={dateReceivedRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput inputRef={contactnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Email</p>
-                                        <OutlinedInput inputRef={receivedbyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} />
+                                        <OutlinedInput inputRef={emailRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Date Received</p>
-                                        <OutlinedInput inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={dateReceivedRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} placeholder='EX: YEAR-MONTH-DAY'/>
                                     </Stack>
                                 </Grid>
                             </Grid>
@@ -104,7 +142,7 @@ const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => 
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
 
-                    <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
+                    <Button variant='contained'  onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
@@ -112,4 +150,4 @@ const AddRenewalApplication: React.FC<formdetails> = ({ open, handleClose }) => 
     )
 }
 
-export default AddRenewalApplication
+export default AddApplication

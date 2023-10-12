@@ -219,3 +219,10 @@
     .next-button:hover {
         background-color: grey;
     }
+
+    .center_div {
+        display: flex;
+        justify-content: center;
+        /* Center horizontally */
+        text-align: center; /* Center horizontally */
+    }
