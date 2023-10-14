@@ -6,12 +6,10 @@ import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
-import AddOccupancy from './AddOccupancy';
-import ViewPendingOccupancyList from './ViewPendingOccupancyPopup';
-import UpdatePendingOccupancyPopup from './UpdatePendingOccupancyPopup';
+import AddOccupancy from './Pending_Occupancy/AddOccupancy';
+import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
+import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 import EvaluateApprovedOccupancy from './EvaluateApprovedOccupancy';
-
-
 
 //Header Part
 const AdditionalTab: React.FC = () => {
