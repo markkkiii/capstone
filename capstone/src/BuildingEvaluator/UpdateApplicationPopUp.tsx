@@ -45,34 +45,6 @@ export default function UpdateApplicationPopup(props:formdetails){
     const dateReceivedRef = useRef<HTMLInputElement | null>(null);
     const receivedbyRef = useRef<HTMLInputElement | null>(null);
 
-    const [inputValues, setInputValues] = useState({
-        
-        buildingPermitNo: props.buildingPermitNo,
-        applicantName: props.applicantName,
-        projectName: props.projectName,
-        address:props.address,
-        typeofoccupancy:props.typeofoccupancy,
-        contactno:props.contactno,
-        datereceived: props.datereceived,
-        receivedby:props.receivedby,
-      });
-
-      const testRef = () => {
-       console.log(buildingpermRef.current?.value)
-       console.log(permiteeRef.current?.value)
-       console.log(dateReceivedRef.current?.value)
-      };
-
-     
-
-      const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setInputValues((prevInputValues) => ({
-          ...prevInputValues,
-          [name]: value,
-        }));
-      };
-
       const updatePermit = async () =>{
         axios.put('http://localhost:8080/BFP/updatePermit?id='+props.no,
             {

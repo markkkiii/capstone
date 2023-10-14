@@ -6,9 +6,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import DisapprovedOccupancyList from './DisapprovedOccupancyList';
-import ViewOccupancyPopup from './ViewOccupancyPopup';
-import UpdateOccupancyPopup from './UpdateOccupancyPopup';
+import ViewOccupancyPopup from './Disapproved_Occupancy_Permits/ViewOccupancyPopup';
+import UpdateOccupancyPopup from './Disapproved_Occupancy_Permits/UpdateOccupancyPopup';
+import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy_Permits/EvaluateDisapprovedOccupancy';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -194,7 +194,10 @@ const OccupancyListDisapproved: React.FC = () => {
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>
                             <option value="Pending Records">Pending Records</option>
-                            <option value="Completed Records">Completed Records</option>
+                            <option value="NTC Records">NTC Records</option>
+                            <option value="NTCV Records">NTCV Records</option>
+                            <option value="Abatement Records">Abatement Records</option>
+                            <option value="Closure Records">Closure Records</option>
                         </select>
                     </div>
                 </div>
@@ -206,7 +209,11 @@ const OccupancyListDisapproved: React.FC = () => {
                             <th>Owner's Name</th>
                             <th>Business Name</th>
                             <th>Type of Occupancy</th>
-                            <th>FSIC #</th>
+                            <th>{sortBy === 'NTC Records' ? 'NTC #' :
+                                sortBy === 'NTCV Records' ? 'NTCV #' :
+                                    sortBy === 'Abatement Records' ? 'Abatement#' :
+                                        sortBy === 'Closure Records' ? 'Closure #' :
+                                            'FSIC #'}</th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -259,7 +266,7 @@ const OccupancyListDisapproved: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <DisapprovedOccupancyList open={openDisOccupancy[applicationform.controlno]} handleClose={() => handleCloseDisOccupancy(applicationform.controlno)} />
+                                        <EvaluateDisapprovedOccupancy open={openDisOccupancy[applicationform.controlno]} handleClose={() => handleCloseDisOccupancy(applicationform.controlno)} />
                                         <ViewOccupancyPopup  open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseViewOccupancy(applicationform.controlno)}/>
                                         <UpdateOccupancyPopup  open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdateOccupancy(applicationform.controlno)}/>
                                     </td>

@@ -12,6 +12,7 @@ import UpdatePendingOccupancyPopup from './UpdatePendingOccupancyPopup';
 import EvaluateApprovedOccupancy from './EvaluateApprovedOccupancy';
 
 
+
 //Header Part
 const AdditionalTab: React.FC = () => {
 

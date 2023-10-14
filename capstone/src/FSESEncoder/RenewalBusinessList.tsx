@@ -6,11 +6,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import UpdateRenewalApplication from './UpdateRenewalApplication';
-import ViewRenewalApplication from './ViewRenewalApplication';
+import UpdateRenewalApplication from './Approved_Business-Renewal_Permits/UpdateRenewalApplication';
+import ViewRenewalApplication from './Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import AddApplication from './AddApplication';
 import axios from 'axios';
-import EvaluatePopup from './EvaluateApprovedApplication';
+import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -41,7 +42,7 @@ const RenewalBusinessList: React.FC = () => {
     const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-
+    const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -53,26 +54,28 @@ const RenewalBusinessList: React.FC = () => {
         type_occupancy: "test",
         contact_no: '09123123123',
         email: 'test@gmail',
-        date_received: '01/01/2001',
-        date_inspection: "01/01/2001",
+        date_received: '2023-01-01',
+        date_inspection: "2023-01-01",
         inspection_no: 2,
         fsic_no: 2,
-        fsic_date: '01/01/2001',
+        fsic_date: '2023-01-01',
         ntc_no: 2,
-        ntc_date: '01/01/2001',
-        ntcv_no: 2,
-        ntcv_date: '01/01/2001',
+        ntc_date: '2023-01-01',
+        ntcv_no:2,
+        ntcv_date: '2023-01-01',
+        or_no: 2,
+        amount:2000,
+        payment_date: '2023-01-01',
         abatement_no: 2,
-        abatement_date: '01/01/2001',
-        closure_no: 2,
-        closure_date: '01/01/2001',
+        abatement_date:'01/01/2001',
+        closure_no:2,
+        closure_date:'01/01/2001',
         remarks: "Pending",
         team_leader: "Jobert",
         fireInspectors: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
         defects: [['test'], ['test2']]
-    }])
-
+    }]) 
 
     useEffect(() => {
         if (sortBy === 'Pending Records') {
@@ -81,7 +84,7 @@ const RenewalBusinessList: React.FC = () => {
             }).catch(err => console.log(err))
         }
         else if (sortBy === 'Approved Records') {
-            axios.get('http://localhost:8080/newbpapplication/getAllNewbpApprovedApplication').then(res => {
+            axios.get('http://localhost:8080/renewalbpapprovedapplication/getAllRenewalbpApprovedApplication').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }
@@ -158,13 +161,34 @@ const RenewalBusinessList: React.FC = () => {
             ...prevRenewal,
             [no]: false,
         }));
+        handleRender()
     };
+
+      //VIEW Evaliate Popup
+      const handleOpenViewEval = (no: number) => {
+        setopenViewEvaluate((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
+    };
+
+    //View Evaluate  Close
+    const handleCloseViewEval= (no: number) => {
+        setopenViewEvaluate((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
+    };
+
+
     //Update Popup 
     const handleOpenUpdate = (no: number) => {
         setopenUpdateRenewal((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
         }));
+        
     };
 
     //Update Popup
@@ -173,6 +197,7 @@ const RenewalBusinessList: React.FC = () => {
             ...prevOpenUpdate,
             [no]: false,
         }));
+        handleRender()
     };
 
 
@@ -199,16 +224,16 @@ const RenewalBusinessList: React.FC = () => {
             else if (selectedValue === 'Print') {
 
             }
-        } else if (status === 'Approved' || status === 'Disapproved') {
+        } else if (status === 'FSIC NOT PRINTED' || status === 'FSIC PRINTED') {
             //Completed function condition goes here
 
         }
         else if (selectedValue === 'Update') {
-
+            handleOpenViewEval(value);
 
         }
         else if (selectedValue === 'View') {
-
+            handleOpenViewEval(value);
         }
         else if (selectedValue === 'Print') {
 
@@ -321,8 +346,34 @@ const RenewalBusinessList: React.FC = () => {
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                     </td>
-                                    <ViewRenewalApplication open={openViewRenewal[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
-                                    <UpdateRenewalApplication open={openUpdateRenewal[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
+                                    <ViewRenewalApplication 
+                                    open={openViewRenewal[applicationform.id]} 
+                                    handleClose={() => handleCloseView(applicationform.id)}
+                                    bspermit_no={applicationform.bspermit_no}
+                                    permitee={applicationform.permittee}
+                                    businessname={applicationform.business_name}
+                                    address={applicationform.address}
+                                    natureofbusiness={applicationform.nature_business}
+                                    typeofoccupancy={applicationform.type_occupancy}
+                                    contactno={applicationform.contact_no}
+                                    email={applicationform.email}
+                                    datereceived={applicationform.date_received}
+                                     />
+                                    <UpdateRenewalApplication 
+                                    open={openUpdateRenewal[applicationform.id]} 
+                                    handleClose={() => handleCloseUpdate(applicationform.id)} 
+                                    bspermit_no={applicationform.bspermit_no}
+                                    permitee={applicationform.permittee}
+                                    businessname={applicationform.business_name}
+                                    address={applicationform.address}
+                                    natureofbusiness={applicationform.nature_business}
+                                    typeofoccupancy={applicationform.type_occupancy}
+                                    contactno={applicationform.contact_no}
+                                    email={applicationform.email}
+                                    datereceived={applicationform.date_received}
+                                    id={applicationform.id}
+                                    form="Renewal"
+                                    />
                                     <EvaluatePopup
                                         form='Renewal'
                                         bpid={applicationform.id}
@@ -338,6 +389,33 @@ const RenewalBusinessList: React.FC = () => {
                                         datereceived={applicationform.date_received}
                                         handleClose={() => handleCloseEvaluate(applicationform.id)}
                                     />
+                                    <ViewEvaluate
+                                            form = {selectedAction[applicationform.id]}
+                                            permit='Renewal'
+                                            open = {openViewEvaluate[applicationform.id]}
+                                            handleClose={() => handleCloseViewEval(applicationform.id)}
+                                            bpid = {applicationform.id}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy = {applicationform.type_occupancy}
+                                            contactno = {applicationform.contact_no}
+                                            email = {applicationform.email}
+                                            date_received = {applicationform.date_received}
+                                            date_inspection ={applicationform.date_inspection}
+                                            inspection_no = {applicationform.inspection_no}
+                                            fsic_no = {applicationform.fsic_no}
+                                            fsic_date = {applicationform.fsic_date}
+                                            amount = {applicationform.amount}
+                                            or_no = {applicationform.or_no}
+                                            payment_date ={applicationform.payment_date}
+                                            remarks = {applicationform.remarks}
+                                            team_leader = {applicationform.team_leader}
+                                            fireInspectors = {applicationform.fireInspectors}
+                                            recommendation = {applicationform.recommendation}
+                                        />
                                 </tr>
 
                             ))}

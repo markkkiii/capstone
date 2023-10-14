@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import './BusinessList.css';
+import '../BusinessList.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 
 
@@ -22,6 +22,7 @@ const cardStyle = {
 
 export interface formdetails {
   form: string;
+  permit: string;
   bpid: number;
   business_no: string;
   permitee: string;
@@ -31,19 +32,34 @@ export interface formdetails {
   typeofoccupancy: string;
   contactno: string;
   email: string;
-  datereceived: string;
+  date_received: string;
+  date_inspection: string;
+  inspection_no: number;
+  fsic_no: number;
+  fsic_date: string;
+  amount: number;
+  or_no: number;
+  payment_date: string;
+  remarks: string;
+  team_leader: string;
+  fireInspectors?: string[];
+  recommendation?: string[];
   open: boolean;
   handleClose: () => void;
 }
 
-export default function EvaluatePopup(props: formdetails) {
+export default function ViewEvaluate(props: formdetails) {
 
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
+  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const business_noRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const permiteeRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const business_nameRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const addressRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const natureofbusinessRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const contactnoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const emailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const date_receivedRef = useRef<HTMLInputElement | null>(null)
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const fsicRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -52,15 +68,12 @@ export default function EvaluatePopup(props: formdetails) {
   const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
+  const [inputInspector, setInputInspector] = useState<string>(props.fireInspectors?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
-  const [inputrecommendation, setinputrecommendation] = useState<string>(''); // State to store the input value as a single string
+  const [inputrecommendation, setinputrecommendation] = useState<string>(props.recommendation?.join('\n') || ' '); // State to store the input value as a single string
   const [inputrecommendationarray, setrecommendationarray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
-  const handleCons = (event: SelectChangeEvent<boolean>) => {
-    setSelectedCons(event.target.value as boolean);
-    console.log(selectedCons)
-  };
+
 
   // Function to handle input changes
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +82,10 @@ export default function EvaluatePopup(props: formdetails) {
   // Function to handle input changes
   const RecommendationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setinputrecommendation(event.target.value);
+  };
+
+  const handleRemarks = (event: SelectChangeEvent<string>) => {
+    setselectedRemarks(event.target.value); // Update the state variable with the new selected value
   };
 
   // Function to split the input value into an array of strings based on newline characters
@@ -95,24 +112,26 @@ export default function EvaluatePopup(props: formdetails) {
 
   // uploads data to db
   const evaluateApproved = async () => {
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/newbpapplication/insertBusinessPermit'
+
+    let NEW_URL = '';
+    if (props.permit === 'New') {
+      NEW_URL = 'http://localhost:8080/newbpapplication/putEvalauteApprovedApplication?id='
+      console.log(props.bpid)
     }
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/renewalbpapprovedapplication/insertRenewalBusinessPermit'
+    else if (props.permit === 'Renewal') {
+      NEW_URL = 'http://localhost:8080/renewalbpapprovedapplication/putEvalauteApprovedApplication?id='
     }
-    axios.post(NEW_URL,
+    axios.put(NEW_URL+props.bpid,
       {
-        address: props.address,
-        bspermit_no: props.business_no,
-        permittee: props.permitee,
-        business_name: props.business_name,
-        nature_business: props.natureofbusiness,
-        type_occupancy: props.typeofoccupancy,
-        contact_no: props.contactno,
-        email: props.email,
-        date_received: props.datereceived,
+        bspermit_no: business_noRef.current?.value,
+        permittee:permiteeRef.current?.value,
+        business_name: business_nameRef.current?.value,
+        address: addressRef.current?.value,
+        nature_business: natureofbusinessRef.current?.value,
+        type_occupancy: typeofoccupancyRef.current?.value,
+        contact_no: contactnoRef.current?.value,
+        email: emailRef.current?.value,
+        date_received: date_receivedRef.current?.value,
         date_inspection: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         fsic_no: fsicRef.current?.value,
@@ -120,7 +139,7 @@ export default function EvaluatePopup(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
-        remarks: "FSIC Not Printed",
+        remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
         recommendation: inputrecommendationarray
@@ -128,32 +147,24 @@ export default function EvaluatePopup(props: formdetails) {
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-      deletefunc(props.bpid);
       props.handleClose()
-    }).catch(err => console.log(err))
+    }).catch(err => 
+      console.log(err)
+      )
   }
-
-  const deletefunc = (value: number) => {
-    //function here
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/BPPending/deletePermit/'
-    }
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/Renewal/deletePermit/'
-    }
-
-    axios.delete(NEW_URL + value).then(res => {
-        console.log(res.data);
-    }).catch(err => console.log(err))
-}
 
 
   // Sets the values of the array and uploads data to db
   const addEvaulation = () => {
     handleRender();
-    evaluateApproved();
-    
+    if (props.form !== 'Update') {
+      props.handleClose()
+    }
+    else {
+      evaluateApproved();
+    }
+
+
   }
   return (
     <div>
@@ -175,102 +186,102 @@ export default function EvaluatePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Business Permit Number</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_no} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={business_noRef} defaultValue={props.business_no} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.permitee} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={permiteeRef} defaultValue={props.permitee} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Business Name</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_name} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={business_nameRef} defaultValue={props.business_name} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Address</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={addressRef} defaultValue={props.address} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Nature of Business</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.natureofbusiness} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={natureofbusinessRef} defaultValue={props.natureofbusiness} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Type of Occupancy</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={typeofoccupancyRef} defaultValue={props.typeofoccupancy} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Contact Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.contactno} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={contactnoRef} defaultValue={props.contactno} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Email</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.email} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={emailRef} defaultValue={props.email} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={date_receivedRef} defaultValue={props.date_received ? new Date(props.date_received).toISOString().split('T')[0] : ''} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.date_inspection? new Date(props.date_inspection).toISOString().split('T')[0] : ''} inputRef={dateInspectionRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={inspectOrderRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.inspection_no} inputRef={inspectOrderRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >FSIC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.fsic_no} inputRef={fsicRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >FSIC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.fsic_date ? new Date(props.fsic_date).toISOString().split('T')[0] : ''} inputRef={fsicDateRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
+                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }} >
                       <h2 className='custom-paragraph' >FSIC Payment</h2>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Amount</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={AmountRef} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.amount} inputRef={AmountRef} disabled={props.form !== 'Update'} variant='standard' />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }} >
                       <p className='custom-paragraph' >O.R Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={OrNoRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.or_no} inputRef={OrNoRef} disabled={props.form !== 'Update'} variant='standard' />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.payment_date ? new Date(props.payment_date).toISOString().split('T')[0] : ''} inputRef={dateRef} disabled={props.form !== 'Update'} variant='standard' />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -281,7 +292,7 @@ export default function EvaluatePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
                       <h3 className='custom-paragraph' style={{ marginTop: 0 }}>Team Leader</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} disabled={props.form !== 'Update'} variant='standard' defaultValue={props.team_leader} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -326,6 +337,20 @@ export default function EvaluatePopup(props: formdetails) {
                       />
                     </Stack>
                   </Grid>
+                  <Grid item xs={10} sm={11}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Remarks</p>
+                      <Select
+                        sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
+                        disabled={props.form !== 'Update'}
+                        value={selectedRemarks}
+                        onChange={handleRemarks}
+                      >
+                        <MenuItem value="FSIC Printed">FSIC Printed</MenuItem>
+                        <MenuItem value="FSIC Not Printed">FSIC Not Printed</MenuItem>
+                      </Select>
+                    </Stack>
+                  </Grid>
                 </Grid>
               </CardContent>
             </Card>
@@ -333,7 +358,7 @@ export default function EvaluatePopup(props: formdetails) {
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
           <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaulation}>
-            Add Evaluation
+            {props.form === 'Update' ? 'Update Permit' : 'Close Permit'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import './ClerkCSS.css';
+import '../ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,7 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
-import DefectPopup from '../FSESEncoder/DefectPopup';
+import DefectPopup from './DefectPopup';
 
 
 const cardStyle = {
@@ -42,7 +42,7 @@ interface DefectData {
   period: string;
 }
 
-export default function EvaluateAbatementPopup(props: formdetails) {
+export default function EvaluateNTCVPopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
@@ -108,8 +108,8 @@ export default function EvaluateAbatementPopup(props: formdetails) {
   };
 
   // uploads data to db
-  const evaluateAbatement = async () => {
-    axios.post('http://localhost:8080/newbpnoticetocomply/insertAbatementPermit',
+  const evaluateNTCV = async () => {
+    axios.post('http://localhost:8080/newbpnoticetocomply/insertNTCVPermit',
       {
         bspermit_no: props.bpid,
         permitte: props.permitee,
@@ -126,7 +126,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
-        remarks: "FOR ISSUANCE Closure",
+        remarks: "FOR ISSUANCE NTCV",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
         defects:arrayList
@@ -140,7 +140,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
     handleRender();
-    evaluateAbatement();
+    evaluateNTCV();
   }
 
   return (
@@ -231,13 +231,13 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>NTC Number</p>
+                      <p className='custom-paragraph' >NTC Number</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>NTC Date</p>
+                      <p className='custom-paragraph'  >NTC Date</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
@@ -253,19 +253,6 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Abatement Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
-                    </Stack>
-                  </Grid>
-                  
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
                       <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Fire Safety Inspectors</h2>
