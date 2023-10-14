@@ -7,7 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
 import { DialogTitle, IconButton } from '@mui/material';
 import { useRef, useState } from 'react';
-import EvaluatePopup from '../FSESEncoder/EvaluateApprovedApplication';
+import EvaluatePopup from '../../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import EvaluateNTC from './EvaluateNTC';
 
 interface ChoiceProps {

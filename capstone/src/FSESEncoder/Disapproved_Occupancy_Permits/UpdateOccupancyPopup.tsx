@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import Button from '@mui/material/Button';
-import './ClerkCSS.css';
+import '../BusinessList.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack } from '@mui/material';
+import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import axios from 'axios';
 
 
 const cardStyle = {
@@ -41,7 +42,7 @@ export interface formdetails {
 }
 
 
-export default function UpdatePendingOccupancyPopup(props: formdetails) {
+export default function UpdateOccupancyList(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -104,26 +105,38 @@ export default function UpdatePendingOccupancyPopup(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '720px' }} >
           <>
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
                   <Grid item xs={10} sm={8}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Building Permit No.</p>
+                      <p className='custom-paragraph'>Inspection Order Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Control Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }}/>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'>Building Permit Number</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Name of Owner/Permitee</p>
+                      <p className='custom-paragraph'>Applicant Name</p>
                       <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px'}} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Business Name</p>
+                      <p className='custom-paragraph' >Project Name</p>
                       <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px'}} />
                     </Stack>
                   </Grid>
@@ -135,26 +148,26 @@ export default function UpdatePendingOccupancyPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Nature of Business</p>
-                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', width: '340px' }} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Type of Occupancy</p>
-                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', width: '305px' }} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Contact Number</p>
-                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', width: '340px' }} />
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px' }} />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={6}>
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Email</p>
-                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', width: '305px' }} />
+                      <p className='custom-paragraph'  >Assessment of Fees</p>
+                      <OutlinedInput fullWidth className='custom-outlined-input-multiline'
+                        sx={{
+                          borderRadius: '11px',
+                          height: '100px',
+                          paddingTop: '0',
+                          '& textarea': {
+                            paddingTop: '20px', // Adjust the value as needed
+                          },
+                        }//
+                        } multiline
+                        readOnly
+                        rows={2}
+                      />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -169,7 +182,7 @@ export default function UpdatePendingOccupancyPopup(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'Blue', borderRadius: '15px', height: '35px' }} onClick={props.handleClose}>
+          <Button variant='contained' sx={{ backgroundColor: 'Blue', borderRadius: '13px', height: '30px' }} onClick={props.handleClose}>
             Update Record
           </Button>
         </DialogActions>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import './BusinessList.css';
+import '../ClerkCSS.css'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import DefectPopup from './DefectPopup';
 
 
 const cardStyle = {
@@ -16,12 +17,12 @@ const cardStyle = {
   alignItems: 'center',
   maxWidth: 800,
   backgroundColor: 'lightgrey',
+  paddingLeft: 20,
 }; //Style Purposes
 
 
 
 export interface formdetails {
-  form: string;
   bpid: number;
   business_no: string;
   permitee: string;
@@ -36,14 +37,18 @@ export interface formdetails {
   handleClose: () => void;
 }
 
-export default function EvaluatePopup(props: formdetails) {
+interface DefectData {
+  defects: string;
+  period: string;
+}
+
+export default function EvaluateClosurePopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
+  const [data, setData] = useState<DefectData[]>([]);
+  const [arrayList, setArrayList] = useState<string[][]>([]);
+  const [openAddDefect, setOpenAddDefect] = useState(false);
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const fsicRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -54,9 +59,30 @@ export default function EvaluatePopup(props: formdetails) {
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
-  const [inputrecommendation, setinputrecommendation] = useState<string>(''); // State to store the input value as a single string
-  const [inputrecommendationarray, setrecommendationarray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
+
+  //opens add defect pop up
+  const openDialog = () => {
+    setOpenAddDefect(true);
+  };
+
+  useEffect(() => {
+    // Convert data to an array of arrays
+    setArrayList(data.map(item => [item.defects, item.period]));
+  }, [data]);
+
+  //closes add defect pop up
+  const closeDialog = () => {
+    setOpenAddDefect(false);
+  };
+
+  const addDefect = (defect: string, period: string) => {
+    const newData: DefectData = { defects: defect, period: period };
+    setData([...data, newData]);
+    console.log(data)
+  };
+
+
   const handleCons = (event: SelectChangeEvent<boolean>) => {
     setSelectedCons(event.target.value as boolean);
     console.log(selectedCons)
@@ -66,10 +92,6 @@ export default function EvaluatePopup(props: formdetails) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputInspector(event.target.value);
   };
-  // Function to handle input changes
-  const RecommendationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setinputrecommendation(event.target.value);
-  };
 
   // Function to split the input value into an array of strings based on newline characters
   const updateInputArray = useCallback(() => {
@@ -77,40 +99,24 @@ export default function EvaluatePopup(props: formdetails) {
     setinputInspectorArray(newArray);
   }, [inputInspector]);
 
-  const updateRecommendArray = useCallback(() => {
-    const newArray = inputrecommendation.split('\n').filter((line) => line.trim() !== '');
-    setrecommendationarray(newArray);
-  }, [inputrecommendation]);
-
   useEffect(() => {
     updateInputArray();
-    updateRecommendArray();
-  }, [render, updateInputArray, updateRecommendArray]);
+  }, [render, updateInputArray]);
 
   const handleRender = () => {
     setRender(prevRender => !prevRender);
   };
 
-
-
   // uploads data to db
-  const evaluateApproved = async () => {
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/newbpapplication/insertBusinessPermit'
-    }
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/renewalbpapprovedapplication/insertRenewalBusinessPermit'
-    }
-    axios.post(NEW_URL,
+  const evaluateClosure = async () => {
+    axios.post('http://localhost:8080/newbpnoticetocomply/insertClosurePermit',
       {
-        address: props.address,
-        bspermit_no: props.business_no,
-        permittee: props.permitee,
+        bspermit_no: props.bpid,
+        permitte: props.permitee,
         business_name: props.business_name,
+        address: props.address,
         nature_business: props.natureofbusiness,
-        type_occupancy: props.typeofoccupancy,
-        contact_no: props.contactno,
+        contactno: props.contactno,
         email: props.email,
         date_received: props.datereceived,
         date_inspection: dateInspectionRef.current?.value,
@@ -120,41 +126,23 @@ export default function EvaluatePopup(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
-        remarks: "FSIC Not Printed",
+        remarks: "FOR ISSUANCE Closure",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
-        recommendation: inputrecommendationarray
+        defects:arrayList
       }
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-      deletefunc(props.bpid);
-      props.handleClose()
     }).catch(err => console.log(err))
   }
-
-  const deletefunc = (value: number) => {
-    //function here
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/BPPending/deletePermit/'
-    }
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/Renewal/deletePermit/'
-    }
-
-    axios.delete(NEW_URL + value).then(res => {
-        console.log(res.data);
-    }).catch(err => console.log(err))
-}
-
 
   // Sets the values of the array and uploads data to db
-  const addEvaulation = () => {
+  const addEvaluation = () => {
     handleRender();
-    evaluateApproved();
-    
+    evaluateClosure();
   }
+
   return (
     <div>
       <Dialog open={props.open}
@@ -167,9 +155,12 @@ export default function EvaluatePopup(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '1500px' }} >
+        <DialogContent style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
           <>
-            <Card style={cardStyle} elevation={0}>
+            <Card style={cardStyle}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
                   <Grid item xs={10} sm={11}>
@@ -228,49 +219,62 @@ export default function EvaluatePopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date of Inspection</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Inspection Order Number </p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={inspectOrderRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >FSIC Number</p>
+                      <p className='custom-paragraph'>NTC Number</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >FSIC Date</p>
+                      <p className='custom-paragraph'>NTC Date</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
-                      <h2 className='custom-paragraph' >FSIC Payment</h2>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={11}>
+                  <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Amount</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={AmountRef} />
+                      <p className='custom-paragraph' >NTCV Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >O.R Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={OrNoRef} />
+                      <p className='custom-paragraph'  >NTCV Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateRef} />
+                      <p className='custom-paragraph' >Abatement Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >Abatement Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' >Closure Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >Closure Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -306,25 +310,26 @@ export default function EvaluatePopup(props: formdetails) {
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '10px' }}>Recommendations</p>
-                      <OutlinedInput fullWidth className='custom-outlined-input-multiline'
-                        sx={{
-                          borderRadius: '11px',
-                          height: '100px',
-                          paddingTop: '0',
-                          '& textarea': {
-                            paddingTop: '20px', // Adjust the value as needed
-                          },
-                        }//
-                        }
-                        multiline
-                        value={inputrecommendation}
-                        onChange={RecommendationChange}
-                        placeholder={`Test Recommendation\nType in the recommendation then press enter to move next line`}
-                        rows={2}
-                      />
-                    </Stack>
+                    <table>
+                      <thead style={{ textAlign: "center" }}>
+                        <tr>
+                          <th style={{ textAlign: "center" }}>Defects</th>
+                          <th style={{ textAlign: "center" }}>Grace Period</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.defects}</td>
+                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <DefectPopup open={openAddDefect} onClose={closeDialog} onAdd={addDefect} />
+                    <Button variant='contained' sx={{ marginTop:'10px',backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
+                      Add Defect
+                    </Button>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -332,7 +337,7 @@ export default function EvaluatePopup(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaulation}>
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
             Add Evaluation
           </Button>
         </DialogActions>

@@ -6,12 +6,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import UpdateRenewalApplication from './UpdateRenewalApplication';
-import ViewRenewalApplication from './ViewRenewalApplication';
+import UpdateRenewalApplication from './Approved_Business-Renewal_Permits/UpdateRenewalApplication';
+import ViewRenewalApplication from './Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import AddApplication from './AddApplication';
 import axios from 'axios';
-import EvaluatePopup from './EvaluateApprovedApplication';
-import ViewEvaluate from './ViewEvaluate';
+import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
 
 //Header Part
 const AdditionalTab: React.FC = () => {

@@ -7,8 +7,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
 import { DialogTitle, IconButton } from '@mui/material';
 import { useRef, useState } from 'react';
-import EvaluatePopup from './EvaluateApprovedApplication';
-import EvaluateNTC from '../FSESClerk/EvaluateNTC';
+import EvaluatePopup from '../../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import EvaluateNTC from './EvaluateNTC';
 
 interface ChoiceProps {
     bpid: number;

@@ -6,9 +6,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import DisapprovedOccupancyList from './DisapprovedOccupancyList';
-import ViewOccupancyPopup from './ViewOccupancyPopup';
-import UpdateOccupancyPopup from './UpdateOccupancyPopup';
+import ViewOccupancyPopup from './Disapproved_Occupancy_Permits/ViewOccupancyPopup';
+import UpdateOccupancyPopup from './Disapproved_Occupancy_Permits/UpdateOccupancyPopup';
+import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy_Permits/EvaluateDisapprovedOccupancy';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -266,7 +266,7 @@ const OccupancyListDisapproved: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <DisapprovedOccupancyList open={openDisOccupancy[applicationform.controlno]} handleClose={() => handleCloseDisOccupancy(applicationform.controlno)} />
+                                        <EvaluateDisapprovedOccupancy open={openDisOccupancy[applicationform.controlno]} handleClose={() => handleCloseDisOccupancy(applicationform.controlno)} />
                                         <ViewOccupancyPopup  open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseViewOccupancy(applicationform.controlno)}/>
                                         <UpdateOccupancyPopup  open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdateOccupancy(applicationform.controlno)}/>
                                     </td>

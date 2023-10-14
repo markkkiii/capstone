@@ -5,7 +5,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
-import EvaluateClosurePopup from './EvaluateClosure';
+import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateClosure';
 
 
 //Header Part

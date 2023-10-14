@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '@mui/material/Button';
-import './ClerkCSS.css';
+import '../ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
