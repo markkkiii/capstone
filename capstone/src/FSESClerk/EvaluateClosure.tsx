@@ -42,7 +42,7 @@ interface DefectData {
   period: string;
 }
 
-export default function EvaluateNTCPopup(props: formdetails) {
+export default function EvaluateClosurePopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
@@ -108,8 +108,8 @@ export default function EvaluateNTCPopup(props: formdetails) {
   };
 
   // uploads data to db
-  const evaluateNTC = async () => {
-    axios.post('http://localhost:8080/newbpnoticetocomply/insertNTCPermit',
+  const evaluateClosure = async () => {
+    axios.post('http://localhost:8080/newbpnoticetocomply/insertClosurePermit',
       {
         bspermit_no: props.bpid,
         permitte: props.permitee,
@@ -126,7 +126,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
-        remarks: "FOR ISSUANCE NTCV",
+        remarks: "FOR ISSUANCE Closure",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
         defects:arrayList
@@ -140,7 +140,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
     handleRender();
-    evaluateNTC();
+    evaluateClosure();
   }
 
   return (
@@ -219,7 +219,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Inspection Order Number </p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
                     </Stack>
                   </Grid>
@@ -231,13 +231,49 @@ export default function EvaluateNTCPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >NTC Number</p>
+                      <p className='custom-paragraph'>NTC Number</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >NTC Date</p>
+                      <p className='custom-paragraph'>NTC Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' >NTCV Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >NTCV Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' >Abatement Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >Abatement Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' >Closure Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >Closure Date</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
                     </Stack>
                   </Grid>
