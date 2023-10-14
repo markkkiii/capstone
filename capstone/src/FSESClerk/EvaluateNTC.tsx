@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import './BusinessList.css';
+import './ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from '../FSESEncoder/DefectPopup';
 
@@ -107,8 +107,6 @@ export default function EvaluateNTCPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-
-
   // uploads data to db
   const evaluateNTC = async () => {
     axios.post('http://localhost:8080/newbpnoticetocomply/insertNTCPermit',
@@ -140,7 +138,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
   }
 
   // Sets the values of the array and uploads data to db
-  const addEvaulation = () => {
+  const addEvaluation = () => {
     handleRender();
     evaluateNTC();
   }
@@ -221,13 +219,13 @@ export default function EvaluateNTCPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date of Inspection</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={inspectOrderRef} />
                     </Stack>
                   </Grid>
@@ -303,7 +301,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaulation}>
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
             Add Evaluation
           </Button>
         </DialogActions>

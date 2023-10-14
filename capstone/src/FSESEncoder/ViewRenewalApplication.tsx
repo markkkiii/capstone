@@ -3,9 +3,8 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack, TextField } from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, Stack, TextField } from '@mui/material';
 import { useRef, useState } from 'react';
-import axios from 'axios';
 
 const cardStyle = {
     display: 'flex',
@@ -30,7 +29,18 @@ export interface formdetails {
 }
 
 
+
 const ViewRenewalApplication: React.FC<formdetails> = (props: formdetails) => {
+
+    // const buildingpermRef = useRef<HTMLInputElement | null>(null);
+    // const permiteeRef = useRef<HTMLInputElement | null>(null);
+    // const businessnameRef = useRef<HTMLInputElement | null>(null);
+    // const addressRef = useRef<HTMLInputElement | null>(null);
+    // const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
+    // const contactnoRef = useRef<HTMLInputElement | null>(null);
+    // const dateReceivedRef = useRef<HTMLInputElement | null>(null);
+    // const receivedbyRef = useRef<HTMLInputElement | null>(null);
+
     return (
         <div>
             <Dialog open={props.open} maxWidth="md" fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey' } }}>
