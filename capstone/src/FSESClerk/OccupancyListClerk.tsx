@@ -8,6 +8,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import AddOccupancy from './AddOccupancy';
 import ViewPendingOccupancyList from './ViewPendingOccupancyPopup';
+import UpdatePendingOccupancyPopup from './UpdatePendingOccupancyPopup';
 
 
 //Header Part
@@ -36,7 +37,9 @@ const OccupancyListClerk: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openAddOccupancy, setopenAddOccupancy] = useState<Record<number, boolean>>({});
-    const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
+    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
+    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
+
 
 
 
@@ -94,7 +97,7 @@ const OccupancyListClerk: React.FC = () => {
 
     //VIEW Popup
     const handleOpenView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
+        setopenViewOccupancy((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
         }));
@@ -102,12 +105,27 @@ const OccupancyListClerk: React.FC = () => {
 
     //View Popup Close
     const handleCloseView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
+        setopenViewOccupancy((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
         }));
     };
 
+    //Update Popup 
+    const handleOpenUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: true,
+        }));
+    };
+
+    //Update Popup
+    const handleCloseUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: false,
+        }));
+    };
  
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -122,7 +140,7 @@ const OccupancyListClerk: React.FC = () => {
                 handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
-            
+                handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
                 
@@ -256,7 +274,8 @@ const OccupancyListClerk: React.FC = () => {
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                         <AddOccupancy open={open} handleClose={handleClickClose} />
-                                        <ViewPendingOccupancyList open={openViewRenewal[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
+                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
+                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
                                     </td>
                                 </tr>
                             ))}
