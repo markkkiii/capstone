@@ -1,4 +1,3 @@
-import Navbar from '../FSESEncoder/Navbar'
 import React, { useEffect, useState } from 'react';
 import './ClerkCSS.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +7,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import AddOccupancy from './AddOccupancy';
+import ViewPendingOccupancyList from './ViewPendingOccupancyPopup';
 
 
 //Header Part
@@ -36,6 +36,8 @@ const OccupancyListClerk: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openAddOccupancy, setopenAddOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
+
 
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -90,6 +92,22 @@ const OccupancyListClerk: React.FC = () => {
         setOpen(false);
     };
 
+    //VIEW Popup
+    const handleOpenView = (no: number) => {
+        setopenViewRenewal((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
+    };
+
+    //View Popup Close
+    const handleCloseView = (no: number) => {
+        setopenViewRenewal((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+    };
+
  
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -101,7 +119,7 @@ const OccupancyListClerk: React.FC = () => {
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-       
+                handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
             
@@ -238,7 +256,7 @@ const OccupancyListClerk: React.FC = () => {
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                         <AddOccupancy open={open} handleClose={handleClickClose} />
-
+                                        <ViewPendingOccupancyList open={openViewRenewal[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
                                     </td>
                                 </tr>
                             ))}
