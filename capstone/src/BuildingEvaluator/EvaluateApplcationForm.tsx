@@ -145,7 +145,6 @@ export default function EvaluateApplicationForm() {
                                     <p className='custom-paragraph'>Status</p>
                                     <Select value={selectedValue.toString()} onChange={handleStatus}
                                         sx={{ height: '30px', width: '200px', borderRadius: '14px', borderWidth: '20px' }}
-
                                     >
                                         <MenuItem value="false">Approved</MenuItem>
                                         <MenuItem value="true">Disaproved</MenuItem>
