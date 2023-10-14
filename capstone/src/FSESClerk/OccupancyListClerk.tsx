@@ -10,6 +10,8 @@ import AddOccupancy from './Pending_Occupancy/AddOccupancy';
 import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
 import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 import EvaluateApprovedOccupancy from './EvaluateApprovedOccupancy';
+import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
+import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -39,7 +41,7 @@ const OccupancyListClerk: React.FC = () => {
     const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
-    
+    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
 
 
 
@@ -61,16 +63,16 @@ const OccupancyListClerk: React.FC = () => {
         fsic_date: '2023-01-01',
         ntc_no: 2,
         ntc_date: '2023-01-01',
-        ntcv_no:2,
+        ntcv_no: 2,
         ntcv_date: '2023-01-01',
         or_no: 2,
-        amount:2000,
+        amount: 2000,
         payment_date: '2023-01-01',
         abatement_no: 2,
-        abatement_date:'01/01/2001',
-        closure_no:2,
-        closure_date:'01/01/2001',
-        remarks: "Pending",
+        abatement_date: '01/01/2001',
+        closure_no: 2,
+        closure_date: '01/01/2001',
+        remarks: "Disapproved",
         team_leader: "Jobert",
         fireInspectors: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
@@ -126,6 +128,22 @@ const OccupancyListClerk: React.FC = () => {
         }));
     };
 
+    //VIEW/Update Evaluate Popup Open
+    const handleOpenViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: true,
+        }));
+    };
+
+    //VIEW/Update Evaluate Popup Close
+    const handleCloseViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: false,
+        }));
+    };
+
     //Update Popup 
     const handleOpenUpdate = (no: number) => {
         setopenUpdateOccupancy((prevOpenUpdate) => ({
@@ -157,7 +175,7 @@ const OccupancyListClerk: React.FC = () => {
             [no]: false,
         }));
     };
- 
+
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
@@ -179,19 +197,18 @@ const OccupancyListClerk: React.FC = () => {
             else if (selectedValue === 'Print') {
 
             }
-        } else if (status === 'Approved' || status === 'Disapproved') {
+        } else if (status === 'Disapproved') {
             //Completed function condition goes here
+            if (selectedValue === 'Update') {
+                handleOpenViewUpdate(value)
 
-        }
-        else if (selectedValue === 'Update') {
-            handleOpenUpdate(value);
+            }
+            else if (selectedValue === 'View') {
+                handleOpenViewUpdate(value)
+            }
+            else if (selectedValue === 'Print') {
 
-        }
-        else if (selectedValue === 'View') {
-
-        }
-        else if (selectedValue === 'Print') {
-
+            }
         }
     }
     return (
@@ -287,7 +304,7 @@ const OccupancyListClerk: React.FC = () => {
                                     <td>{applicationform.business_name}</td>
                                     <td>{applicationform.type_occupancy}</td>
                                     <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
-                                                    'N/A'}</td>
+                                        'N/A'}</td>
                                     <td>{applicationform.remarks}</td>
                                     <td>
                                         <select
@@ -308,20 +325,8 @@ const OccupancyListClerk: React.FC = () => {
                                         <AddOccupancy open={open} handleClose={handleClickClose} />
                                         <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
                                         <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
-                                        <EvaluateApprovedOccupancy
-                                            bpid={applicationform.id}
-                                            open={openEvalOccupancy[applicationform.id]}
-                                            business_no={applicationform.bspermit_no}
-                                            permitee={applicationform.permittee}
-                                            business_name={applicationform.business_name}
-                                            address={applicationform.address}
-                                            natureofbusiness={applicationform.nature_business}
-                                            typeofoccupancy={applicationform.type_occupancy}
-                                            contactno={applicationform.contact_no}
-                                            email={applicationform.email}
-                                            datereceived={applicationform.date_received}
-                                            handleClose={() => handleCloseEval(applicationform.id)}
-                                        />
+                                        <EvaluateDisapprovedOccupancy open={openEvalOccupancy[applicationform.id]} handleClose={() => handleCloseEval(applicationform.id)} />
+                                        <ViewUpdateDisapprovedOccupancy open={openViewUpdOccupancy[applicationform.id]} handleClose={() => handleCloseViewUpdate(applicationform.id)} form={selectedAction[applicationform.id]} />
                                     </td>
                                 </tr>
                             ))}

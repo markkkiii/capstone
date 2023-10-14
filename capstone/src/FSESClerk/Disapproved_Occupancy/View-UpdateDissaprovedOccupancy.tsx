@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '@mui/material/Button';
-import '../BusinessList.css';
+import '../ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -39,10 +39,11 @@ export interface formdetails {
 export interface formdetails {
   open: boolean;
   handleClose: () => void;
+  form: string;
 }
 
 
-export default function EvaluateDisapprovedOccupancy(props: formdetails) {
+export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -113,43 +114,43 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={8}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Inspection Order Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Control Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Building Permit Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Applicant Name</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Project Name</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Address</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Contact Number</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled ={props.form !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -165,7 +166,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                           },
                         }//
                         } multiline
-                        readOnly
+                        readOnly ={props.form !== 'Update'} 
                         rows={2}
                       />
                     </Stack>
@@ -173,24 +174,24 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled ={props.form !== 'Update'}  variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NOD Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly ={props.form !== 'Update'}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NOD Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly ={props.form !== 'Update'}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{paddingTop:'20px'}} >Deficiencies</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Deficiencies</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -201,7 +202,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                           },
                         }//
                         } multiline
-                        readOnly
+                        readOnly ={props.form !== 'Update'} 
                         rows={2}
                       />
                     </Stack>
@@ -214,13 +215,13 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Name</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} readOnly ={props.form !== 'Update'}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} readOnly ={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                 </Grid>
@@ -229,8 +230,8 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
-            Add Evaluation
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={props.handleClose}>
+            {props.form === 'Update' ? 'Update Permit' : 'Close Permit'}
           </Button>
         </DialogActions>
       </Dialog>
