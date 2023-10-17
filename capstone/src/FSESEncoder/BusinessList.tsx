@@ -260,7 +260,7 @@ const BusinessList: React.FC = () => {
                         <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
                     </div>
                     <div className="title-container">
-                        <h1 className="title">Business Application List</h1>
+                        <h1 className="title">New Business List</h1>
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} >
