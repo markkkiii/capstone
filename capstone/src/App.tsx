@@ -11,6 +11,7 @@ import BusinessRenewalPayment from './Collecting Agent/BusinessRenewalPayment';
 import OccupancyPayment from './Collecting Agent/OccupancyPayment';
 import BuildingPayment from './Collecting Agent/BuildingPayment';
 import NewBusinessPayment from './Collecting Agent/NewBusinessPayment';
+import OccupancyListApproved from './FSESEncoder/OccupancyListApproved';
 
 export default function App(){
 
