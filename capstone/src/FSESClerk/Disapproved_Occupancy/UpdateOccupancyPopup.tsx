@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '@mui/material/Button';
-import '../BusinessList.css';
+import '../ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -42,7 +42,7 @@ export interface formdetails {
 }
 
 
-export default function ViewOccupancyList(props: formdetails) {
+export default function UpdateOccupancyList(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -105,7 +105,7 @@ export default function ViewOccupancyList(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '800px' }} >
+        <DialogContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '720px' }} >
           <>
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
@@ -113,48 +113,48 @@ export default function ViewOccupancyList(props: formdetails) {
                   <Grid item xs={10} sm={8}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Inspection Order Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Control Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }}/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Building Permit Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: '300px' }} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Applicant Name</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px'}} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Project Name</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <p className='custom-paragraph' >Project Name</p>
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px'}} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Address</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <p className='custom-paragraph' >Address</p>
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px' }}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Contact Number</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <p className='custom-paragraph'  >Contact Number</p>
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px' }} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Assessment of Fees</p>
+                      <p className='custom-paragraph'  >Assessment of Fees</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -172,8 +172,8 @@ export default function ViewOccupancyList(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
-                      <TextField className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <p className='custom-paragraph' >Date Received</p>
+                      <OutlinedInput className='custom-outlined-input' fullWidth sx={{ borderRadius: '11px'}} />
                     </Stack>
                   </Grid>
                 </Grid>
@@ -182,8 +182,8 @@ export default function ViewOccupancyList(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'Red', borderRadius: '13px', height: '30px' }} onClick={props.handleClose}>
-            Close View
+          <Button variant='contained' sx={{ backgroundColor: 'Blue', borderRadius: '13px', height: '30px' }} onClick={props.handleClose}>
+            Update Record
           </Button>
         </DialogActions>
       </Dialog>

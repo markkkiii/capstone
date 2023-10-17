@@ -104,7 +104,7 @@ export default function UpdatePendingOccupancyPopup(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+        <DialogContent style={{ alignSelf:'center' }} >
           <>
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
