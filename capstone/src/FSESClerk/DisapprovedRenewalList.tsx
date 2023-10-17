@@ -1,10 +1,8 @@
-import Navbar from '../FSESEncoder/Navbar'
 import React, { useEffect, useState } from 'react';
 import './ClerkCSS.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Button, IconButton } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 
@@ -223,4 +221,4 @@ const DisapprovedRenewalList: React.FC = () => {
         </>
     )
 }
-export default DisapprovedRenewalList
+export default DisapprovedRenewalList;
