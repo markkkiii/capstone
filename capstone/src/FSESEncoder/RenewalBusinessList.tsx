@@ -256,7 +256,7 @@ const RenewalBusinessList: React.FC = () => {
                         <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
                     </div>
                     <div className="title-container">
-                        <h1 className="title">Renewal Business Application List</h1>
+                        <h1 className="title">Business Renewal List</h1>
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} >
