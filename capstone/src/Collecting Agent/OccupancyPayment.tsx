@@ -105,6 +105,7 @@ const OccupancyPayment: React.FC = () => {
             handleSearch();
         }
     };
+
     //Open Add Application Popup
     const handleClickOpen = () => {
         setOpen(true);
@@ -155,14 +156,17 @@ const OccupancyPayment: React.FC = () => {
     const handlePrintOpen = () => {
         setPrint(true);
     };
+    
     // Print Popup
     const handlePrintClose = () => {
         setPrint(false);
     };
+
     // Delete Popup
     const handleDeleteOpen = () => {
         setDelete(true);
     };
+
     // Delete Popup
     const handleDeleteClose = () => {
         setDelete(false);

@@ -9,6 +9,7 @@ import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateCl
 import PrintClerkPopup from './PrintClerkPopup';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
+import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 
 
 //Header Part
@@ -37,6 +38,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
+    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
@@ -118,14 +120,46 @@ const DisapprovedNewBusiness: React.FC = () => {
           ...prevEvaluateNTC,
           [no]: true,
         }));
-      };
+    };
     
-      const handleCloseView = (no: number) => {
+    const handleCloseView = (no: number) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
           ...prevEvaluateNTC,
           [no]: false,
         }));
-      };
+    };
+
+      //VIEW/Update Evaluate Popup Open
+    const handleOpenViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: true,
+        }));
+    };
+
+    //VIEW/Update Evaluate Popup Close
+    const handleCloseViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: false,
+        }));
+    };
+
+    //Update Popup 
+    const handleOpenUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: true,
+        }));
+    };
+
+    //Update Popup
+    const handleCloseUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: false,
+        }));
+    };
 
       // Print Popup 
     const handlePrintOpen = () => {
@@ -160,7 +194,8 @@ const DisapprovedNewBusiness: React.FC = () => {
                 handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
-            
+                handleOpenUpdate(value);
+
             }
             else if (selectedValue === 'Evaluate') {
                 handleOpenView(value);
@@ -178,7 +213,8 @@ const DisapprovedNewBusiness: React.FC = () => {
 
         }
         else if (selectedValue === 'View') {
-            
+            handleOpenViewUpdate(value)
+
         }
         else if (selectedValue === 'Print') {
             handlePrintOpen();
@@ -281,6 +317,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                         <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
+                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
                                         <EvaluateClosurePopup
                                             bpid={applicationform.id}
                                             open={openprevEvaluateNTC[applicationform.id]}
