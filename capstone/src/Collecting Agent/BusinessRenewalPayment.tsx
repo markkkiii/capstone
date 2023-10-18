@@ -9,6 +9,8 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
 import ViewPaymentPopup from './ViewPaymentPopup';
 import UpdatePaymentPopup from './UpdatePaymentPopup';
+import DeletePaymentPopup from './DeletePaymentPopup';
+import PrintPaymentPopup from './PrintPaymentPopup';
 
 
 //Header Part
@@ -39,7 +41,8 @@ const BusinessRenewalPayment: React.FC = () => {
     const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
     const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -147,6 +150,27 @@ const BusinessRenewalPayment: React.FC = () => {
         handleRender()
     };
 
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
 
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -154,6 +178,8 @@ const BusinessRenewalPayment: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
+
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -165,6 +191,7 @@ const BusinessRenewalPayment: React.FC = () => {
 
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'FSIC NOT PRINTED' || status === 'FSIC PRINTED') {
@@ -178,6 +205,7 @@ const BusinessRenewalPayment: React.FC = () => {
             handleOpenView(value);
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
 
         }
     }
@@ -312,6 +340,15 @@ const BusinessRenewalPayment: React.FC = () => {
                                         accountCode={applicationform.account_code}
                                         id={applicationform.id}
                                         form ="New"
+                                        />
+                                        <DeletePaymentPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintPaymentPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
                                         />
                                     </td>
                                 </tr>

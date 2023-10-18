@@ -7,6 +7,10 @@ import { Button, IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import axios from 'axios';
+import ViewPaymentPopup from './ViewPaymentPopup';
+import UpdatePaymentPopup from './UpdatePaymentPopup';
+import DeletePaymentPopup from './DeletePaymentPopup';
+import PrintPaymentPopup from './PrintPaymentPopup';
 
 
 //Header Part
@@ -34,43 +38,28 @@ const BuildingPayment: React.FC = () => {
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
-    const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
-    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
-    const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
+    const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
+    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
         bspermit_no: "F2-010",
-        permittee: "JohnDoe",
-        business_name: "Default",
-        address: 'Default Location',
-        nature_business: "test",
+        payor: "John Doe",
+        business_name: "Don Mac",
         type_occupancy: "test",
         status: "NTC",
-        contact_no: '09123123123',
-        email: 'test@gmail',
-        date_received: '2023-01-01',
-        date_inspection: "2023-01-01",
-        inspection_no: 2,
-        ntc_no: 2,
-        ntc_date: '2023-01-01',
-        ntcv_no:2,
-        ntcv_date: '2023-01-01',
-        or_no: 2,
-        amount:2000,
-        payment_date: '2023-01-01',
-        abatement_no: 2,
-        abatement_date:'01/01/2001',
-        closure_no:2,
-        closure_date:'01/01/2001',
-        total_payment: "1023.00",
-        team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
-        recommendation: ["reco1", "reco2", "reco3"],
-        defects: [['test'], ['test2']]
+        or_no: "2",
+        amount: "2000",
+        total_payment: "100",
+        date: "10/10/2023",
+        agency: "Test",
+        ops_number: "200",
+        nature_collection: "Rural",
+        account_code: "1",
     }])
 
 
@@ -90,23 +79,6 @@ const BuildingPayment: React.FC = () => {
 
     const handleRender = () => {
         setTest(prevTest => !prevTest);
-    };
-
-     //Evaluate Popup
-     const handleOpenEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: true,
-        }));
-    };
-
-    //Evaluate Popup
-    const handleCloseEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: false,
-        }));
-        handleRender()
     };
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,9 +116,9 @@ const BuildingPayment: React.FC = () => {
         handleRender();
     };
 
-    //VIEW Popup
+    //View Popup
     const handleOpenView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
+        setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
         }));
@@ -154,35 +126,16 @@ const BuildingPayment: React.FC = () => {
 
     //View Popup Close
     const handleCloseView = (no: number) => {
-        setopenViewRenewal((prevRenewal) => ({
+        setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
         }));
         handleRender()
     };
-
-       //VIEW Evaliate Popup
-       const handleOpenViewEval = (no: number) => {
-        setopenViewEvaluate((prevRenewal) => ({
-            ...prevRenewal,
-            [no]: true,
-        }));
-    };
-
-    //View Evaluate  Close
-    const handleCloseViewEval= (no: number) => {
-        setopenViewEvaluate((prevRenewal) => ({
-            ...prevRenewal,
-            [no]: false,
-        }));
-        handleRender()
-    };
-
-
 
     //Update Popup 
     const handleOpenUpdate = (no: number) => {
-        setopenUpdateRenewal((prevOpenUpdate) => ({
+        setopenUpdatePayment((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
         }));
@@ -191,11 +144,29 @@ const BuildingPayment: React.FC = () => {
 
     //Update Popup
     const handleCloseUpdate = (no: number) => {
-        setopenUpdateRenewal((prevOpenUpdate) => ({
+        setopenUpdatePayment((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: false,
         }));
         handleRender()
+    };
+
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
     };
 
 
@@ -205,6 +176,7 @@ const BuildingPayment: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -216,7 +188,7 @@ const BuildingPayment: React.FC = () => {
 
             }
             else if (selectedValue === 'Evaluate') {
-                handleOpenEvaluate(value);
+                handlePrintOpen();
 
             }
             else if (selectedValue === 'Print') {
@@ -227,13 +199,14 @@ const BuildingPayment: React.FC = () => {
 
         }
         else if (selectedValue === 'Update') {
-            handleOpenViewEval(value);
+            handleOpenUpdate(value);
 
         }
         else if (selectedValue === 'View') {
-            handleOpenViewEval(value);
+            handleOpenView(value);
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
 
         }
     }
@@ -313,7 +286,7 @@ const BuildingPayment: React.FC = () => {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
                                         applicationform.bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.permittee.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.payor.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
@@ -321,7 +294,7 @@ const BuildingPayment: React.FC = () => {
                                 <tr key={applicationform.id}>
                                     <td>{applicationform.id}</td>
                                     <td>{applicationform.bspermit_no}</td>
-                                    <td>{applicationform.permittee}</td>
+                                    <td>{applicationform.payor}</td>
                                     <td>{applicationform.business_name}</td>
                                     <td>{applicationform.type_occupancy}</td>
                                     <td>{applicationform.status}</td>
@@ -335,13 +308,49 @@ const BuildingPayment: React.FC = () => {
                                             <option value="">-select-</option>
                                             <option value="View">View</option>
                                             <option value="Update">Update</option>
-                                            <option value="Evaluate">Evaluate</option>
                                             <option value="Print">Print</option>
                                             <option value="Delete">Delete</option>
                                         </select>
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.total_payment, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <ViewPaymentPopup 
+                                        open={openViewPayment[applicationform.id]} 
+                                        handleClose={() => handleCloseView(applicationform.id)} 
+                                        bspermit_no={applicationform.bspermit_no}
+                                        payor={applicationform.payor}
+                                        date={applicationform.date}
+                                        ornumber={applicationform.or_no}
+                                        amount={applicationform.amount}
+                                        agency={applicationform.agency}
+                                        opsnumber={applicationform.ops_number}
+                                        natureOfCollection={applicationform.nature_collection}
+                                        accountCode={applicationform.account_code}
+                                        />
+                                        <UpdatePaymentPopup 
+                                        open={openUpdatePayment[applicationform.id]} 
+                                        handleClose={() => handleCloseUpdate(applicationform.id)} 
+                                        bspermit_no={applicationform.bspermit_no}
+                                        payor={applicationform.payor}
+                                        date={applicationform.date}
+                                        ornumber={applicationform.or_no}
+                                        amount={applicationform.amount}
+                                        agency={applicationform.agency}
+                                        opsnumber={applicationform.ops_number}
+                                        natureOfCollection={applicationform.nature_collection}
+                                        accountCode={applicationform.account_code}
+                                        id={applicationform.id}
+                                        form ="New"
+                                        />
+                                        <DeletePaymentPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintPaymentPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
                                     </td>
                                 </tr>
                             ))}
