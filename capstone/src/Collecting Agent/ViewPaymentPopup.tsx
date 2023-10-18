@@ -67,7 +67,7 @@ const ViewPaymentPopup: React.FC<formdetails> = (props: formdetails) => {
                                         <TextField  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} variant='standard' disabled defaultValue={props.payor}/>
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={10} sm={5}>
+                                <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Business Permit No.</p>
                                         <TextField  fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.bspermit_no}/>
@@ -82,25 +82,25 @@ const ViewPaymentPopup: React.FC<formdetails> = (props: formdetails) => {
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >OPS Number</p>
-                                        <TextField  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} variant='standard' disabled defaultValue={props.opsnumber}/>
+                                        <TextField  className='custom-outlined-input' sx={{ borderRadius: '11px', width: "365px" }} variant='standard' disabled defaultValue={props.opsnumber}/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Date</p>
-                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.date ? new Date(props.date).toISOString().split('T')[0] : ''}/>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} variant='standard' disabled defaultValue={props.date ? new Date(props.date).toISOString().split('T')[0] : ''}/>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Agency</p>
-                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.agency}/>
+                                        <TextField  fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.bspermit_no}/>
                                     </Stack>
                                 </Grid>
                                 <Grid container marginTop={'5rem'} style={{ height: '100%'}}>
                                     <Grid item xs={12}>
                                     <TableContainer>
-                                        <Table sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                                        <Table sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto' }}>
                                         <TableHead>
                                             <TableRow>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center'}}>Nature of Collection</TableCell>
