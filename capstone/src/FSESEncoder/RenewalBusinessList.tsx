@@ -12,6 +12,8 @@ import AddApplication from './AddApplication';
 import axios from 'axios';
 import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
+import DeleteEncoderPopup from './DeleteEncoderPopup';
+import PrintEncoderPopup from './PrintEncoderPopup';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -43,6 +45,8 @@ const RenewalBusinessList: React.FC = () => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
     const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -200,6 +204,24 @@ const RenewalBusinessList: React.FC = () => {
         handleRender()
     };
 
+     // Print Popup 
+     const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender()
+    };
+
 
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -207,6 +229,7 @@ const RenewalBusinessList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -222,6 +245,7 @@ const RenewalBusinessList: React.FC = () => {
 
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'FSIC NOT PRINTED' || status === 'FSIC PRINTED') {
@@ -236,6 +260,7 @@ const RenewalBusinessList: React.FC = () => {
             handleOpenViewEval(value);
         }
         else if (selectedValue === 'Print') {
+            handleDeleteOpen();
 
         }
     }
@@ -415,6 +440,15 @@ const RenewalBusinessList: React.FC = () => {
                                             team_leader = {applicationform.team_leader}
                                             fireInspectors = {applicationform.fireInspectors}
                                             recommendation = {applicationform.recommendation}
+                                        />
+                                        <DeleteEncoderPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintEncoderPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
                                         />
                                 </tr>
 

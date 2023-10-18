@@ -6,6 +6,9 @@ import { Button, IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateClosure';
+import PrintClerkPopup from './PrintClerkPopup';
+import DeleteClerkPopup from './DeleteClerkPopup';
+import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
 
 
 //Header Part
@@ -33,8 +36,12 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
-
+    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [test, setTest] = useState<boolean>(false);
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -78,6 +85,10 @@ const DisapprovedNewBusiness: React.FC = () => {
         // For example, you can filter the buildingApplications array based on the searchText
     };
 
+    const handleRender = () => {
+        setTest(prevTest => !prevTest);
+    };
+
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
     const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
@@ -116,6 +127,24 @@ const DisapprovedNewBusiness: React.FC = () => {
         }));
       };
 
+      // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
  
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -123,11 +152,12 @@ const DisapprovedNewBusiness: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-       
+                handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
             
@@ -136,6 +166,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                 handleOpenView(value);
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'Approved' || status === 'Disapproved') {
@@ -150,6 +181,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
 
         }
     }
@@ -248,6 +280,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
                                         <EvaluateClosurePopup
                                             bpid={applicationform.id}
                                             open={openprevEvaluateNTC[applicationform.id]}
@@ -262,6 +295,16 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             handleClose={() => handleCloseView(applicationform.id)}
                                         />
+                                        <DeleteClerkPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintClerkPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
+
                                     </td>
                                 </tr>
                             ))}

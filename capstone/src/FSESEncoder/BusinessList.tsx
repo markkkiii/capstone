@@ -12,6 +12,8 @@ import axios from 'axios';
 import AddApplication from './AddApplication';
 import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
+import DeleteEncoderPopup from './DeleteEncoderPopup';
+import PrintEncoderPopup from './PrintEncoderPopup';
 
 
 //Header Part
@@ -44,6 +46,10 @@ const BusinessList: React.FC = () => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
+
+
 
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -92,6 +98,7 @@ const BusinessList: React.FC = () => {
             }).catch(err => console.log(err))
         }
     }, [sortBy, test]);
+
 
 
     const handleRender = () => {
@@ -184,6 +191,24 @@ const BusinessList: React.FC = () => {
         handleRender()
     };
 
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
 
 
     //Update Popup 
@@ -211,7 +236,7 @@ const BusinessList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-
+            handleDeleteOpen();
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
@@ -226,7 +251,7 @@ const BusinessList: React.FC = () => {
 
             }
             else if (selectedValue === 'Print') {
-
+                handlePrintOpen();
             }
         } else if (status === 'FSIC NOT PRINTED' || status === 'FSIC PRINTED') {
             //Completed function condition goes here
@@ -240,6 +265,7 @@ const BusinessList: React.FC = () => {
             handleOpenViewEval(value);
         }
         else if (selectedValue === 'Print') {
+            handleDeleteOpen();
 
         }
     }
@@ -419,14 +445,25 @@ const BusinessList: React.FC = () => {
                                             fireInspectors = {applicationform.fireInspectors}
                                             recommendation = {applicationform.recommendation}
                                         />
+                                        <DeleteEncoderPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintEncoderPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
+
                 <AddApplication open={open} handleClose={handleClickClose} add="New" />
+                
             </div>
         </>
     )
 }
-export default BusinessList
+export default BusinessList;
