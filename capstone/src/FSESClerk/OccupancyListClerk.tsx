@@ -12,6 +12,8 @@ import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupa
 import EvaluateApprovedOccupancy from './EvaluateApprovedOccupancy';
 import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
 import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
+import DeleteClerkPopup from './DeleteClerkPopup';
+import PrintClerkPopup from './PrintClerkPopup';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -42,6 +44,9 @@ const OccupancyListClerk: React.FC = () => {
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [test, setTest] = useState<boolean>(false);
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
 
 
@@ -86,6 +91,10 @@ const OccupancyListClerk: React.FC = () => {
     const handleSearch = () => {
         // Perform search logic here based on the searchText value
         // For example, you can filter the buildingApplications array based on the searchText
+    };
+
+    const handleRender = () => {
+        setTest(prevTest => !prevTest);
     };
 
 
@@ -176,12 +185,31 @@ const OccupancyListClerk: React.FC = () => {
         }));
     };
 
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -195,6 +223,7 @@ const OccupancyListClerk: React.FC = () => {
                 handleOpenEval(value);
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'Disapproved') {
@@ -207,6 +236,7 @@ const OccupancyListClerk: React.FC = () => {
                 handleOpenViewUpdate(value)
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         }
@@ -327,6 +357,15 @@ const OccupancyListClerk: React.FC = () => {
                                         <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
                                         <EvaluateDisapprovedOccupancy open={openEvalOccupancy[applicationform.id]} handleClose={() => handleCloseEval(applicationform.id)} />
                                         <ViewUpdateDisapprovedOccupancy open={openViewUpdOccupancy[applicationform.id]} handleClose={() => handleCloseViewUpdate(applicationform.id)} form={selectedAction[applicationform.id]} />
+                                        <DeleteClerkPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintClerkPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
                                     </td>
                                 </tr>
                             ))}

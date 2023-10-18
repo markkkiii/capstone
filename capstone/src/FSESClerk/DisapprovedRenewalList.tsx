@@ -5,6 +5,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import {IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
+import AddOccupancy from './Pending_Occupancy/AddOccupancy';
+import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
+import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
+import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
+import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
+import DeleteClerkPopup from './DeleteClerkPopup';
+import PrintClerkPopup from './PrintClerkPopup';
 
 
 //Header Part
@@ -32,6 +39,13 @@ const DisapprovedRenewalList: React.FC = () => {
     const [sortBy, setSortBy] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
+    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
+    const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [test, setTest] = useState<boolean>(false);
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
 
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -61,6 +75,10 @@ const DisapprovedRenewalList: React.FC = () => {
         // For example, you can filter the buildingApplications array based on the searchText
     };
 
+    const handleRender = () => {
+        setTest(prevTest => !prevTest);
+    };
+
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
     const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
@@ -85,6 +103,88 @@ const DisapprovedRenewalList: React.FC = () => {
         setOpen(false);
     };
 
+    //VIEW Popup
+    const handleOpenView = (no: number) => {
+        setopenViewOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: true,
+        }));
+    };
+
+    //View Popup Close
+    const handleCloseView = (no: number) => {
+        setopenViewOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: false,
+        }));
+    };
+
+    //VIEW/Update Evaluate Popup Open
+    const handleOpenViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: true,
+        }));
+    };
+
+    //VIEW/Update Evaluate Popup Close
+    const handleCloseViewUpdate = (no: number) => {
+        setopenViewUpdOccupancy((prevOpenView) => ({
+            ...prevOpenView,
+            [no]: false,
+        }));
+    };
+
+    //Update Popup 
+    const handleOpenUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: true,
+        }));
+    };
+
+    //Update Popup
+    const handleCloseUpdate = (no: number) => {
+        setopenUpdateOccupancy((prevOpenUpdate) => ({
+            ...prevOpenUpdate,
+            [no]: false,
+        }));
+    };
+
+    //Evaluate Popup 
+    const handleOpenEval = (no: number) => {
+        setopenEvalOccupancy((prevOpenEval) => ({
+            ...prevOpenEval,
+            [no]: true,
+        }));
+    };
+
+    //Evaluate Popup
+    const handleCloseEval = (no: number) => {
+        setopenEvalOccupancy((prevOpenEval) => ({
+            ...prevOpenEval,
+            [no]: false,
+        }));
+    };
+
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
  
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -92,23 +192,26 @@ const DisapprovedRenewalList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-       
+                handleOpenView(value);
             }
             else if (selectedValue === 'Update') {
-            
+                handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
-                
+                handleOpenEval(value);
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'Approved' || status === 'Disapproved') {
             //Completed function condition goes here
+            handleOpenViewUpdate(value)
 
         }
         else if (selectedValue === 'Update') {
@@ -116,9 +219,11 @@ const DisapprovedRenewalList: React.FC = () => {
 
         }
         else if (selectedValue === 'View') {
+            handleOpenViewUpdate(value)
 
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
 
         }
     }
@@ -210,6 +315,20 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <AddOccupancy open={open} handleClose={handleClickClose} />
+                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
+                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
+                                        <EvaluateDisapprovedOccupancy open={openEvalOccupancy[applicationform.controlno]} handleClose={() => handleCloseEval(applicationform.controlno)} />
+                                        <ViewUpdateDisapprovedOccupancy open={openViewUpdOccupancy[applicationform.controlno]} handleClose={() => handleCloseViewUpdate(applicationform.controlno)} form={selectedAction[applicationform.controlno]} />
+                                        <DeleteClerkPopup
+                                            open={deleteit}
+                                            value={applicationform.controlno}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintClerkPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
 
                                     </td>
                                 </tr>

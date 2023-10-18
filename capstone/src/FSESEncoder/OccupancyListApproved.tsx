@@ -12,6 +12,8 @@ import EvaluateDisapprovedOccupancy from '../FSESClerk/Disapproved_Occupancy/Eva
 import EvaluateApprovedOccupancy from '../FSESClerk/EvaluateApprovedOccupancy';
 import ViewPendingOccupancyList from '../FSESClerk/Pending_Occupancy/ViewPendingOccupancyPopup';
 import UpdatePendingOccupancyPopup from '../FSESClerk/Pending_Occupancy/UpdatePendingOccupancyPopup';
+import DeleteEncoderPopup from './DeleteEncoderPopup';
+import PrintEncoderPopup from './PrintEncoderPopup';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -43,6 +45,10 @@ const OccupancyListApproved: React.FC = () => {
     const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
+    const [deleteit, setDelete] = useState(false);
+    const [print, setPrint] = useState(false);
+    const [test, setTest] = useState<boolean>(false);
+
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -78,6 +84,9 @@ const OccupancyListApproved: React.FC = () => {
     }])
 
 
+    const handleRender = () => {
+        setTest(prevTest => !prevTest);
+    };
     //Evaluate Popup Open
     const handleOpenDisOccupancy = (no: number) => {
         setopenDisOccupancy((prevOccu) => ({
@@ -142,6 +151,24 @@ const OccupancyListApproved: React.FC = () => {
         }));
     };
 
+    // Print Popup 
+    const handlePrintOpen = () => {
+        setPrint(true);
+    };
+    // Print Popup
+    const handlePrintClose = () => {
+        setPrint(false);
+    };
+    // Delete Popup
+    const handleDeleteOpen = () => {
+        setDelete(true);
+    };
+    // Delete Popup
+    const handleDeleteClose = () => {
+        setDelete(false);
+        handleRender();
+    };
+
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
@@ -177,6 +204,7 @@ const OccupancyListApproved: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
+            handleDeleteOpen();
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -191,6 +219,7 @@ const OccupancyListApproved: React.FC = () => {
                 handleOpenEval(value);
             }
             else if (selectedValue === 'Print') {
+                handlePrintOpen();
 
             }
         } else if (status === 'Approved' || status === 'Disapproved') {
@@ -205,6 +234,7 @@ const OccupancyListApproved: React.FC = () => {
 
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
 
         }
     }
@@ -318,6 +348,15 @@ const OccupancyListApproved: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             handleClose={() => handleCloseEval(applicationform.id)}
+                                        />
+                                        <DeleteEncoderPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            handleClose={() => handleDeleteClose()}
+                                        />
+                                        <PrintEncoderPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
                                         />
                                     </td>
                                 </tr>
