@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
 
@@ -24,6 +24,7 @@ const cardStyle = {
 
 export interface formdetails {
   bpid: number;
+  form: string;
   business_no: string;
   permitee: string;
   business_name: string;
@@ -33,6 +34,9 @@ export interface formdetails {
   contactno: string;
   email: string;
   datereceived: string;
+  ntc: number;
+  ntc_date: string;
+  defects: string[][];
   open: boolean;
   handleClose: () => void;
 }
@@ -51,12 +55,16 @@ export default function EvaluateNTCVPopup(props: formdetails) {
   const [openAddDefect, setOpenAddDefect] = useState(false);
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const fsicRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const fsicDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCVRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCVDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
@@ -107,33 +115,58 @@ export default function EvaluateNTCVPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
+  const updateRemarks = () =>{
+     let new_url = '';
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
+    }
+    axios.put(new_url+props.bpid,
+      {
+        remarks: "Issued NTCV",
+      }
+    )
+  }
+
+
   // uploads data to db
   const evaluateNTCV = async () => {
-    axios.post('http://localhost:8080/newbpnoticetocomply/insertNTCVPermit',
+    let new_url = '';
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpnoticecorrectviolation/insertNTCVPermit';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/insertRenewalNTCVPermit'
+    }
+    axios.post(new_url,
       {
         bspermit_no: props.bpid,
-        permitte: props.permitee,
+        permittee: props.permitee,
         business_name: props.business_name,
         address: props.address,
         nature_business: props.natureofbusiness,
-        contactno: props.contactno,
+        type_occupancy: props.typeofoccupancy,
+        contact_no: props.contactno,
         email: props.email,
         date_received: props.datereceived,
         date_inspection: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
-        fsic_no: fsicRef.current?.value,
-        fsic_date: fsicDateRef.current?.value,
-        amount: AmountRef.current?.value,
-        or_no: OrNoRef.current?.value,
-        payment_date: dateRef.current?.value,
-        remarks: "FOR ISSUANCE NTCV",
+        ntc_no: props.ntc,
+        ntc_date: props.ntc_date,
+        ntcv_no: NTCVRef.current?.value,
+        ntcv_date: NTCVDateRef.current?.value,
+        remarks: "For Issuance Abatement",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
-        defects:arrayList
+        defects: arrayList
       }
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
+      updateRemarks();
+      props.handleClose();
     }).catch(err => console.log(err))
   }
 
@@ -220,37 +253,37 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Inspection Order Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={inspectOrderRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={inspectOrderRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateInspectionRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={NTCVRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={NTCVDateRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -303,9 +336,21 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                       </tbody>
                     </table>
                     <DefectPopup open={openAddDefect} onClose={closeDialog} onAdd={addDefect} />
-                    <Button variant='contained' sx={{ marginTop:'10px',backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
+                    <Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
                       Add Defect
                     </Button>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Received By</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedByRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start', marginTop: '20px' }}>
+                      <p className='custom-paragraph'  >Received Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedDateRef} />
+                    </Stack>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -313,7 +358,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaluation}>
             Add Evaluation
           </Button>
         </DialogActions>

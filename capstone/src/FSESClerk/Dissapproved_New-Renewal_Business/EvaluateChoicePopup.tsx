@@ -9,70 +9,36 @@ import { DialogTitle, IconButton } from '@mui/material';
 import { useRef, useState } from 'react';
 import EvaluatePopup from '../../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import EvaluateNTC from './EvaluateNTC';
+import EvaluateNTCVPopup from './EvaluateNTCV';
 
 interface ChoiceProps {
-    bpid: number;
+  
     open: boolean;
-    business_no: string;
-    permitee: string;
-    business_name: string;
-    address: string;
-    natureofbusiness: string;
-    typeofoccupancy: string;
-    contactno: string;
-    email: string;
-    datereceived: string;
-    handleOpenUpdate: () => void;
+    remarks: string;
+    handleOpenNTCV: () => void;
+    handleOpenAbatement: () => void;
+    handleOpenClosure: () => void;
     handleClose: () => void;
 }
 
 const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openNTCBusiness, setopenNTCBusiness] = useState<Record<number, boolean>>({});
+    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
 
-
-    //Evaluate Popup
-    const handleOpenEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: true,
-        }));
-    };
-
-    //Evaluate Popup
-    const handleCloseEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: false,
-        }));
-    };
-
-    
-    //NTC Popup
-    const handleOpenNTC = (no: number) => {
-        setopenNTCBusiness((prevOpenNTC) => ({
-            ...prevOpenNTC,
-            [no]: true,
-        }));
-    };
-
-    //NTC Popup
-    const handleCloseNTC = (no: number) => {
-        setopenNTCBusiness((prevOpenNTC) => ({
-            ...prevOpenNTC,
-            [no]: false,
-        }));
-    };
-
-    const openApprovedEval = (id: number) => {
-        handleOpenEvaluate(id);
+    const handleOpenForms = () =>{
+        if(props.remarks === 'NTC Records'){
+            props.handleOpenNTCV();
+        }
+        else if (props.remarks === 'NTCV Records'){
+            props.handleOpenAbatement();
+        }
+        else if (props.remarks === 'Abatement Records'){
+            props.handleOpenClosure();
+        }
         props.handleClose();
     }
 
-    const openNTC = (id: number) => {
-        handleOpenNTC(id);
-        props.handleClose();
-    }
 
     return (
         <div>
@@ -86,24 +52,15 @@ const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
                     <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>How do you want to Evaluate this Form?</p>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={() => openApprovedEval(props.bpid)} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Approve</Button>
-                    <Button variant='contained' onClick={() => openNTC(props.bpid)} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }}>NTC</Button>
+                    <Button variant='contained'  sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Approve</Button>
+                    <Button variant='contained' onClick={handleOpenForms} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }}>
+                        {props.remarks === 'NTC Records'?'NTCV':
+                        props.remarks === 'NTCV Records'?'Abatement':
+                        props.remarks === 'Abatement Records'?'Closure':
+                        'NA'}
+                        </Button>
                 </DialogActions>
             </Dialog>
-            <EvaluateNTC
-                bpid={props.bpid}
-                business_no={props.business_no}
-                permitee={props.permitee}
-                business_name={props.business_name}
-                address={props.address}
-                natureofbusiness={props.natureofbusiness}
-                typeofoccupancy={props.typeofoccupancy}
-                contactno={props.contactno}
-                email={props.email}
-                datereceived={props.datereceived}
-                open={openNTCBusiness[props.bpid]}
-                handleClose={() => handleCloseNTC(props.bpid)}
-            />
         </div>
     );
 };
