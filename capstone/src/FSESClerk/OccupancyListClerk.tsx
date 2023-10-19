@@ -264,7 +264,7 @@ const OccupancyListClerk: React.FC = () => {
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>
                             <option value="Pending Records">Pending Records</option>
-                            <option value="Completed Records">Completed Records</option>
+                            <option value="Disapproved Records">Disapproved Records</option>
                         </select>
                         <div className="date-input-container">
                             <Button
@@ -308,7 +308,7 @@ const OccupancyListClerk: React.FC = () => {
                             .filter((applicationform) => {
                                 if (sortBy === 'Pending Records') {
                                     return applicationform.remarks === 'Pending';
-                                } else if (sortBy === 'Completed Records') {
+                                } else if (sortBy === 'Disapproved Records') {
                                     return applicationform.remarks === 'Approved' || applicationform.remarks === 'Disapproved';
                                 } else {
                                     return true;// Show all records if no sortBy value is selected
