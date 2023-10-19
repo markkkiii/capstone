@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import AddPaymentPopup from './AddPaymentPopup';
 
 const cardStyle = {
     display: 'flex',
@@ -102,7 +103,7 @@ const ViewPaymentPopup: React.FC<formdetails> = (props: formdetails) => {
                                     <TableContainer>
                                         <Table sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: 'auto', marginBottom: 'auto' }}>
                                         <TableHead>
-                                            <TableRow>
+                                        <TableRow>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center'}}>Nature of Collection</TableCell>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center' }}>Account Code</TableCell>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center' }}>Amount</TableCell>
@@ -129,6 +130,7 @@ const ViewPaymentPopup: React.FC<formdetails> = (props: formdetails) => {
                     <Button variant='contained' onClick={props.handleClose} sx={{ backgroundColor: 'Red', borderRadius: '13px', height: '30px' }}>Close</Button>
                 </DialogActions>
             </Dialog>
+
 
         </div>
     )
