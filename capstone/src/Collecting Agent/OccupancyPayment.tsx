@@ -11,6 +11,7 @@ import PrintPaymentPopup from './PrintPaymentPopup';
 import DeletePaymentPopup from './DeletePaymentPopup';
 import UpdatePaymentPopup from './UpdatePaymentPopup';
 import ViewPaymentPopup from './ViewPaymentPopup';
+import AddPaymentPopup from './AddPaymentPopup';
 
 
 //Header Part
@@ -357,6 +358,7 @@ const OccupancyPayment: React.FC = () => {
                             ))}
                     </tbody>
                 </table>
+                <AddPaymentPopup open={open} handleClose={handleClickClose} add="New" />
             </div>
         </>
     )
