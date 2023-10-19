@@ -110,12 +110,6 @@ export default function ViewOccupancyList(props: formdetails) {
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
-                  <Grid item xs={10} sm={8}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Inspection Order Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
-                    </Stack>
-                  </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Control Number</p>
