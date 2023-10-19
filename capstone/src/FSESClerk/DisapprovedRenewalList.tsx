@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ClerkCSS.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import {IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import AddOccupancy from './Pending_Occupancy/AddOccupancy';
@@ -12,6 +12,12 @@ import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapp
 import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';
+import axios from 'axios';
+import EvaluateNTCPopup from './Dissapproved_New-Renewal_Business/EvaluateNTC';
+import EvaluateChoicePopup from './Dissapproved_New-Renewal_Business/EvaluateChoicePopup';
+import EvaluateNTCVPopup from './Dissapproved_New-Renewal_Business/EvaluateNTCV';
+import EvaluateAbatementPopup from './Dissapproved_New-Renewal_Business/EvaluateAbatement';
+import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateClosure';
 
 
 //Header Part
@@ -36,35 +42,60 @@ const AdditionalTab: React.FC = () => {
 
 const DisapprovedRenewalList: React.FC = () => {
     const [searchText, setSearchText] = useState('');
-    const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
+    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
+    const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
+    const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
+    const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});//Open NTC Choice Pop up
     const [test, setTest] = useState<boolean>(false);
     const [deleteit, setDelete] = useState(false);
     const [print, setPrint] = useState(false);
 
 
     const [applicationform, SetApplicationForm] = useState([{
-        controlno: 100,
-        businesspermit: '100',
-        ownersname: "default",
-        businessname: "veryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy longggggggggggggggggggggg nameeeeeeeeeeeeeeeeeeeeeeeeeeee",
-        typeofoccupancy: "Occupancy",
-        fsicno: "#23451",
-        contactno: "default",
-        datereceived: "2023-05-27",
-        receivedby: "default",
-        status: "Pending",
-        evaluator: "-",
-        nostorey: 0,
-        constructrenovate: "New Construction",
-        structureconstructed: false,
-        remarks: "Not Printed",
-        defects: "-"
+        id: 0,
+        bspermit_no: "F2-010",
+        permittee: "JohnDoe",
+        business_name: "Default",
+        address: 'Default Location',
+        nature_business: "test",
+        type_occupancy: "test",
+        contact_no: '09123123123',
+        email: 'test@gmail',
+        date_received: '2023-01-01',
+        date_inspection: "2023-01-01",
+        inspection_no: 2,
+        fsic_no: 2,
+        fsic_date: '2023-01-01',
+        ntc_no: 2,
+        ntc_date: '2023-01-01',
+        ntcv_no: 2,
+        ntcv_date: '2023-01-01',
+        abatement_no: 2,
+        abatement_date: '2023-01-01',
+        or_no: 2,
+        amount: 2000,
+        payment_date: '2023-01-01',
+        closure_no: 2,
+        closure_date: '01/01/2001',
+        remarks: "Pending",
+        team_leader: "Jobert",
+        fireInspectors: ["test", "test1"],
+        recommendation: ["reco1", "reco2", "reco3"],
+        defects: [['test'], ['test2']],
+        received_name: 'Default',
+        receivedntc_date: '01/01/2001',
+        receivedntcv_date: '01/01/2001',
+        receivedabatement_date: '01/01/2001',
+        receivedclosure_date: '01/01/2001',
+        status: 'default'
     }])
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +109,120 @@ const DisapprovedRenewalList: React.FC = () => {
     const handleRender = () => {
         setTest(prevTest => !prevTest);
     };
+    //Open EVAL NTC
+    const handleOpenEvalNTC = (no: number) => {
+        setopenprevEvaluateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: true,
+        }));
 
+    };
+    //Close EVAL NTC
+    const handleCloseEvalNTC = (no: number) => {
+        setopenprevEvaluateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Evaluate Choice
+    const handleOpenEvalChoice = (no: number) => {
+        setopenEvalChoice((prevEvalChoice) => ({
+            ...prevEvalChoice,
+            [no]: true,
+        }));
+
+    };
+    // Closes Evaluate Choice
+    const handleCloseEvalCHoice = (no: number) => {
+        setopenEvalChoice((prevEvalChoice) => ({
+            ...prevEvalChoice,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Evaluate NTCV
+    const handleOpenNTCV = (no: number) => {
+        setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
+            ...prevEvaluateNTCV,
+            [no]: true,
+        }));
+
+    };
+    // Closes Evaluate NTCV
+    const handleCloseNTCV = (no: number) => {
+        setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
+            ...prevEvaluateNTCV,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Evaluate Abatement
+    const handleOpenAbatement = (no: number) => {
+        setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: true,
+        }));
+
+    };
+    // Closes Evaluate Abatement
+    const handleCloseAbatement = (no: number) => {
+        setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Evaluate Closure
+    const handleOpenClosure = (no: number) => {
+        setopenprevEvaluateClosure((prevEvaluateClosure) => ({
+            ...prevEvaluateClosure,
+            [no]: true,
+        }));
+
+    };
+    // Closes Evaluate Closure
+    const handleCloseClosure = (no: number) => {
+        setopenprevEvaluateClosure((prevEvaluateClosure) => ({
+            ...prevEvaluateClosure,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    // Gets Data from the DATABASE
+    useEffect(() => {
+        if (sortBy === 'Pending Records') {
+            axios.get('http://localhost:8080/Renewal/getAllRenewalPermit').then(res => {
+                SetApplicationForm(res.data)
+                console.log(applicationform)
+            }).catch(err => console.log(err))
+        }
+        else if (sortBy === 'NTC Records') {
+            axios.get('http://localhost:8080/renewalbpnoticetocomply/getAllRenewalbpNoticeToComply').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+        else if (sortBy === 'NTCV Records') {
+            axios.get('http://localhost:8080/renewalbpnoticetocorrectviolation/getAllRenewalbpNoticeToCorrectViolation').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+        else if (sortBy === 'Abatement Records') {
+            axios.get('http://localhost:8080/renewalbpabatementorder/getAllRenewalbpAbatementOrder').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+        else if (sortBy === 'Closure Records') {
+            axios.get('http://localhost:8080/renewalbpclosureorder/getAllRenewalbpClosureOrder').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+    }, [sortBy, test]);
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
     const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
@@ -185,7 +329,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
 
- 
+
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
@@ -203,27 +347,31 @@ const DisapprovedRenewalList: React.FC = () => {
                 handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
-                handleOpenEval(value);
+                handleOpenEvalNTC(value);
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
 
             }
-        } else if (status === 'Approved' || status === 'Disapproved') {
+        }
+        else if (status === 'For Issuance NTCV') {
+            if (selectedValue === 'Evaluate') {
+                //Completed function condition goes here
+                handleOpenEvalChoice(value);
+            }
+        }
+        else if (status === 'For Issuance Abatement') {
             //Completed function condition goes here
-            handleOpenViewUpdate(value)
+            if (selectedValue === 'Evaluate') {
+                handleOpenEvalChoice(value);
+            }
 
         }
-        else if (selectedValue === 'Update') {
-
-
-        }
-        else if (selectedValue === 'View') {
-            handleOpenViewUpdate(value)
-
-        }
-        else if (selectedValue === 'Print') {
-            handlePrintOpen();
+        else if (status === 'For Issuance Closure') {
+            //Completed function condition goes here
+            if (selectedValue === 'Evaluate') {
+                handleOpenEvalChoice(value);
+            }
 
         }
     }
@@ -250,8 +398,13 @@ const DisapprovedRenewalList: React.FC = () => {
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>
                             <option value="Pending Records">Pending Records</option>
-                            <option value="Completed Records">Completed Records</option>
+                            <option value="NTC Records">NTC Records</option>
+                            <option value="NTCV Records">NTCV Records</option>
+                            <option value="Abatement Records">Abatement Records</option>
+                            <option value="Closure Records">Closure Records</option>
                         </select>
+                        <div className="date-input-container">
+                        </div>
                     </div>
                 </div>
                 <table>
@@ -262,7 +415,11 @@ const DisapprovedRenewalList: React.FC = () => {
                             <th>Owner's Name</th>
                             <th>Business Name</th>
                             <th>Type of Occupancy</th>
-                            <th>FSIC #</th>
+                            <th>{sortBy === 'NTC Records' ? 'NTC #' :
+                                sortBy === 'NTCV Records' ? 'NTCV #' :
+                                    sortBy === 'Abatement Records' ? 'Abatement #' :
+                                        sortBy === 'Closure Records' ? 'Closure #' :
+                                            'FSIC #'}</th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -270,39 +427,35 @@ const DisapprovedRenewalList: React.FC = () => {
                     <tbody>
                         {applicationform
                             .filter((applicationform) => {
-                                if (sortBy === 'Pending Records') {
-                                    return applicationform.status === 'Pending';
-                                } else if (sortBy === 'Completed Records') {
-                                    return applicationform.status === 'Approved' || applicationform.status === 'Disapproved';
-                                } else {
-                                    return true;// Show all records if no sortBy value is selected
-                                }
-                            })
-                            .filter((applicationform) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
-                                        applicationform.businesspermit.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.ownersname.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        applicationform.permittee.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
                             .map((applicationform) => (
-                                <tr key={applicationform.controlno}>
-                                    <td>{applicationform.controlno}</td>
-                                    <td>{applicationform.businesspermit}</td>
-                                    <td>{applicationform.ownersname}</td>
-                                    <td>{applicationform.businessname}</td>
-                                    <td>{applicationform.typeofoccupancy}</td>
-                                    <td>{applicationform.fsicno}</td>
+                                <tr key={applicationform.id}>
+                                    <td>{applicationform.id}</td>
+                                    <td>{applicationform.bspermit_no}</td>
+                                    <td>{applicationform.permittee}</td>
+                                    <td>{applicationform.business_name}</td>
+                                    <td>{applicationform.type_occupancy}</td>
+                                    <td>{sortBy === 'Pending Records' ? 'N/A' :
+                                        'NTC Records' ? applicationform.ntc_no :
+                                            'NTCV Records' ? applicationform.ntcv_no :
+                                                'Abatement Records' ? applicationform.abatement_no :
+                                                    'Closure Records' ? applicationform.closure_no :
+                                                        'N/A'}</td>
                                     <td>{applicationform.remarks}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[applicationform.controlno] || ''}
-                                            onChange={(event) => handleActionChange(event, applicationform.controlno)}
+                                            value={selectedAction[applicationform.id] || ''}
+                                            onChange={(event) => handleActionChange(event, applicationform.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -312,17 +465,95 @@ const DisapprovedRenewalList: React.FC = () => {
                                             <option value="Print">Print</option>
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.businesspermit)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <AddOccupancy open={open} handleClose={handleClickClose} />
-                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.controlno]} handleClose={() => handleCloseView(applicationform.controlno)} />
-                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.controlno]} handleClose={() => handleCloseUpdate(applicationform.controlno)} />
-                                        <EvaluateDisapprovedOccupancy open={openEvalOccupancy[applicationform.controlno]} handleClose={() => handleCloseEval(applicationform.controlno)} />
-                                        <ViewUpdateDisapprovedOccupancy open={openViewUpdOccupancy[applicationform.controlno]} handleClose={() => handleCloseViewUpdate(applicationform.controlno)} form={selectedAction[applicationform.controlno]} />
+                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
+                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
+                                        <EvaluateNTCPopup
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openprevEvaluateNTC[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            handleClose={() => handleCloseEvalNTC(applicationform.id)}
+                                        />
+                                        <EvaluateChoicePopup
+                                            open={openEvalChoice[applicationform.id]}
+                                            remarks={sortBy}
+                                            handleOpenNTCV={() => handleOpenNTCV(applicationform.id)}
+                                            handleOpenAbatement={() => handleOpenAbatement(applicationform.id)}
+                                            handleOpenClosure={() => handleOpenClosure(applicationform.id)}
+                                            handleClose={() => handleCloseEvalCHoice(applicationform.id)}
+
+                                        />
+
+                                        <EvaluateNTCVPopup
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateNTCV[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            ntc={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            defects={applicationform.defects}
+                                            handleClose={() => handleCloseNTCV(applicationform.id)}
+                                        />
+                                        <EvaluateAbatementPopup
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateAbatement[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            ntc={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            defects={applicationform.defects}
+                                            handleClose={() => handleCloseAbatement(applicationform.id)}
+                                        />
+                                        <EvaluateClosurePopup
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateClosure[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            ntc={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            defects={applicationform.defects}
+                                            handleClose={() => handleCloseClosure(applicationform.id)}
+                                        />
+
                                         <DeleteClerkPopup
                                             open={deleteit}
-                                            value={applicationform.controlno}
+                                            value={applicationform.id}
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintClerkPopup

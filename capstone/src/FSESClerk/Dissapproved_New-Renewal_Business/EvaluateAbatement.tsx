@@ -24,6 +24,7 @@ const cardStyle = {
 
 export interface formdetails {
   bpid: number;
+  form: string;
   business_no: string;
   permitee: string;
   business_name: string;
@@ -33,6 +34,9 @@ export interface formdetails {
   contactno: string;
   email: string;
   datereceived: string;
+  ntc: number;
+  ntc_date: string;
+  defects: string[][];
   open: boolean;
   handleClose: () => void;
 }

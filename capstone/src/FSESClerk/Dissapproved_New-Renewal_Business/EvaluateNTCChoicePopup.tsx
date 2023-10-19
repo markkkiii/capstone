@@ -27,52 +27,9 @@ interface ChoiceProps {
 }
 
 const EvaluateNTCChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
-    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
-    const [openNTCBusiness, setopenNTCBusiness] = useState<Record<number, boolean>>({});
+ 
+ 
 
-
-    //Evaluate Popup
-    const handleOpenEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: true,
-        }));
-    };
-
-    //Evaluate Popup
-    const handleCloseEvaluate = (no: number) => {
-        setopenEvaluateBusiness((prevOpenEvaluate) => ({
-            ...prevOpenEvaluate,
-            [no]: false,
-        }));
-    };
-
-    
-    //NTC Popup
-    const handleOpenNTC = (no: number) => {
-        setopenNTCBusiness((prevOpenNTC) => ({
-            ...prevOpenNTC,
-            [no]: true,
-        }));
-    };
-
-    //NTC Popup
-    const handleCloseNTC = (no: number) => {
-        setopenNTCBusiness((prevOpenNTC) => ({
-            ...prevOpenNTC,
-            [no]: false,
-        }));
-    };
-
-    const openApprovedEval = (id: number) => {
-        handleOpenEvaluate(id);
-        props.handleClose();
-    }
-
-    const openNTC = (id: number) => {
-        handleOpenNTC(id);
-        props.handleClose();
-    }
 
     return (
         <div>
@@ -86,24 +43,11 @@ const EvaluateNTCChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
                     <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>How do you want to Evaluate this Form?</p>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={() => openApprovedEval(props.bpid)} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Complied</Button>
-                    <Button variant='contained' onClick={() => openNTC(props.bpid)} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }}>NTCV</Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Complied</Button>
+                    <Button variant='contained' sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }}>NTCV</Button>
                 </DialogActions>
             </Dialog>
-            <EvaluateNTC
-                bpid={props.bpid}
-                business_no={props.business_no}
-                permitee={props.permitee}
-                business_name={props.business_name}
-                address={props.address}
-                natureofbusiness={props.natureofbusiness}
-                typeofoccupancy={props.typeofoccupancy}
-                contactno={props.contactno}
-                email={props.email}
-                datereceived={props.datereceived}
-                open={openNTCBusiness[props.bpid]}
-                handleClose={() => handleCloseNTC(props.bpid)}
-            />
+
         </div>
     );
 };
