@@ -260,8 +260,11 @@ const RenewalBusinessList: React.FC = () => {
             handleOpenViewEval(value);
         }
         else if (selectedValue === 'Print') {
+            handlePrintOpen();
+        }
+        else if (selectedValue === 'Delete') {
+            // Perform delete logic here
             handleDeleteOpen();
-
         }
     }
     return (
@@ -444,6 +447,8 @@ const RenewalBusinessList: React.FC = () => {
                                         <DeleteEncoderPopup
                                             open={deleteit}
                                             value={applicationform.id}
+                                            remarks={applicationform.remarks}
+                                            form = "Renewal"
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintEncoderPopup

@@ -261,10 +261,7 @@ const OccupancyListApproved: React.FC = () => {
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>
                             <option value="Pending Records">Pending Records</option>
-                            <option value="NTC Records">NTC Records</option>
-                            <option value="NTCV Records">NTCV Records</option>
-                            <option value="Abatement Records">Abatement Records</option>
-                            <option value="Closure Records">Closure Records</option>
+                            <option value="Approved Records">Approved Records</option>
                         </select>
                     </div>
                 </div>
@@ -276,11 +273,8 @@ const OccupancyListApproved: React.FC = () => {
                             <th>Owner's Name</th>
                             <th>Business Name</th>
                             <th>Type of Occupancy</th>
-                            <th>{sortBy === 'NTC Records' ? 'NTC #' :
-                                sortBy === 'NTCV Records' ? 'NTCV #' :
-                                    sortBy === 'Abatement Records' ? 'Abatement#' :
-                                        sortBy === 'Closure Records' ? 'Closure #' :
-                                            'FSIC #'}</th>
+                            <th>FSIC #
+                            </th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -290,7 +284,7 @@ const OccupancyListApproved: React.FC = () => {
                             .filter((applicationform) => {
                                 if (sortBy === 'Pending Records') {
                                     return applicationform.remarks === 'Pending';
-                                } else if (sortBy === 'Completed Records') {
+                                } else if (sortBy === 'Approved Records') {
                                     return applicationform.remarks === 'Approved' || applicationform.remarks === 'Disapproved';
                                 } else {
                                     return true;// Show all records if no sortBy value is selected
@@ -352,6 +346,8 @@ const OccupancyListApproved: React.FC = () => {
                                         <DeleteEncoderPopup
                                             open={deleteit}
                                             value={applicationform.id}
+                                            remarks={applicationform.remarks}
+                                            form = "Occupancy"
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintEncoderPopup
