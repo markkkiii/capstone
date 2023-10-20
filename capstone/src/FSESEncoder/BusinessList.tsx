@@ -231,13 +231,13 @@ const BusinessList: React.FC = () => {
 
 
     //Handles the button Logic 
-    const handleNext = (value: number, status: string, buildingno: string) => {
+    const handleNext = (value: number, remarks: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
             handleDeleteOpen();
-        } else if (status === 'Pending') {
+        } else if (remarks === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
                 handleOpenView(value);
@@ -253,9 +253,11 @@ const BusinessList: React.FC = () => {
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
             }
-        } else if (status === 'FSIC NOT PRINTED' || status === 'FSIC PRINTED') {
+        } else if (remarks === 'FSIC Printed' || remarks === 'FSIC Not Printed') {
             //Completed function condition goes here
-
+        if (selectedValue === 'Evaluate') {
+            alert('Application already evaluated!');
+            }
         }
         else if (selectedValue === 'Update') {
             handleOpenViewEval(value);
@@ -266,7 +268,10 @@ const BusinessList: React.FC = () => {
         }
         else if (selectedValue === 'Print') {
             handleDeleteOpen();
-
+        }
+        else if (selectedValue === 'Delete') {
+            // Perform delete logic here
+            handleDeleteOpen();
         }
     }
     return (
@@ -448,7 +453,9 @@ const BusinessList: React.FC = () => {
                                         <DeleteEncoderPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            handleClose={() => handleDeleteClose()}
+                                            remarks={applicationform.remarks}
+                                            form = "New"
+                                            handleClose={() => handleDeleteClose()}      
                                         />
                                         <PrintEncoderPopup
                                             open={print}
