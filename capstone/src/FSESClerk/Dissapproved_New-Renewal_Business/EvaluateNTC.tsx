@@ -162,7 +162,9 @@ export default function EvaluateNTCPopup(props: formdetails) {
         remarks: "For Issuance NTCV",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
-        defects: arrayList
+        defects: arrayList,
+        received_name: ReceivedByRef.current?.value,
+        receivedabatement_date: ReceivedDateRef.current?.value
 
       }
     ).then(res => {

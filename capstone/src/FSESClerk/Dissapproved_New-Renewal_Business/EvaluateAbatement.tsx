@@ -36,6 +36,8 @@ export interface formdetails {
   datereceived: string;
   ntc: number;
   ntc_date: string;
+  ntcv: number;
+  ntcv_date: string;
   defects: string[][];
   open: boolean;
   handleClose: () => void;
@@ -53,13 +55,13 @@ export default function EvaluateAbatementPopup(props: formdetails) {
   const [data, setData] = useState<DefectData[]>([]);
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const fsicRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const fsicDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const AbatementRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const AbatementDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
@@ -111,34 +113,62 @@ export default function EvaluateAbatementPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
+  const updateRemarks = () =>{
+    let new_url = '';
+   if (props.form === 'New') {
+     new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
+   }
+   else if (props.form === 'Renewal') {
+     new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
+   }
+   axios.put(new_url+props.bpid,
+     {
+       remarks: "Issued Abatement",
+     }
+   )
+ }
+
+
+
   // uploads data to db
   const evaluateAbatement = async () => {
-    axios.post('http://localhost:8080/newbpnoticetocomply/insertAbatementPermit',
+    let new_url = '';
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpabatementorder/insertAbatementPermit';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpabatementorder/insertRenewalAbatementPermit'
+    }
+    axios.post(new_url,
       {
         bspermit_no: props.bpid,
-        permitte: props.permitee,
+        permittee: props.permitee,
         business_name: props.business_name,
         address: props.address,
         nature_business: props.natureofbusiness,
-        contactno: props.contactno,
+        type_occupancy: props.typeofoccupancy,
+        contact_no: props.contactno,
         email: props.email,
         date_received: props.datereceived,
         date_inspection: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
-        fsic_no: fsicRef.current?.value,
-        fsic_date: fsicDateRef.current?.value,
-        amount: AmountRef.current?.value,
-        or_no: OrNoRef.current?.value,
-        payment_date: dateRef.current?.value,
-        remarks: "FOR ISSUANCE Closure",
+        ntc_no: props.ntc,
+        ntc_date: props.ntc_date,
+        ntcv_no: AbatementRef.current?.value,
+        ntcv_date: AbatementDateRef.current?.value,
+        remarks: "For Issuance Closure",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
-        defects:arrayList
+        defects: arrayList,
+        received_name: ReceivedByRef.current?.value,
+        receivedabatement_date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-    }).catch(err => console.log(err))
+      updateRemarks();
+      props.handleClose();
+      }).catch(err => console.log(err))
   }
 
   // Sets the values of the array and uploads data to db
@@ -224,49 +254,49 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Inspection Order Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={dateInspectionRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={inspectOrderRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={inspectOrderRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateInspectionRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date ? new Date(props.ntcv_date).toISOString().split('T')[0] : ''}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={AbatementRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Abatement Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={AbatementDateRef} />
                     </Stack>
                   </Grid>
                   
@@ -324,13 +354,25 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                       Add Defect
                     </Button>
                   </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Received By</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedByRef} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start', marginTop: '20px' }}>
+                      <p className='custom-paragraph'  >Received Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedDateRef} />
+                    </Stack>
+                  </Grid>
                 </Grid>
               </CardContent>
             </Card>
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaluation}>
             Add Evaluation
           </Button>
         </DialogActions>
