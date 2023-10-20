@@ -529,6 +529,8 @@ const DisapprovedRenewalList: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             ntc={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
+                                            ntcv = {applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseAbatement(applicationform.id)}
                                         />

@@ -160,7 +160,9 @@ export default function EvaluateNTCVPopup(props: formdetails) {
         remarks: "For Issuance Abatement",
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
-        defects: arrayList
+        defects: arrayList,
+        received_name: ReceivedByRef.current?.value,
+        receivedabatement_date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
@@ -271,7 +273,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ?  new Date(props.ntc_date).toISOString().split('T')[0] : ''} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
