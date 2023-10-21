@@ -14,6 +14,7 @@ import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapp
 import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';
+import axios from 'axios';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -37,7 +38,7 @@ const AdditionalTab: React.FC = () => {
 
 const OccupancyListClerk: React.FC = () => {
     const [searchText, setSearchText] = useState('');
-    const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
@@ -47,42 +48,33 @@ const OccupancyListClerk: React.FC = () => {
     const [test, setTest] = useState<boolean>(false);
     const [deleteit, setDelete] = useState(false);
     const [print, setPrint] = useState(false);
-
-
-
-
+    
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
-        bspermit_no: "F2-010",
-        permittee: "JohnDoe",
-        business_name: "Default",
-        address: 'Default Location',
-        nature_business: "test",
-        type_occupancy: "test",
-        contact_no: '09123123123',
-        email: 'test@gmail',
-        date_received: '2023-01-01',
-        date_inspection: "2023-01-01",
-        inspection_no: 2,
-        fsic_no: 2,
-        fsic_date: '2023-01-01',
-        ntc_no: 2,
-        ntc_date: '2023-01-01',
-        ntcv_no: 2,
-        ntcv_date: '2023-01-01',
-        or_no: 2,
-        amount: 2000,
-        payment_date: '2023-01-01',
-        abatement_no: 2,
-        abatement_date: '01/01/2001',
-        closure_no: 2,
-        closure_date: '01/01/2001',
-        remarks: "Disapproved",
-        team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
-        recommendation: ["reco1", "reco2", "reco3"],
-        defects: [['test'], ['test2']]
+        application_no: "2",
+        applicant_name: "Jane Does",
+        building_no: "2",
+        project_name: "Don Mac",
+        location: "asdasd",
+        contact_no: "2",
+        assessment_fees: "100",
+        date_received: "2023-09-08",
+        remarks: "Pending",
+        nod_no: 2,
     }])
+
+    useEffect(() => {
+        if (sortBy === 'Pending Records') {
+            axios.get('http://localhost:8080/occupancyPendingclerk/getAllOccupancyPendingClerk').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+        else if (sortBy === 'Disapproved Records') {
+            axios.get('http://localhost:8080/occupancydisapprovedclerk/getAllOccupancyDisapprovedClerk').then(res => {
+                SetApplicationForm(res.data)
+            }).catch(err => console.log(err))
+        }
+    }, [sortBy, test]);
 
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -237,7 +229,10 @@ const OccupancyListClerk: React.FC = () => {
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
-
+            }
+            else if(selectedValue === 'Delete') {
+                // Perform delete logic here
+                handleDeleteOpen();
             }
         }
     }
@@ -294,11 +289,11 @@ const OccupancyListClerk: React.FC = () => {
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Business Permit #</th>
+                            <th>Application Number #</th>
                             <th>Owner's Name</th>
-                            <th>Business Name</th>
-                            <th>Type of Occupancy</th>
-                            <th>FSIC #</th>
+                            <th>Project Name</th>
+                            <th>Assessment Fees</th>
+                            <th>NOD #</th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -306,35 +301,26 @@ const OccupancyListClerk: React.FC = () => {
                     <tbody>
                         {applicationform
                             .filter((applicationform) => {
-                                if (sortBy === 'Pending Records') {
-                                    return applicationform.remarks === 'Pending';
-                                } else if (sortBy === 'Disapproved Records') {
-                                    return applicationform.remarks === 'Approved' || applicationform.remarks === 'Disapproved';
-                                } else {
-                                    return true;// Show all records if no sortBy value is selected
-                                }
-                            })
-                            .filter((applicationform) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
-                                        applicationform.bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.permittee.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.application_no.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        applicationform.applicant_name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
                             .map((applicationform) => (
                                 <tr key={applicationform.id}>
                                     <td>{applicationform.id}</td>
-                                    <td>{applicationform.bspermit_no}</td>
-                                    <td>{applicationform.permittee}</td>
-                                    <td>{applicationform.business_name}</td>
-                                    <td>{applicationform.type_occupancy}</td>
-                                    <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
-                                        'N/A'}</td>
+                                    <td>{applicationform.application_no}</td>
+                                    <td>{applicationform.applicant_name}</td>
+                                    <td>{applicationform.project_name}</td>
+                                    <td>{applicationform.assessment_fees}</td>
+                                    <td>{sortBy === 'Disapproved Records' ? applicationform.nod_no :
+                                                    'N/A'}</td>
                                     <td>{applicationform.remarks}</td>
                                     <td>
                                         <select
@@ -349,10 +335,9 @@ const OccupancyListClerk: React.FC = () => {
                                             <option value="Print">Print</option>
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.application_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <AddOccupancy open={open} handleClose={handleClickClose} />
                                         <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
                                         <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
                                         <EvaluateDisapprovedOccupancy open={openEvalOccupancy[applicationform.id]} handleClose={() => handleCloseEval(applicationform.id)} />
@@ -360,6 +345,8 @@ const OccupancyListClerk: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
+                                            form = "New"
+                                            remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintClerkPopup
@@ -371,6 +358,7 @@ const OccupancyListClerk: React.FC = () => {
                             ))}
                     </tbody>
                 </table>
+                <AddOccupancy open={open} handleClose={handleClickClose} add="New" />
 
             </div>
         </>
