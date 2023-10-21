@@ -8,14 +8,26 @@ import axios from 'axios';
 interface DeleteProps {
     value: number;
     open: boolean;
+    remarks: string;
+    form: string;
     handleClose: () => void;
 }
 
-const DeleteClerkPopup: React.FC<DeleteProps> = ({ value, open, handleClose }) => {
+const DeleteClerkPopup: React.FC<DeleteProps> = ({ form, remarks, value, open, handleClose }) => {
+
+    let pending =''
+    if(form === 'New'){
+        if(remarks === 'Pending'){
+            pending = 'occupancyPendingclerk'
+        }
+        else if (remarks === 'Disapproved'){
+            pending = 'occupancydisapprovedclerk'
+        }
+    }
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/BFP/deletePermit/' + value).then(res => {
+        axios.delete('http://localhost:8080/'+pending+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()

@@ -43,6 +43,12 @@ const AddPaymentPopup: React.FC<formdetails> = ({open, handleClose, add}) => {
         const newRow = { natureOfCollection: '', accountCode: '', amount: '' };
         setTableData((prevData) => [...prevData, newRow]);
       };
+
+    const handleDeleteRow = (rowIndex: number) => {
+        const updatedData = [...tableData];
+        updatedData.splice(rowIndex, 1);
+        setTableData(updatedData);
+      };
       
 
     const handleTableChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, rowIndex: number, key: keyof typeof tableData[0]) => {
@@ -148,6 +154,7 @@ const AddPaymentPopup: React.FC<formdetails> = ({open, handleClose, add}) => {
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5'}}>Nature of Collection</TableCell>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}>Account Code</TableCell>
                                             <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}>Amount</TableCell>
+                                            <TableCell sx ={{fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}></TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -173,6 +180,15 @@ const AddPaymentPopup: React.FC<formdetails> = ({open, handleClose, add}) => {
                                                     value={row.amount}
                                                     onChange={(e) => handleTableChange(e, rowIndex, 'amount')}
                                                 />
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Button
+                                                    variant="contained"
+                                                    sx={{ borderRadius: '13px', height: '30px', backgroundColor: 'blue' }}
+                                                    onClick={() => handleDeleteRow(rowIndex)}
+                                                    >
+                                                    Delete
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                             ))}

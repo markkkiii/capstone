@@ -18,19 +18,54 @@ const cardStyle = {
 export interface formdetails {
     open: boolean;
     handleClose: () => void;
+    add: string;
+
 }
 
 
-const AddOccupancy: React.FC<formdetails> = ({ open, handleClose }) => {
+const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
-    const buildingpermRef = useRef<HTMLInputElement | null>(null);
-    const permiteeRef = useRef<HTMLInputElement | null>(null);
-    const businessnameRef = useRef<HTMLInputElement | null>(null);
-    const addressRef = useRef<HTMLInputElement | null>(null);
-    const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);
-    const contactnoRef = useRef<HTMLInputElement | null>(null);
+    const applicantionnoRef = useRef<HTMLInputElement | null>(null);
+    const applicantnameRef = useRef<HTMLInputElement | null>(null);
+    const buildingnoRef = useRef<HTMLInputElement | null>(null);
+    const projectnameRef = useRef<HTMLInputElement | null>(null);
     const dateReceivedRef = useRef<HTMLInputElement | null>(null);
-    const receivedbyRef = useRef<HTMLInputElement | null>(null);
+    const locationRef = useRef<HTMLInputElement | null>(null);
+    const contactnoRef = useRef<HTMLInputElement | null>(null);
+    const assessmentfeesRef = useRef<HTMLInputElement | null>(null);
+
+
+    const AddForm = async () => {
+        let NEW_URL = '';
+        if(add === 'New'){
+            NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertNODPermit';
+        }
+        axios
+            .post(NEW_URL, {
+                application_no: applicantionnoRef.current?.value,
+                applicant_name: applicantnameRef.current?.value,
+                building_no: buildingnoRef.current?.value,
+                project_name: projectnameRef.current?.value,
+                date_received: dateReceivedRef.current?.value,
+                location: locationRef.current?.value,
+                contact_no: contactnoRef.current?.value,
+                assessment_fees: assessmentfeesRef.current?.value,
+                remarks: "Pending"  
+            })
+            .then(res => {
+
+                if (res.data) {
+                    console.log(applicantionnoRef.current?.value)
+                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    handleClose()
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            
+    }
 
     return (
         <div>
@@ -47,49 +82,49 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose }) => {
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Application No.</p>
-                                        <OutlinedInput inputRef={typeofoccupancyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput inputRef={applicantionnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Building Permit No.</p>
-                                        <OutlinedInput inputRef={typeofoccupancyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "306px" }} />
+                                        <OutlinedInput inputRef={buildingnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "306px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Applicant Name</p>
-                                        <OutlinedInput inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={applicantnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Project Name</p>
-                                        <OutlinedInput inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={projectnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Location</p>
-                                        <OutlinedInput inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={locationRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Assessment of Fees</p>
-                                        <OutlinedInput inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={assessmentfeesRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Contact No.</p>
-                                        <OutlinedInput inputRef={typeofoccupancyRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput inputRef={contactnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={5}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Date Received</p>
-                                        <OutlinedInput inputRef={contactnoRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput inputRef={dateReceivedRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 
@@ -99,8 +134,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose }) => {
                     </Card>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-
-                    <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
+                <Button variant='contained'  onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
@@ -108,4 +142,4 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose }) => {
     )
 }
 
-export default AddOccupancy
+export default AddOccupancy;
