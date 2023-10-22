@@ -15,6 +15,9 @@ import EvaluateNTCPopup from './Dissapproved_New-Renewal_Business/EvaluateNTC';
 import EvaluateChoicePopup from './Dissapproved_New-Renewal_Business/EvaluateChoicePopup';
 import EvaluateNTCVPopup from './Dissapproved_New-Renewal_Business/EvaluateNTCV';
 import EvaluateAbatementPopup from './Dissapproved_New-Renewal_Business/EvaluateAbatement';
+import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
+import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
+import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-UpdateAbatement';
 
 
 //Header Part
@@ -46,6 +49,9 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
     const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
+    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTC Form
+    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTCV Form
+    const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<number, boolean>>({}); //Opens NTCV Form
     const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
     const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
     const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});
@@ -98,7 +104,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         if (sortBy === 'Pending Records') {
             axios.get('http://localhost:8080/BPPending/getAllBPPermit').then(res => {
                 SetApplicationForm(res.data)
-           
+
             }).catch(err => console.log(err))
         }
         else if (sortBy === 'NTC Records') {
@@ -182,9 +188,6 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
 
-
-
-
     //Opens Evaluate NTC
     const handleOpenView = (no: number) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
@@ -201,6 +204,58 @@ const DisapprovedNewBusiness: React.FC = () => {
         }));
         handleRender();
     };
+    //Opens Update View NTC
+    const handleOpenViewUpdateNTC = (no: number) => {
+        setopenViewUpdateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: true,
+        }));
+
+    };
+    // Closes Update View NTC
+    const handleCloseViewUpdateNTC = (no: number) => {
+        setopenViewUpdateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Update View NTCV
+    const handleOpenViewUpdateNTCV = (no: number) => {
+        setopenViewUpdateNTCV((prevEvaluateNTCV) => ({
+            ...prevEvaluateNTCV,
+            [no]: true,
+        }));
+
+    };
+    // Closes Update View NTCV
+    const handleCloseViewUpdateNTCV = (no: number) => {
+        setopenViewUpdateNTCV((prevEvaluateNTCV) => ({
+            ...prevEvaluateNTCV,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Update View Abatement
+    const handleOpenViewUpdateAbatement = (no: number) => {
+        setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: true,
+        }));
+
+    };
+    // Closes Update View Abatement
+    const handleCloseViewUpdateAbatement = (no: number) => {
+        setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+
 
     //Opens Evaluate NTCV
     const handleOpenNTCV = (no: number) => {
@@ -225,7 +280,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvaluateAbatement,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Evaluate Abatement
     const handleCloseAbatement = (no: number) => {
@@ -312,7 +367,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             // Perform delete logic here
             handleDeleteOpen();
 
-        }   
+        }
         if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
@@ -330,21 +385,35 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        if(selectedValue ==='Evaluate'){
-            if (status === 'For Issuance NTCV' ) {
+        else if (status === 'For Issuance NTCV' || status === 'Issued NTCV') {
+            if (selectedValue === 'Evaluate') {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
             }
-            else if (status === 'For Issuance Abatement') {
-                //Completed function condition goes here
-                handleOpenEvalChoice(value);
+            else if (selectedValue === 'View' || selectedValue === 'Update') {
+                handleOpenViewUpdateNTC(value);
             }
-            else if (status === 'For Issuance Closure') {
-                //Completed function condition goes here
-                handleOpenEvalChoice(value);
+        }
+        else if (status === 'For Issuance Abatement' || status === 'Issued Abatement') {
+            //Completed function condition goes here
+            if (selectedValue === 'Evaluate') {
+                handleOpenAbatement(value);
             }
-        } 
-        
+            else if (selectedValue === 'View' || selectedValue === 'Update') {
+                handleOpenViewUpdateNTCV(value);
+            }
+        }
+        else if (status === 'For Issuance Closure' || status === 'Issued Closure') {
+            //Completed function condition goes here
+            if (selectedValue === 'Evaluate') {
+                handleOpenClosure(value);
+            }
+            else if (selectedValue === 'View' || selectedValue === 'Update') {
+                handleOpenViewUpdateAbatement(value);
+            }
+
+        }
+
     }
     return (
         <>
@@ -470,16 +539,16 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         />
                                         <EvaluateChoicePopup
                                             open={openEvalChoice[applicationform.id]}
-                                            remarks = {sortBy}
-                                            handleOpenNTCV = {() => handleOpenNTCV(applicationform.id)}
-                                            handleOpenAbatement = {() => handleOpenAbatement(applicationform.id)}
-                                            handleOpenClosure = {() => handleOpenClosure(applicationform.id)}
+                                            remarks={sortBy}
+                                            handleOpenNTCV={() => handleOpenNTCV(applicationform.id)}
+                                            handleOpenAbatement={() => handleOpenAbatement(applicationform.id)}
+                                            handleOpenClosure={() => handleOpenClosure(applicationform.id)}
                                             handleClose={() => handleCloseEvalCHoice(applicationform.id)}
 
                                         />
                                         <EvaluateNTCVPopup
                                             bpid={applicationform.id}
-                                            form = 'New'
+                                            form='New'
                                             open={openprevEvaluateNTCV[applicationform.id]}
                                             business_no={applicationform.bspermit_no}
                                             permitee={applicationform.permittee}
@@ -495,7 +564,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseNTCV(applicationform.id)}
                                         />
-                                          <EvaluateAbatementPopup
+                                        <EvaluateAbatementPopup
                                             bpid={applicationform.id}
                                             form='New'
                                             open={openprevEvaluateAbatement[applicationform.id]}
@@ -510,14 +579,14 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             ntc={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
-                                            ntcv = {applicationform.ntcv_no}
+                                            ntcv={applicationform.ntcv_no}
                                             ntcv_date={applicationform.ntcv_date}
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseAbatement(applicationform.id)}
                                         />
                                         <EvaluateClosurePopup
                                             bpid={applicationform.id}
-                                            form='Renewal'
+                                            form='New'
                                             open={openprevEvaluateClosure[applicationform.id]}
                                             business_no={applicationform.bspermit_no}
                                             permitee={applicationform.permittee}
@@ -530,8 +599,97 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             ntc={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
+                                            ntcv={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            abatement={applicationform.abatement_no}
+                                            abatement_date={applicationform.abatement_date}
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseClosure(applicationform.id)}
+
+                                        />
+                                        <ViewUpdateNTC
+                                            bpid={applicationform.id}
+                                            form='New'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openprevViewUpdateNTC[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedntc_date}
+                                            handleClose={() => handleCloseViewUpdateNTC(applicationform.id)}
+                                        />
+                                        <ViewUpdateNTCVPopup
+                                            bpid={applicationform.id}
+                                            form='New'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openViewUpdateNTCV[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            ntcv_no={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedntcv_date}
+                                            handleClose={() => handleCloseViewUpdateNTCV(applicationform.id)}
+                                        />
+                                        <ViewUpdateAbatementPopup
+                                            bpid={applicationform.id}
+                                            form='New'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openViewUpdateAbatement[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            ntcv_no={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            abatement_no={applicationform.abatement_no}
+                                            abatement_date={applicationform.abatement_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedabatement_date}
+                                            handleClose={() => handleCloseViewUpdateAbatement(applicationform.id)}
                                         />
 
                                     </td>

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import '../ClerkCSS.css'
+import '../ClerkCSS.css';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
 
@@ -25,6 +25,7 @@ const cardStyle = {
 export interface formdetails {
   bpid: number;
   form: string;
+  activity: string;
   business_no: string;
   permitee: string;
   business_name: string;
@@ -34,14 +35,17 @@ export interface formdetails {
   contactno: string;
   email: string;
   datereceived: string;
-  ntc: number;
+  inspection_no: number;
+  inspectiondate: string;
+  ntc_no: number;
   ntc_date: string;
-  ntcv: number;
-  ntcv_date: string;
-  abatement: number;
-  abatement_date: string;
-  defects: string[][];
+  teamleader: string;
+  fireinspectors: string[];
   open: boolean;
+  defects: string[][];
+  remarks: string;
+  receivedby: string;
+  receiveddate:string;
   handleClose: () => void;
 }
 
@@ -50,30 +54,44 @@ interface DefectData {
   period: string;
 }
 
-export default function EvaluateClosurePopup(props: formdetails) {
+export default function ViewUpdateNTC(props: formdetails) {
 
+  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const [data, setData] = useState<DefectData[]>([]);
+  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(([defects, period]) => ({ defects, period })) : []); // handles ObjectList Data
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
+  const BusinessNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const PermiteeRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const BusinessnameRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const AddressRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NatureBusinessRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ContactnoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const EmailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const dateReceivedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const closureRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const closureDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
+  const [inputInspector, setInputInspector] = useState<string>(props.fireinspectors?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
 
   //opens add defect pop up
   const openDialog = () => {
     setOpenAddDefect(true);
+  };
+
+  const handleRemarks = (event: SelectChangeEvent<string>) => {
+    setselectedRemarks(event.target.value); // Update the state variable with the new selected value
   };
 
   useEffect(() => {
@@ -103,6 +121,18 @@ export default function EvaluateClosurePopup(props: formdetails) {
     setInputInspector(event.target.value);
   };
 
+  // Deletes the Pending Application
+ 
+
+  const removeItem = (indexToRemove: number) => {
+    // Create a copy of the current data array
+    const updatedData = [...data];
+    // Remove the item at the specified index
+    updatedData.splice(indexToRemove, 1);
+    // Update the data state with the modified array
+    setData(updatedData);
+  };
+
   // Function to split the input value into an array of strings based on newline characters
   const updateInputArray = useCallback(() => {
     const newArray = inputInspector.split('\n').filter((line) => line.trim() !== '');
@@ -117,72 +147,56 @@ export default function EvaluateClosurePopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  const updateRemarks = () =>{
-    let new_url = '';
-   if (props.form === 'New') {
-     new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
-   }
-   else if (props.form === 'Renewal') {
-     new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
-   }
-   axios.put(new_url+props.bpid,
-     {
-       remarks: "Issued Closure",
-     }
-   )
- }
-
 
 
   // uploads data to db
-  const evaluateClosure = async () => {
+  const evaluateNTC = async () => {
     let new_url = '';
     if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpclosureorder/insertClosurePermit';
+      new_url = 'http://localhost:8080/newbpnoticetocomply/updateNewbpNotucetoComply?id=';
     }
     else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpclosureorder/insertRenewalClosurePermit';
+      new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRenewalbpNTC?id='
     }
-    axios.post(new_url,
+    axios.put(new_url+props.bpid,
       {
-        bspermit_no: props.bpid,
-        permittee: props.permitee,
-        business_name: props.business_name,
-        address: props.address,
-        nature_business: props.natureofbusiness,
-        type_occupancy: props.typeofoccupancy,
-        contact_no: props.contactno,
-        email: props.email,
-        date_received: props.datereceived,
+        bspermit_no: BusinessNoRef.current?.value,
+        permittee: PermiteeRef.current?.value,
+        business_name: BusinessnameRef.current?.value,
+        address: AddressRef.current?.value,
+        nature_business: NatureBusinessRef.current?.value,
+        type_occupancy: typeofoccupancyRef.current?.value,
+        contact_no: ContactnoRef.current?.value,
+        email: EmailRef.current?.value,
+        date_received: dateReceivedRef.current?.value,
         date_inspection: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
-        ntc_no: props.ntc,
-        ntc_date: props.ntc_date,
-        ntcv_no: props.ntcv,
-        ntcv_date: props.ntcv_date,
-        abatement_no: props.abatement,
-        abatement_date: props.abatement_date,
-        closure_no: closureRef.current?.value,
-        closure_date:closureDateRef.current?.value,
-        remarks: "Issued Closure",
+        ntc_no: NTCRef.current?.value,
+        ntc_date: NTCDateRef.current?.value,
+        remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
         defects: arrayList,
         received_name: ReceivedByRef.current?.value,
-        receivedabatement_date: ReceivedDateRef.current?.value
+        receivedntc_date: ReceivedDateRef.current?.value
+
       }
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-      updateRemarks();
       props.handleClose();
     }).catch(err => console.log(err))
   }
 
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
-    handleRender();
-    evaluateClosure();
+    if (props.activity !=='Update'){
+      props.handleClose();
+    }
+    else{
+      handleRender();
+      evaluateNTC();
+    }
   }
 
   return (
@@ -208,115 +222,79 @@ export default function EvaluateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Business Permit Number</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_no} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={BusinessNoRef} sx={{ borderRadius: '11px' }} defaultValue={props.business_no} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Name of Owner/Permitee</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.permitee} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={PermiteeRef} sx={{ borderRadius: '11px' }} defaultValue={props.permitee} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Business Name</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_name} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={BusinessnameRef} sx={{ borderRadius: '11px' }} defaultValue={props.business_name} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Address</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={AddressRef} sx={{ borderRadius: '11px' }} defaultValue={props.address} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Nature of Business</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.natureofbusiness} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' inputRef={NatureBusinessRef} sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.natureofbusiness} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Type of Occupancy</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={typeofoccupancyRef} sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Contact Number</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.contactno} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' inputRef={ContactnoRef} sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.contactno} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Email</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.email} variant='standard' disabled />
+                      <TextField className='custom-outlined-input' inputRef={EmailRef} sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.email} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' inputRef={dateReceivedRef} sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Inspection Order Number </p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={inspectOrderRef} />
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Inspection Order Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.inspection_no} inputRef={inspectOrderRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateInspectionRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.inspectiondate ? new Date(props.inspectiondate).toISOString().split('T')[0] : ''} inputRef={dateInspectionRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc} disabled/>
+                      <p className='custom-paragraph' >NTC Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv} disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }}  defaultValue={props.ntcv_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.abatement} disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Abatement Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }}  defaultValue={props.abatement_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Closure Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={closureRef} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  >Closure Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={closureDateRef} />
+                      <p className='custom-paragraph'  >NTC Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} inputRef={NTCDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -327,7 +305,7 @@ export default function EvaluateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
                       <h3 className='custom-paragraph' style={{ marginTop: 0 }}>Team Leader</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} defaultValue={props.teamleader} inputRef={teamLeaderRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -346,6 +324,7 @@ export default function EvaluateClosurePopup(props: formdetails) {
                         value={inputInspector}
                         onChange={handleInputChange}
                         multiline
+                        disabled={props.activity !== 'Update'}
                         placeholder={`F03 John Doe\nType in the name then press enter to move next line`}
                         rows={2}
                       />
@@ -357,42 +336,62 @@ export default function EvaluateClosurePopup(props: formdetails) {
                         <tr>
                           <th style={{ textAlign: "center" }}>Defects</th>
                           <th style={{ textAlign: "center" }}>Grace Period</th>
+                          <th style={{ width: "20px" }}></th>
                         </tr>
                       </thead>
                       <tbody>
                         {data.map((item, index) => (
                           <tr key={index}>
-                            <td>{item.defects}</td>
+                            <td style={{ textAlign: "center" }}>{item.defects}</td>
                             <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <th><Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={() => removeItem(index)} disabled={props.activity !== 'Update'}>
+                              Remove
+                            </Button></th>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                     <DefectPopup open={openAddDefect} onClose={closeDialog} onAdd={addDefect} />
-                    <Button variant='contained' sx={{ marginTop:'10px',backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
+                    <Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog} disabled={props.activity !== 'Update'}>
                       Add Defect
                     </Button>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Received By</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedByRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.receivedby} inputRef={ReceivedByRef} disabled={props.activity !== 'Update'} />
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={5}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start', marginTop: '18px' }}>
+                      <p className='custom-paragraph' >Status after Grace Period</p>
+                      <Select
+                        sx={{ height: '30px', width: '300px', borderRadius: '14px', borderWidth: '20px' }}
+                        value={selectedRemarks}
+                        onChange={handleRemarks}
+                        disabled={props.activity !== 'Update'}
+                      >
+                        <MenuItem value="Complied">Complied</MenuItem>
+                        <MenuItem value="For Issuance NTCV">For Issuance NTCV</MenuItem>
+                        <MenuItem value="Issued NTCV">Issued NTCV</MenuItem>
+                      </Select>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start', marginTop: '20px' }}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Received Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedDateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.receiveddate ? new Date(props.receiveddate).toISOString().split('T')[0] : ''} inputRef={ReceivedDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                 </Grid>
+
               </CardContent>
             </Card>
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
           <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaluation}>
-            Add Evaluation
+            {props.activity !=='Update'? 'Close Form': 'Update Form'}
           </Button>
         </DialogActions>
       </Dialog>
