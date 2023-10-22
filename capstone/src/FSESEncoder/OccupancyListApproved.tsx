@@ -52,37 +52,23 @@ const OccupancyListApproved: React.FC = () => {
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
-        bspermit_no: "F2-010",
-        permittee: "JohnDoe",
-        business_name: "Default",
-        address: 'Default Location',
-        nature_business: "test",
-        type_occupancy: "test",
-        contact_no: '09123123123',
-        email: 'test@gmail',
-        date_received: '2023-01-01',
-        date_inspection: "2023-01-01",
-        inspection_no: 2,
-        fsic_no: 2,
-        fsic_date: '2023-01-01',
-        ntc_no: 2,
-        ntc_date: '2023-01-01',
-        ntcv_no:2,
-        ntcv_date: '2023-01-01',
-        or_no: 2,
-        amount:2000,
-        payment_date: '2023-01-01',
-        abatement_no: 2,
-        abatement_date:'01/01/2001',
-        closure_no:2,
-        closure_date:'01/01/2001',
+        control_no: 20,
+        buildingpermitno: '20-2',
+        applicant_name: 'Default',
+        project_name: 'Default',
+        location: '',
+        contact_no: '',
+        date_received: '',
+        team_leader: '',
+        fireInspectors: [],
+        inspection_no: 0,
+        date_inspection: '',
+        received_name: '',
+        receivedoccu_date: '',
         remarks: "Pending",
-        team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
-        recommendation: ["reco1", "reco2", "reco3"],
-        defects: [['test'], ['test2']]
+        nod_no: 0,
+        fsic_no: 0
     }])
-
 
     const handleRender = () => {
         setTest(prevTest => !prevTest);
@@ -103,8 +89,8 @@ const OccupancyListApproved: React.FC = () => {
         }));
     };
 
-     //Evaluate Popup 
-     const handleOpenEval = (no: number) => {
+    //Evaluate Popup 
+    const handleOpenEval = (no: number) => {
         setopenEvalOccupancy((prevOpenEval) => ({
             ...prevOpenEval,
             [no]: true,
@@ -119,8 +105,8 @@ const OccupancyListApproved: React.FC = () => {
         }));
     };
 
-      //VIEW Popup
-      const handleOpenView = (no: number) => {
+    //VIEW Popup
+    const handleOpenView = (no: number) => {
         setopenViewOccupancy((prevOpenView) => ({
             ...prevOpenView,
             [no]: true,
@@ -208,12 +194,9 @@ const OccupancyListApproved: React.FC = () => {
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
-            if (selectedValue === 'View') {
+            if ((selectedValue === 'View') || (selectedValue === 'Update') ) {
                 handleOpenView(value);
 
-            }
-            else if (selectedValue === 'Update') {
-                handleOpenUpdate(value);
             }
             else if (selectedValue === 'Evaluate') {
                 handleOpenEval(value);
@@ -271,10 +254,8 @@ const OccupancyListApproved: React.FC = () => {
                             <th>No.</th>
                             <th>Business Permit #</th>
                             <th>Owner's Name</th>
-                            <th>Business Name</th>
-                            <th>Type of Occupancy</th>
-                            <th>FSIC #
-                            </th>
+                            <th>Project Name</th>
+                            <th>FSIC #</th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -297,18 +278,17 @@ const OccupancyListApproved: React.FC = () => {
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
-                                        applicationform.bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.permittee.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.buildingpermitno.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        applicationform.applicant_name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
                             .map((applicationform) => (
                                 <tr key={applicationform.id}>
                                     <td>{applicationform.id}</td>
-                                    <td>{applicationform.bspermit_no}</td>
-                                    <td>{applicationform.permittee}</td>
-                                    <td>{applicationform.business_name}</td>
-                                    <td>{applicationform.type_occupancy}</td>
+                                    <td>{applicationform.buildingpermitno}</td>
+                                    <td>{applicationform.applicant_name}</td>
+                                    <td>{applicationform.project_name}</td>
                                     <td>{applicationform.fsic_no}</td>
                                     <td>{applicationform.remarks}</td>
                                     <td>
@@ -324,30 +304,34 @@ const OccupancyListApproved: React.FC = () => {
                                             <option value="Print">Print</option>
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.buildingpermitno)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
-                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
-                                        <EvaluateApprovedOccupancy
-                                            bpid={applicationform.id}
-                                            open={openEvalOccupancy[applicationform.id]}
-                                            business_no={applicationform.bspermit_no}
-                                            permitee={applicationform.permittee}
-                                            business_name={applicationform.business_name}
-                                            address={applicationform.address}
-                                            natureofbusiness={applicationform.nature_business}
-                                            typeofoccupancy={applicationform.type_occupancy}
-                                            contactno={applicationform.contact_no}
-                                            email={applicationform.email}
-                                            datereceived={applicationform.date_received}
-                                            handleClose={() => handleCloseEval(applicationform.id)}
+                                        <ViewPendingOccupancyList
+                                            id={applicationform.id}
+                                            open={openViewOccupancy[applicationform.id]}
+                                            handleClose={() => handleCloseView(applicationform.id)}
+                                            activity={selectedAction[applicationform.id]}
+                                            controlno={applicationform.control_no}
+                                            buildingno={applicationform.buildingpermitno}
+                                            applicantname={applicationform.applicant_name}
+                                            projectname={applicationform.project_name}
+                                            location={applicationform.location}
+                                            contact_no={applicationform.contact_no}
+                                            date_received={applicationform.date_received}
+                                            team_leader={applicationform.team_leader}
+                                            fireInspectors={applicationform.fireInspectors}
+                                            inspection_no={applicationform.inspection_no}
+                                            date_inspection={applicationform.date_inspection}
+                                            received_name={applicationform.received_name}
+                                            receivedoccu_date={applicationform.receivedoccu_date}
                                         />
+                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
                                         <DeleteEncoderPopup
                                             open={deleteit}
                                             value={applicationform.id}
                                             remarks={applicationform.remarks}
-                                            form = "Occupancy"
+                                            form="Occupancy"
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintEncoderPopup

@@ -9,7 +9,6 @@ import AddOccupancy from './Pending_Occupancy/AddOccupancy';
 import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
 import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
-import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';
 import axios from 'axios';
