@@ -36,27 +36,28 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
 
     const AddForm = async () => {
-        let NEW_URL = '';
-        if(add === 'New'){
-            NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertNODPermit';
-        }
+       let NEW_URL = 'http://localhost:8080/occupancyPending/insertPendingOccupancy';
         axios
             .post(NEW_URL, {
-                application_no: applicantionnoRef.current?.value,
+                control_no: applicantionnoRef.current?.value,
+                buildingpermitno: buildingnoRef.current?.value,
                 applicant_name: applicantnameRef.current?.value,
-                building_no: buildingnoRef.current?.value,
                 project_name: projectnameRef.current?.value,
-                date_received: dateReceivedRef.current?.value,
                 location: locationRef.current?.value,
                 contact_no: contactnoRef.current?.value,
-                assessment_fees: assessmentfeesRef.current?.value,
+                date_received: dateReceivedRef.current?.value,
+                team_leader: '',
+                fireInspectors: [],
+                inspection_no: 0,
+                date_inspection: '',
+                received_name: '',
+                receivedoccu_date:'',
                 remarks: "Pending"  
             })
             .then(res => {
-
                 if (res.data) {
                     console.log(applicantionnoRef.current?.value)
-                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    alert("Successfully Added!" + JSON.stringify(res.data));
                     handleClose()
                 }
 
@@ -75,7 +76,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
                         <CancelIcon sx={{ color: 'red' }} />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'400px'}} >
                     <Card style={cardStyle} elevation={0}>
                         <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
@@ -107,12 +108,6 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Location</p>
                                         <OutlinedInput inputRef={locationRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
-                                    </Stack>
-                                </Grid>
-                                <Grid item xs={10} sm={11}>
-                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' >Assessment of Fees</p>
-                                        <OutlinedInput inputRef={assessmentfeesRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
