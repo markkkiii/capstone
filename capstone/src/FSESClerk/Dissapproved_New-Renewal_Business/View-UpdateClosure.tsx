@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import '../ClerkCSS.css';
+import '../ClerkCSS.css'
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -43,6 +43,8 @@ export interface formdetails {
   ntcv_date: string;
   abatement_no: number;
   abatement_date: string;
+  closure_no: number;
+  closure_date: string;
   teamleader: string;
   fireinspectors: string[];
   open: boolean;
@@ -58,7 +60,7 @@ interface DefectData {
   period: string;
 }
 
-export default function ViewUpdateAbatementPopup(props: formdetails) {
+export default function ViewUpdateClosurePopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
@@ -79,13 +81,14 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
   const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCVRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCVDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AbatementRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AbatementDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const closureRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const closureDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(props.fireinspectors?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
@@ -118,15 +121,15 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
     console.log(selectedCons)
   };
 
-  const handleRemarks = (event: SelectChangeEvent<string>) => {
-    setselectedRemarks(event.target.value); // Update the state variable with the new selected value
-  };
-
-
   // Function to handle input changes
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputInspector(event.target.value);
   };
+
+  const handleRemarks = (event: SelectChangeEvent<string>) => {
+    setselectedRemarks(event.target.value); // Update the state variable with the new selected value
+  };
+
 
   // Function to split the input value into an array of strings based on newline characters
   const updateInputArray = useCallback(() => {
@@ -142,7 +145,21 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  //Removes Item From defects
+  const updateRemarks = () => {
+    let new_url = '';
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
+    }
+    axios.put(new_url + props.bpid,
+      {
+        remarks: "Issued Closure",
+      }
+    )
+  }
+
   const removeItem = (indexToRemove: number) => {
     // Create a copy of the current data array
     const updatedData = [...data];
@@ -154,13 +171,13 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
 
 
   // uploads data to db
-  const evaluateAbatement = async () => {
+  const evaluateClosure = async () => {
     let new_url = '';
     if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpabatementorder/updateNewbpAbatementOrder?id=';
+      new_url = 'http://localhost:8080/newbpclosureorder/updateNewbpClosure?id=';
     }
     else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpabatementorder/updateRenewalbpAbatement?id='
+      new_url = 'http://localhost:8080/renewalbpclosureorder/updateRenewalbpClosure?id='
     }
     axios.put(new_url + props.bpid,
       {
@@ -181,12 +198,14 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
         ntcv_date: NTCVDateRef.current?.value,
         abatement_no: AbatementRef.current?.value,
         abatement_date: AbatementDateRef.current?.value,
+        closure_no: closureRef.current?.value,
+        closure_date: closureDateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
         fireInspectors: inputInspectorArray,
         defects: arrayList,
         received_name: ReceivedByRef.current?.value,
-        receivedabatement_date: ReceivedDateRef.current?.value
+        receivedclosure_date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
@@ -197,13 +216,8 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
 
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
-    if (props.activity !== 'Update') {
-      props.handleClose();
-    }
-    else {
-      handleRender();
-      evaluateAbatement();
-    }
+    handleRender();
+    evaluateClosure();
   }
 
   return (
@@ -226,7 +240,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
             <Card style={cardStyle}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
-                  <Grid item xs={10} sm={11}>
+                <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Business Permit Number</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={BusinessNoRef} defaultValue={props.business_no} variant='standard' disabled={props.activity !== 'Update'} />
@@ -319,7 +333,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={AbatementRef} defaultValue={props.abatement_no} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={AbatementRef} defaultValue={props.abatement_no} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -328,7 +342,18 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={AbatementDateRef} defaultValue={props.abatement_date ? new Date(props.abatement_date).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
-
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph' >Closure Number</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={closureRef} defaultValue={props.closure_no} disabled={props.activity !== 'Update'}/>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={10} sm={6}>
+                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                      <p className='custom-paragraph'  >Closure Date</p>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={closureDateRef} defaultValue={props.closure_date ? new Date(props.closure_date).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'}/>
+                    </Stack>
+                  </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
                       <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Fire Safety Inspectors</h2>
@@ -337,7 +362,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
                       <h3 className='custom-paragraph' style={{ marginTop: 0 }}>Team Leader</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} defaultValue={props.teamleader} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} defaultValue={props.teamleader} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -356,7 +381,6 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                         value={inputInspector}
                         onChange={handleInputChange}
                         multiline
-                        disabled={props.activity !== 'Update'}
                         placeholder={`F03 John Doe\nType in the name then press enter to move next line`}
                         rows={2}
                       />

@@ -18,6 +18,9 @@ import EvaluateAbatementPopup from './Dissapproved_New-Renewal_Business/Evaluate
 import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
 import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
 import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-UpdateAbatement';
+import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-UpdateClosure';
+import ViewEvaluate from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewEvaluate';
+import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 
 
 //Header Part
@@ -52,8 +55,11 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTC Form
     const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTCV Form
     const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<number, boolean>>({}); //Opens NTCV Form
+    const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<number, boolean>>({}); //Opens NTCV Form
     const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
     const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
+    const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});// Opens Approved Form
+    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
@@ -176,7 +182,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvalChoice,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Evaluate Choice
     const handleCloseEvalCHoice = (no: number) => {
@@ -194,7 +200,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvaluateNTC,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Evaluate NTC
     const handleCloseView = (no: number) => {
@@ -210,7 +216,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvaluateNTC,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Update View NTC
     const handleCloseViewUpdateNTC = (no: number) => {
@@ -227,7 +233,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvaluateNTCV,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Update View NTCV
     const handleCloseViewUpdateNTCV = (no: number) => {
@@ -244,11 +250,28 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevEvaluateAbatement,
             [no]: true,
         }));
-
+        handleRender();
     };
     // Closes Update View Abatement
     const handleCloseViewUpdateAbatement = (no: number) => {
         setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+    //Opens Update View Closure
+    const handleOpenViewUpdateClosure = (no: number) => {
+        setopenViewUpdateClosure((prevEvaluateAbatement) => ({
+            ...prevEvaluateAbatement,
+            [no]: true,
+        }));
+        handleRender();
+    };
+    // Closes Update View Closure
+    const handleCloseViewUpdateClosure = (no: number) => {
+        setopenViewUpdateClosure((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
         }));
@@ -290,6 +313,25 @@ const DisapprovedNewBusiness: React.FC = () => {
         }));
         handleRender();
     };
+
+     //Open Approved Eval Popup
+     const handleOpenEvaluate = (no: number) => {
+        setopenEvaluateBusiness((prevOpenEvaluate) => ({
+            ...prevOpenEvaluate,
+            [no]: true,
+        }));
+        handleRender();
+    };
+
+    //Close Approved Eval Popup
+    const handleCloseEvaluate = (no: number) => {
+        setopenEvaluateBusiness((prevOpenEvaluate) => ({
+            ...prevOpenEvaluate,
+            [no]: false,
+        }));
+        handleRender()
+    };
+
 
     //Opens Evaluate Closure
     const handleOpenClosure = (no: number) => {
@@ -385,33 +427,43 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if (status === 'For Issuance NTCV' || status === 'Issued NTCV') {
-            if (selectedValue === 'Evaluate') {
+        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV' || status === 'Issued NTCV' || status === 'Complied')) {
+            if ((selectedValue === 'Evaluate') && (status === 'For Issuance NTCV')) {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
             }
-            else if (selectedValue === 'View' || selectedValue === 'Update') {
+            else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateNTC(value);
             }
         }
-        else if (status === 'For Issuance Abatement' || status === 'Issued Abatement') {
+        else if ((sortBy === 'NTCV Records' && status === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && status === 'Issued Abatement' || sortBy === 'NTCV Records' && status === 'Complied')) {
             //Completed function condition goes here
-            if (selectedValue === 'Evaluate') {
-                handleOpenAbatement(value);
+            if ((selectedValue === 'Evaluate') && (status === 'For Issuance Abatement')) {
+                handleOpenEvalChoice(value);
             }
             else if (selectedValue === 'View' || selectedValue === 'Update') {
                 handleOpenViewUpdateNTCV(value);
             }
         }
-        else if (status === 'For Issuance Closure' || status === 'Issued Closure') {
+        else if ((sortBy === 'Abatement Records' && status === 'For Issuance Closure') || (sortBy === 'Abatement Records' && status === 'Issued Closure' || sortBy === 'Abatement Records' && status === 'Complied')) {
             //Completed function condition goes here
-            if (selectedValue === 'Evaluate') {
-                handleOpenClosure(value);
-            }
-            else if (selectedValue === 'View' || selectedValue === 'Update') {
-                handleOpenViewUpdateAbatement(value);
-            }
+            if ((selectedValue === 'Evaluate') && (status === 'For Issuance Closure')) {
+                handleOpenEvalChoice(value);
 
+            }
+            else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
+                handleOpenViewUpdateAbatement(value);
+                console.log(sortBy)
+            }
+        }
+        else if ((sortBy === 'Closure Records' && status === 'For Issuance Closure') || (sortBy === 'Closure Records' && status === 'Issued Closure' || sortBy === 'Closure Records' && status === 'Complied')) {
+            if ((selectedValue === 'Evaluate') && (status === 'Issued Closure')) {
+                handleOpenEvalChoice(value);
+
+            }
+            else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
+                handleOpenViewUpdateClosure(value);
+            }
         }
 
     }
@@ -436,7 +488,6 @@ const DisapprovedNewBusiness: React.FC = () => {
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                            <option value="">Sort By</option>
                             <option value="Pending Records">Pending Records</option>
                             <option value="NTC Records">NTC Records</option>
                             <option value="NTCV Records">NTCV Records</option>
@@ -529,7 +580,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            form = "New"
+                                            form="New"
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />
@@ -540,6 +591,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <EvaluateChoicePopup
                                             open={openEvalChoice[applicationform.id]}
                                             remarks={sortBy}
+                                            handleOpenApproved={() => handleOpenEvaluate(applicationform.id)}
                                             handleOpenNTCV={() => handleOpenNTCV(applicationform.id)}
                                             handleOpenAbatement={() => handleOpenAbatement(applicationform.id)}
                                             handleOpenClosure={() => handleOpenClosure(applicationform.id)}
@@ -690,6 +742,55 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             receivedby={applicationform.received_name}
                                             receiveddate={applicationform.receivedabatement_date}
                                             handleClose={() => handleCloseViewUpdateAbatement(applicationform.id)}
+                                        />
+                                        <ViewUpdateClosurePopup
+                                            bpid={applicationform.id}
+                                            form='New'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openViewUpdateClosure[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            ntcv_no={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            abatement_no={applicationform.abatement_no}
+                                            abatement_date={applicationform.abatement_date}
+                                            closure_no={applicationform.closure_no}
+                                            closure_date={applicationform.closure_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedclosure_date}
+                                            handleClose={() => handleCloseViewUpdateClosure(applicationform.id)}
+                                        />
+
+                                        <EvaluatePopup
+                                            form='New'
+                                            activity={sortBy}
+                                            bpid={applicationform.id}
+                                            open={openEvaluateBusiness[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            handleClose={() => handleCloseEvaluate(applicationform.id)}
                                         />
 
                                     </td>

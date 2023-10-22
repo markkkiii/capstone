@@ -23,6 +23,7 @@ const cardStyle = {
 export interface formdetails {
   form: string;
   bpid: number;
+  activity: string;
   business_no: string;
   permitee: string;
   business_name: string;
@@ -128,9 +129,18 @@ export default function EvaluatePopup(props: formdetails) {
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-      deletefunc(props.bpid);
+      afterevalfunc();
       props.handleClose()
     }).catch(err => console.log(err))
+  }
+
+  const afterevalfunc = () =>{
+    if(props.activity === 'Pending'){
+      deletefunc(props.bpid);
+    }
+    else{
+      updatefunc();
+    }
   }
 
   const deletefunc = (value: number) => {
@@ -146,6 +156,47 @@ export default function EvaluatePopup(props: formdetails) {
     axios.delete(NEW_URL + value).then(res => {
         console.log(res.data);
     }).catch(err => console.log(err))
+}
+
+const updatefunc = () =>{
+  let new_url = '';
+  if(props.activity === 'NTC Records'){
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
+    }
+  }
+  else if (props.activity === 'NTCV Records'){
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
+    }
+  }
+  else if(props.activity==='Abatement Records'){
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
+    }
+  }
+  else if (props.activity === 'Closure Records'){
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpclosureorder/updateRemarks?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpclosureorder/updateRemarks?id=';
+    }
+  }
+  axios.put(new_url+props.bpid,
+    {
+      remarks: "Complied",
+    }
+  )
 }
 
 

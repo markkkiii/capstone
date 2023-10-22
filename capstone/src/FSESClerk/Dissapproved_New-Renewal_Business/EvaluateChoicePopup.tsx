@@ -19,12 +19,18 @@ interface ChoiceProps {
     handleOpenAbatement: () => void;
     handleOpenClosure: () => void;
     handleClose: () => void;
+    handleOpenApproved: () => void;
 }
 
 const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openNTCBusiness, setopenNTCBusiness] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
+
+    const handleOpenApproved = () => {
+        props.handleOpenApproved();
+        props.handleClose();
+    }
 
     const handleOpenForms = () =>{
         if(props.remarks === 'NTC Records'){
@@ -52,8 +58,8 @@ const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
                     <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>How do you want to Evaluate this Form?</p>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained'  sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Approve</Button>
-                    <Button variant='contained' onClick={handleOpenForms} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }}>
+                    <Button variant='contained' onClick={handleOpenApproved} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Approve</Button>
+                    <Button variant='contained' onClick={handleOpenForms} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'red' }} disabled = {props.remarks === 'Closure Records'}>
                         {props.remarks === 'NTC Records'?'NTCV':
                         props.remarks === 'NTCV Records'?'Abatement':
                         props.remarks === 'Abatement Records'?'Closure':
