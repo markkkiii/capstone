@@ -404,7 +404,8 @@ const OccupancyListClerk: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            form="New"
+                                            form = "New"
+                                            sortby={sortBy}
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />
