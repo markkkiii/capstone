@@ -18,6 +18,8 @@ import EvaluateChoicePopup from './Dissapproved_New-Renewal_Business/EvaluateCho
 import EvaluateNTCVPopup from './Dissapproved_New-Renewal_Business/EvaluateNTCV';
 import EvaluateAbatementPopup from './Dissapproved_New-Renewal_Business/EvaluateAbatement';
 import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateClosure';
+import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
+import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
 
 
 //Header Part
@@ -49,6 +51,8 @@ const DisapprovedRenewalList: React.FC = () => {
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
+    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
     const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
     const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
@@ -125,6 +129,41 @@ const DisapprovedRenewalList: React.FC = () => {
         }));
         handleRender();
     };
+
+    //Opens Evaluate NTC
+    const handleOpenViewUpdateNTC = (no: number) => {
+        setopenViewUpdateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: true,
+        }));
+
+    };
+    // Closes Evaluate NTC
+    const handleCloseViewUpdateNTC = (no: number) => {
+        setopenViewUpdateNTC((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
+     //Opens Update View NTCV
+     const handleOpenViewUpdateNTCV = (no: number) => {
+        setopenViewUpdateNTCV((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: true,
+        }));
+
+    };
+    // Closes Update View NTCV
+    const handleCloseViewUpdateNTCV = (no: number) => {
+        setopenViewUpdateNTCV((prevEvaluateNTC) => ({
+            ...prevEvaluateNTC,
+            [no]: false,
+        }));
+        handleRender();
+    };
+
 
     //Opens Evaluate Choice
     const handleOpenEvalChoice = (no: number) => {
@@ -354,27 +393,33 @@ const DisapprovedRenewalList: React.FC = () => {
 
             }
         }
-        else if (status === 'For Issuance NTCV') {
+        else if (status === 'For Issuance NTCV' || status === 'Issued NTCV') {
             if (selectedValue === 'Evaluate') {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
             }
+            else if (selectedValue === 'View' || selectedValue === 'Update') {
+                handleOpenViewUpdateNTC(value);
+            }
         }
-        else if (status === 'For Issuance Abatement') {
+        else if (status === 'For Issuance Abatement' || status === 'Issued Abatement') {
             //Completed function condition goes here
             if (selectedValue === 'Evaluate') {
-                handleOpenEvalChoice(value);
+                handleOpenAbatement(value);
             }
-
+            else if (selectedValue === 'View' || selectedValue === 'Update') {
+                handleOpenViewUpdateNTCV(value);
+            }
         }
         else if (status === 'For Issuance Closure') {
             //Completed function condition goes here
             if (selectedValue === 'Evaluate') {
-                handleOpenEvalChoice(value);
+                handleOpenClosure(value);
             }
 
         }
     }
+
     return (
         <>
             <AdditionalTab />
@@ -529,7 +574,7 @@ const DisapprovedRenewalList: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             ntc={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
-                                            ntcv = {applicationform.ntcv_no}
+                                            ntcv={applicationform.ntcv_no}
                                             ntcv_date={applicationform.ntcv_date}
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseAbatement(applicationform.id)}
@@ -549,10 +594,67 @@ const DisapprovedRenewalList: React.FC = () => {
                                             datereceived={applicationform.date_received}
                                             ntc={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
+                                            ntcv={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            abatement={applicationform.abatement_no}
+                                            abatement_date={applicationform.abatement_date}
                                             defects={applicationform.defects}
                                             handleClose={() => handleCloseClosure(applicationform.id)}
                                         />
-
+                                        <ViewUpdateNTC
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openprevViewUpdateNTC[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedntc_date}
+                                            handleClose={() => handleCloseViewUpdateNTC(applicationform.id)}
+                                        />
+                                        <ViewUpdateNTCVPopup
+                                            bpid={applicationform.id}
+                                            form='Renewal'
+                                            activity={selectedAction[applicationform.id]}
+                                            open={openViewUpdateNTCV[applicationform.id]}
+                                            business_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            business_name={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            inspection_no={applicationform.inspection_no}
+                                            inspectiondate={applicationform.date_inspection}
+                                            ntc_no={applicationform.ntc_no}
+                                            ntc_date={applicationform.ntc_date}
+                                            ntcv_no={applicationform.ntcv_no}
+                                            ntcv_date={applicationform.ntcv_date}
+                                            teamleader={applicationform.team_leader}
+                                            fireinspectors={applicationform.fireInspectors}
+                                            defects={applicationform.defects}
+                                            remarks={applicationform.remarks}
+                                            receivedby={applicationform.received_name}
+                                            receiveddate={applicationform.receivedntcv_date}
+                                            handleClose={() => handleCloseViewUpdateNTCV(applicationform.id)}
+                                        />
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
