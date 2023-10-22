@@ -581,6 +581,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             open={deleteit}
                                             value={applicationform.id}
                                             form="NewBP"
+                                            sortby = {sortBy}
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />

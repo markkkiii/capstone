@@ -828,7 +828,8 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            form="New"
+                                            form="NewBR"
+                                            sortby = {sortBy}
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />

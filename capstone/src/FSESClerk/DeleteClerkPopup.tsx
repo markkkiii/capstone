@@ -10,10 +10,11 @@ interface DeleteProps {
     open: boolean;
     remarks: string;
     form: string;
+    sortby: string;
     handleClose: () => void;
 }
 
-const DeleteClerkPopup: React.FC<DeleteProps> = ({ form, remarks, value, open, handleClose }) => {
+const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value, open, handleClose }) => {
 
     let records =''
     if(form === 'New'){
@@ -34,13 +35,30 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ form, remarks, value, open, h
         else if (remarks === 'Issued Abatement' || remarks === 'For Issuance Abatement' || remarks === 'Complied'){
             records = 'newbpnoticecorrectviolation'
         }
-        else if (remarks === 'Issued Closure' || remarks === 'For Issuance Closure' || remarks === 'Complied'){
+        else if ((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')){
             records = 'newbpabatementorder'
         }
-        else if (remarks === 'Issued Closure' || remarks === 'Complied'){
+        else if ((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')){
             records = 'newbpclosureorder'
         }
     }
+    else if(form === "NewBR"){
+        if (remarks ==='Pending'){
+            records = 'Renewal'
+        }
+        else if (remarks === 'Issued NTCV' || remarks === 'For Issuance NTCV' || remarks === 'Complied'){
+            records = 'renewalbpnoticetocomply'
+        }
+        else if (remarks === 'Issued Abatement' || remarks === 'For Issuance Abatement' || remarks === 'Complied'){
+            records = 'renewalbpnoticetocorrectviolation'
+        }
+        else if ((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')) {
+                records = 'renewalbpabatementorder';
+            }
+        else if ((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')) {
+                records = 'renewalbpclosureorder';
+            }
+        } 
 
     const deletefunc = (value: number) => {
         //function here

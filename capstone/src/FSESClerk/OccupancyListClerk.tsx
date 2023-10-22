@@ -346,6 +346,7 @@ const OccupancyListClerk: React.FC = () => {
                                             open={deleteit}
                                             value={applicationform.id}
                                             form = "New"
+                                            sortby={sortBy}
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />
