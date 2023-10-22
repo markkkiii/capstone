@@ -9,7 +9,6 @@ import AddOccupancy from './Pending_Occupancy/AddOccupancy';
 import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
 import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
-import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';
 import axios from 'axios';
@@ -602,7 +601,6 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
                                         <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
                                         <EvaluateNTCPopup
                                             bpid={applicationform.id}

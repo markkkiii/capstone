@@ -21,16 +21,22 @@ const cardStyle = {
 
 
 export interface formdetails {
-  id:number;
-  inspectionno:number;
-  controlno:number;
-  buildingpermino:string;
-  applicantname:string;
-  projecname:string;
-  address:string;
-  contactnumber:string;
+  id: number;
+  activity: string;
+  inspectionno: number;
+  controlno: number;
+  buildingpermino: string;
+  applicantname: string;
+  projecname: string;
+  address: string;
+  contactnumber: string;
   datereceived: string;
   open: boolean;
+  nod: number;
+  nod_date:string;
+  deficiencies: string[];
+  receivedby:string;
+  receiveddate:string;
   handleClose: () => void;
 }
 
@@ -41,7 +47,7 @@ export interface formdetails {
 }
 
 
-export default function EvaluateDisapprovedOccupancy(props: formdetails) {
+export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
 
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -49,12 +55,19 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
-
+  const contronoRef = useRef<HTMLInputElement | null>(null);
+  const businsspermitRef = useRef<HTMLInputElement | null>(null);
+  const applicantRef = useRef<HTMLInputElement | null>(null);
+  const projectRef = useRef<HTMLInputElement | null>(null);
   const NodRef = useRef<HTMLInputElement | null>(null);
+  const addressRef = useRef<HTMLInputElement | null>(null);
+  const contactnoRef = useRef<HTMLInputElement | null>(null);
+  const dateReceivedRef = useRef<HTMLInputElement | null>(null);
+  const inspectnoRef = useRef<HTMLInputElement | null>(null);
   const NodDateRef = useRef<HTMLInputElement | null>(null);
   const ReceivedNameRef = useRef<HTMLInputElement | null>(null);
   const ReceivedDateRef = useRef<HTMLInputElement | null>(null);
-  const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
+  const [inputInspector, setInputInspector] = useState<string>(props.deficiencies?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
 
@@ -68,7 +81,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputInspector(event.target.value);
   };
-  
+
   const updateInputArray = useCallback(() => {
     const newArray = inputInspector.split('\n').filter((line) => line.trim() !== '');
     setinputInspectorArray(newArray);
@@ -82,29 +95,32 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  const deletefunc = () => {
+  const evalfunc = () => {
     //function here
- 
-    let  NEW_URL ='http://localhost:8080/occupancyPending/deletePermit/'
-    axios.delete(NEW_URL + props.id).then(res => {
-        console.log(res.data);
-    }).catch(err => console.log(err))
-}
+    if (props.activity !== 'Update') {
+      props.handleClose();
+    }
+    else {
+      updatePermit();
+    }
+
+  }
 
 
 
   const updatePermit = async () => {
-    axios.post('http://localhost:8080/disaprovalapp/insertNODPermit',
+    axios.put('http://localhost:8080/disaprovalapp/updateOccupancyDisapprovedClerk?id=' + props.id,
       {
-        control_no: props.controlno,
-        applicant_name: props.applicantname,
-        building_no: props.buildingpermino,
-        address: props.address,
-        project_name: props.projecname,
-        date_received: props.datereceived,
+        control_no: contronoRef.current?.value,
+        applicant_name: applicantRef.current?.value,
+        building_no: businsspermitRef.current?.value,
+        address: addressRef.current?.value,
+        project_name: projectRef.current?.value,
+        date_received: dateReceivedRef.current?.value,
         nod_date: NodDateRef.current?.value,
-        inspection_no: props.inspectionno,
-        nod_no:NodRef.current?.value,
+        contact_no: contactnoRef.current?.value,
+        inspection_no: inspectnoRef.current?.value,
+        nod_no: NodRef.current?.value,
         deficiencies: inputInspectorArray,
         received_name: ReceivedNameRef.current?.value,
         receivednod_date: ReceivedDateRef.current?.value,
@@ -114,7 +130,6 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
       console.log(res.data);
       alert("Evaluation Successful!");
       props.handleClose()
-      deletefunc()
     }).catch(err => console.log(err))
   }
 
@@ -138,66 +153,66 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={8}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Inspection Order Number</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.inspectionno} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.inspectionno} inputRef={inspectnoRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Control Number</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.controlno} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.controlno} inputRef={contronoRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Building Permit Number</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.buildingpermino} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.buildingpermino} inputRef={businsspermitRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Applicant Name</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.applicantname} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.applicantname} inputRef={applicantRef} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Project Name</p>
-                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.projecname} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.projecname} inputRef={projectRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Address</p>
-                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.address} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.address} inputRef={addressRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Contact Number</p>
-                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.contactnumber} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' fullWidth defaultValue={props.contactnumber} inputRef={contactnoRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.datereceived} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.datereceived} inputRef={dateReceivedRef} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NOD Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={NodDateRef} />
+                      <OutlinedInput className='custom-outlined-input' defaultValue={props.nod_date}  sx={{ borderRadius: '11px', width: "330px" }} disabled={props.activity !== 'Update'} inputRef={NodDateRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NOD Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={NodRef}  />
+                      <OutlinedInput className='custom-outlined-input'defaultValue={props.nod} sx={{ borderRadius: '11px', width: "305px" }} disabled={props.activity !== 'Update'} inputRef={NodRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{paddingTop:'20px'}} >Deficiencies</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Deficiencies</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -207,9 +222,10 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                             paddingTop: '20px', // Adjust the value as needed
                           },
                         }//
-                        } 
+                        }
                         value={inputInspector}
                         onChange={handleInputChange}
+                        disabled={props.activity !== 'Update'}
                         multiline
                         rows={2}
                       />
@@ -223,13 +239,13 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Name</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedNameRef}  />
+                      <OutlinedInput className='custom-outlined-input' defaultValue={props.receivedby} disabled={props.activity !== 'Update'} sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedNameRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={ReceivedDateRef} />
+                      <OutlinedInput className='custom-outlined-input' defaultValue={props.receiveddate} disabled={props.activity !== 'Update'} sx={{ borderRadius: '11px', width: "305px" }} inputRef={ReceivedDateRef} />
                     </Stack>
                   </Grid>
                 </Grid>
@@ -238,8 +254,8 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={updatePermit}>
-            Add Evaluation
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={evalfunc}>
+            {props.activity === 'Update' ? 'Update Permit' : 'Close Permit'}
           </Button>
         </DialogActions>
       </Dialog>
