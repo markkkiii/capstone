@@ -24,6 +24,8 @@ import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-U
 import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-UpdateClosure';
 import ViewEvaluate from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewEvaluate';
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
+import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 
 
 //Header Part
@@ -51,8 +53,8 @@ const DisapprovedRenewalList: React.FC = () => {
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
-    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
+    const [openUpdatePending, setopenUpdatePending] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens Update/View NTCV Form
@@ -349,7 +351,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
     //VIEW Popup
     const handleOpenView = (no: number) => {
-        setopenViewOccupancy((prevOpenView) => ({
+        setopenViewPending((prevOpenView) => ({
             ...prevOpenView,
             [no]: true,
         }));
@@ -358,7 +360,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
     //View Popup Close
     const handleCloseView = (no: number) => {
-        setopenViewOccupancy((prevOpenView) => ({
+        setopenViewPending((prevOpenView) => ({
             ...prevOpenView,
             [no]: false,
         }));
@@ -385,7 +387,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
     //Update Popup 
     const handleOpenUpdate = (no: number) => {
-        setopenUpdateOccupancy((prevOpenUpdate) => ({
+        setopenUpdatePending((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
         }));
@@ -394,7 +396,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
     //Update Popup
     const handleCloseUpdate = (no: number) => {
-        setopenUpdateOccupancy((prevOpenUpdate) => ({
+        setopenUpdatePending((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: false,
         }));
@@ -450,9 +452,11 @@ const DisapprovedRenewalList: React.FC = () => {
             //Pending function condition goes here
             if (selectedValue === 'View') {
                 handleOpenView(value);
+                handleRender();
             }
             else if (selectedValue === 'Update') {
                 handleOpenUpdate(value);
+                handleRender();
             }
             else if (selectedValue === 'Evaluate') {
                 handleOpenEvalNTC(value);
@@ -527,7 +531,7 @@ const DisapprovedRenewalList: React.FC = () => {
                         <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
                     </div>
                     <div className="title-container">
-                        <h1 className="title">Renewal Business Permit List</h1>
+                        <h1 className="title">Business Renewal List</h1>
                     </div>
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
@@ -602,8 +606,34 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
-                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
+                                        <ViewRenewalApplication 
+                                            open={openViewPending[applicationform.id]} 
+                                            handleClose={() => handleCloseView(applicationform.id)}
+                                            bspermit_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            businessname={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                        />
+                                        <UpdateRenewalApplication 
+                                            open={openUpdatePending[applicationform.id]} 
+                                            handleClose={() => handleCloseUpdate(applicationform.id)} 
+                                            bspermit_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            businessname={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            id={applicationform.id}
+                                            form="Renewal"
+                                        />
                                         <EvaluateNTCPopup
                                             bpid={applicationform.id}
                                             form='Renewal'
