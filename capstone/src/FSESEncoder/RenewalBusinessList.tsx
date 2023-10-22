@@ -404,6 +404,7 @@ const RenewalBusinessList: React.FC = () => {
                                     />
                                     <EvaluatePopup
                                         form='Renewal'
+                                        activity='Pending'
                                         bpid={applicationform.id}
                                         open={openEvaluateBusiness[applicationform.id]}
                                         business_no={applicationform.bspermit_no}

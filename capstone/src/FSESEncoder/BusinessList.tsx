@@ -411,6 +411,7 @@ const BusinessList: React.FC = () => {
                                         <EvaluatePopup
                                             form= 'New'
                                             bpid={applicationform.id}
+                                            activity='Pending'
                                             open={openEvaluateBusiness[applicationform.id]}
                                             business_no={applicationform.bspermit_no}
                                             permitee={applicationform.permittee}
