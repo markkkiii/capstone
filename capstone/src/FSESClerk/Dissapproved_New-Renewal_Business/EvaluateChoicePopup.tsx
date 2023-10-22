@@ -55,7 +55,7 @@ const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>How do you want to Evaluate this Form?</p>
+                    <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>How do you want to evaluate this form?</p>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
                     <Button variant='contained' onClick={handleOpenApproved} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'green' }}>Approve</Button>

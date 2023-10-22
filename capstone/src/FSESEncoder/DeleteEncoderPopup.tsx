@@ -15,29 +15,29 @@ interface DeleteProps {
 
 const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, handleClose }) => {
 
-    let pending =''
+    let records =''
     if(form === 'New'){
         if(remarks === 'Pending'){
-            pending = 'BPPending'
+            records = 'BPPending'
         }
         else if (remarks === 'FSIC Printed' || remarks === 'FSIC Not Printed'){
-            pending = 'newbpapplication'
+            records = 'newbpapplication'
         }
     }
     else if(form === "Renewal"){
         if (remarks ==='Pending'){
-            pending = 'Renewal'
+            records = 'Renewal'
         }
         else if (remarks === 'FSIC Printed' || remarks === 'FSIC Not Printed'){
-            pending = 'renewalbpapprovedapplication'
+            records = 'renewalbpapprovedapplication'
         }
     }
     else if(form === "Occupancy"){
         if (remarks ==='Pending'){
-            pending = 'occupancyPendingclerk'
+            records = 'occupancyPendingclerk'
         }
         else if (remarks === 'Approved' || remarks === 'Disapproved'){
-            pending = 'occupancydisapprovedclerk'
+            records = 'occupancydisapprovedclerk'
         }
     }
     
@@ -45,7 +45,7 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/'+pending+'/deletePermit/' + value).then(res => {
+        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()

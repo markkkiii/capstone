@@ -15,19 +15,36 @@ interface DeleteProps {
 
 const DeleteClerkPopup: React.FC<DeleteProps> = ({ form, remarks, value, open, handleClose }) => {
 
-    let pending =''
+    let records =''
     if(form === 'New'){
         if(remarks === 'Pending'){
-            pending = 'occupancyPendingclerk'
+            records = 'occupancyPendingclerk' 
         }
         else if (remarks === 'Disapproved'){
-            pending = 'occupancydisapprovedclerk'
+            records = 'occupancydisapprovedclerk'
+        }
+    }
+    else if(form === "NewBP"){
+        if (remarks ==='Pending'){
+            records = 'BPPending'
+        }
+        else if (remarks === 'Issued NTCV' || remarks === 'For Issuance NTCV' || remarks === 'Complied'){
+            records = 'newbpnoticetocomply'
+        }
+        else if (remarks === 'Issued Abatement' || remarks === 'For Issuance Abatement' || remarks === 'Complied'){
+            records = 'newbpnoticecorrectviolation'
+        }
+        else if (remarks === 'Issued Closure' || remarks === 'For Issuance Closure' || remarks === 'Complied'){
+            records = 'newbpabatementorder'
+        }
+        else if (remarks === 'Issued Closure' || remarks === 'Complied'){
+            records = 'newbpclosureorder'
         }
     }
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/'+pending+'/deletePermit/' + value).then(res => {
+        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()
