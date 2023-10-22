@@ -580,7 +580,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            form="New"
+                                            form="NewBP"
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleDeleteClose()}
                                         />
