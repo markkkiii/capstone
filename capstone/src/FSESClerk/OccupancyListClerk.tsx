@@ -308,7 +308,7 @@ const OccupancyListClerk: React.FC = () => {
                         <tr>
                             <th>No.</th>
                             <th>Building Permit #</th>
-                            <th>Owner's Name</th>
+                            <th>Applicant Name</th>
                             <th>Project Name</th>
                             <th>FSIC #</th>
                             <th>Remarks</th>

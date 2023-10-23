@@ -80,7 +80,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
                 </DialogTitle>
                 <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
                     <Card style={cardStyle} elevation={0}>
-                        <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
+                        <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-110px'}} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
@@ -142,7 +142,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
 
-                    <Button variant='contained'  onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
+                    <Button variant='contained'  onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '10px', height: '30px' }}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
