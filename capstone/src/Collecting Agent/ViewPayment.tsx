@@ -123,7 +123,6 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose,payor,business_p
                                                         <TableCell sx={{ fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}>Nature of Collection</TableCell>
                                                         <TableCell sx={{ fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}>Account Code</TableCell>
                                                         <TableCell sx={{ fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}>Amount</TableCell>
-                                                        <TableCell sx={{ fontFamily: 'Oswald', fontSize: '16px', textAlign: 'center', background: '#f5f5f5' }}></TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
@@ -150,31 +149,13 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose,payor,business_p
                                                                     onChange={(e) => handleTableChange(e, rowIndex, 'amount')}
                                                                 />
                                                             </TableCell>
-                                                            <TableCell>
-                                                                <Button
-                                                                    variant="contained"
-                                                                    sx={{ borderRadius: '13px', height: '30px', backgroundColor: 'blue' }}
-                                                                    onClick={() => handleDeleteRow(rowIndex)}
-                                                                    disabled
-                                                                >
-                                                                    Delete
-                                                                </Button>
-                                                            </TableCell>
+                                                            
                                                         </TableRow>
                                                     ))}
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
-                                        <Grid item xs={12} marginTop={'1rem'}>
-                                            <Button
-                                                variant="contained"
-                                                sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}
-                                                onClick={handleAddRow} // Call the handleAddRow function to add a new row
-                                                disabled
-                                            >
-                                                Add Row
-                                            </Button>
-                                        </Grid>
+                                       
                                     </Grid>
                                 </Grid>
                             </Grid>
