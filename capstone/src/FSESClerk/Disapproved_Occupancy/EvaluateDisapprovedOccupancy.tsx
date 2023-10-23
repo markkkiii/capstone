@@ -85,7 +85,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
   const deletefunc = () => {
     //function here
  
-    let  NEW_URL ='http://localhost:8080/occupancyPending/deletePermit/'
+    let  NEW_URL ='http://localhost:8080/occupancyPendingclerk/deletePermit/'
     axios.delete(NEW_URL + props.id).then(res => {
         console.log(res.data);
     }).catch(err => console.log(err))
@@ -94,7 +94,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
 
 
   const updatePermit = async () => {
-    axios.post('http://localhost:8080/disaprovalapp/insertNODPermit',
+    axios.post('http://localhost:8080/occupancyDisapprovedClerk/insertNODPermit',
       {
         control_no: props.controlno,
         applicant_name: props.applicantname,
@@ -108,7 +108,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
         deficiencies: inputInspectorArray,
         received_name: ReceivedNameRef.current?.value,
         receivednod_date: ReceivedDateRef.current?.value,
-        remarks: "NOD Not Yet Printed"
+        remarks: 'Disapproved'
       }
     ).then(res => {
       console.log(res.data);

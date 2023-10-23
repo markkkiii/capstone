@@ -8,14 +8,26 @@ import axios from 'axios';
 interface DeleteProps {
     value: number;
     open: boolean;
+    form: string;
+    remarks: string;
     handleClose: () => void;
 }
 
-const DeletePaymentPopup: React.FC<DeleteProps> = ({ value, open, handleClose }) => {
+const DeletePaymentPopup: React.FC<DeleteProps> = ({ remarks, form, value, open, handleClose }) => {
+
+    let records =''
+    if(form === 'New'){
+        if(remarks === 'Pending'){
+            records = 'occupancyPendingclerk' 
+        }
+        else if (remarks === 'Disapproved'){
+            records = 'occupancyDisapprovedClerk'
+        }
+    }
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/BFP/deletePermit/' + value).then(res => {
+        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()

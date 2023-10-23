@@ -36,7 +36,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
 
     const AddForm = async () => {
-       let NEW_URL = 'http://localhost:8080/occupancyPending/insertPendingOccupancy';
+       let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertPendingOccupancy';
         axios
             .post(NEW_URL, {
                 control_no: applicantionnoRef.current?.value,
@@ -57,8 +57,8 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
             .then(res => {
                 if (res.data) {
                     console.log(applicantionnoRef.current?.value)
-                    alert("Successfully Added!" + JSON.stringify(res.data));
-                    handleClose()
+                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    handleClose();
                 }
 
             })

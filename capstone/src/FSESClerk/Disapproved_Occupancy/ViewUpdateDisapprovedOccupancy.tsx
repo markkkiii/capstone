@@ -25,7 +25,7 @@ export interface formdetails {
   activity: string;
   inspectionno: number;
   controlno: number;
-  buildingpermino: string;
+  buildingpermitno: string;
   applicantname: string;
   projecname: string;
   address: string;
@@ -38,6 +38,7 @@ export interface formdetails {
   receivedby:string;
   receiveddate:string;
   handleClose: () => void;
+  remarks: string;
 }
 
 
@@ -109,11 +110,11 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
 
 
   const updatePermit = async () => {
-    axios.put('http://localhost:8080/disaprovalapp/updateOccupancyDisapprovedClerk?id=' + props.id,
+    axios.put('http://localhost:8080/occupancyDisapprovedClerk/updateOccupancyDisapprovedClerk?id=' + props.id,
       {
         control_no: contronoRef.current?.value,
         applicant_name: applicantRef.current?.value,
-        building_no: businsspermitRef.current?.value,
+        buildingpermit_no: businsspermitRef.current?.value,
         address: addressRef.current?.value,
         project_name: projectRef.current?.value,
         date_received: dateReceivedRef.current?.value,
@@ -124,7 +125,7 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
         deficiencies: inputInspectorArray,
         received_name: ReceivedNameRef.current?.value,
         receivednod_date: ReceivedDateRef.current?.value,
-        remarks: "NOD Not Yet Printed"
+        remarks: "Disapproved"
       }
     ).then(res => {
       console.log(res.data);
@@ -165,7 +166,7 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Building Permit Number</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.buildingpermino} inputRef={businsspermitRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled={props.activity !== 'Update'} variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.buildingpermitno} inputRef={businsspermitRef} sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px', width: '300px' }} disabled={props.activity !== 'Update'} variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
