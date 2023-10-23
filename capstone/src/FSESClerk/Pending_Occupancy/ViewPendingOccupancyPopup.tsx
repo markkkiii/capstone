@@ -186,12 +186,12 @@ export default function ViewPendingOccupancyList(props: formdetails) {
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Contact No.</p>
                       <OutlinedInput inputRef={contactnoRef} defaultValue={props.contact_no} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} disabled={props.activity !== 'Update'} />
-                    </Stack>
+                    </Stack>  
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Date Received</p>
-                      <OutlinedInput inputRef={dateReceivedRef} defaultValue={props.date_received} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput inputRef={dateReceivedRef} defaultValue={props.date_received ? new Date(props.date_received).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>

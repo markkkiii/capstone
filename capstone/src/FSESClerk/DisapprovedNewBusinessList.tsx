@@ -132,6 +132,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }
+        console.log('test');
     }, [sortBy, test]);
 
 
@@ -387,6 +388,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevOpenUpdate,
             [no]: true,
         }));
+        handleRender();
     };
 
     //Update Popup
@@ -395,6 +397,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             ...prevOpenUpdate,
             [no]: false,
         }));
+        handleRender();
     };
 
     // Print Popup 
@@ -449,6 +452,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             }
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateNTC(value);
+                handleRender();
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
@@ -462,6 +466,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             }
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateNTCV(value);
+                handleRender();
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
@@ -477,6 +482,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateAbatement(value);
                 console.log(sortBy)
+                handleRender();
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();

@@ -310,6 +310,7 @@ export default function ViewEvaluate(props: formdetails) {
                         }
                         value={inputInspector}
                         onChange={handleInputChange}
+                        disabled={props.form !== 'Update'}
                         multiline
                         placeholder={`F03 John Doe\nType in the name then press enter to move next line`}
                         rows={2}
@@ -331,6 +332,7 @@ export default function ViewEvaluate(props: formdetails) {
                         }
                         multiline
                         value={inputrecommendation}
+                        disabled={props.form !== 'Update'}
                         onChange={RecommendationChange}
                         placeholder={`Test Recommendation\nType in the recommendation then press enter to move next line`}
                         rows={2}
