@@ -8,8 +8,6 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import AddOccupancy from './Pending_Occupancy/AddOccupancy';
 import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
-import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
-import EvaluateApprovedOccupancy from './EvaluateApprovedOccupancy';
 import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';

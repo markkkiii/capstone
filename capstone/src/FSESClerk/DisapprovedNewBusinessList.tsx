@@ -435,6 +435,10 @@ const DisapprovedNewBusiness: React.FC = () => {
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateNTC(value);
             }
+            else if (selectedValue === 'Print') {
+                handlePrintOpen();
+
+            }
         }
         else if ((sortBy === 'NTCV Records' && status === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && status === 'Issued Abatement' || sortBy === 'NTCV Records' && status === 'Complied')) {
             //Completed function condition goes here
@@ -443,6 +447,10 @@ const DisapprovedNewBusiness: React.FC = () => {
             }
             else if (selectedValue === 'View' || selectedValue === 'Update') {
                 handleOpenViewUpdateNTCV(value);
+            }
+            else if (selectedValue === 'Print') {
+                handlePrintOpen();
+
             }
         }
         else if ((sortBy === 'Abatement Records' && status === 'For Issuance Closure') || (sortBy === 'Abatement Records' && status === 'Issued Closure' || sortBy === 'Abatement Records' && status === 'Complied')) {
@@ -455,6 +463,10 @@ const DisapprovedNewBusiness: React.FC = () => {
                 handleOpenViewUpdateAbatement(value);
                 console.log(sortBy)
             }
+            else if (selectedValue === 'Print') {
+                handlePrintOpen();
+
+            }
         }
         else if ((sortBy === 'Closure Records' && status === 'For Issuance Closure') || (sortBy === 'Closure Records' && status === 'Issued Closure' || sortBy === 'Closure Records' && status === 'Complied')) {
             if ((selectedValue === 'Evaluate') && (status === 'Issued Closure')) {
@@ -463,6 +475,9 @@ const DisapprovedNewBusiness: React.FC = () => {
             }
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateClosure(value);
+            }else if (selectedValue === 'Print') {
+                handlePrintOpen();
+
             }
         }
 

@@ -21,7 +21,6 @@ import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
 import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
 import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-UpdateAbatement';
 import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-UpdateClosure';
-import ViewEvaluate from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewEvaluate';
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
