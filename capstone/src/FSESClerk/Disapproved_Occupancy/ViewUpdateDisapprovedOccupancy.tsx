@@ -37,6 +37,7 @@ export interface formdetails {
   deficiencies: string[];
   receivedby:string;
   receiveddate:string;
+  remarks:string;
   handleClose: () => void;
   remarks: string;
 }
@@ -125,7 +126,9 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
         deficiencies: inputInspectorArray,
         received_name: ReceivedNameRef.current?.value,
         receivednod_date: ReceivedDateRef.current?.value,
-        remarks: "Disapproved"
+
+        remarks: props.remarks
+
       }
     ).then(res => {
       console.log(res.data);

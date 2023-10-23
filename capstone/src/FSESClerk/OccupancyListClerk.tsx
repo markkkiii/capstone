@@ -393,7 +393,8 @@ const OccupancyListClerk: React.FC = () => {
                                             activity={selectedAction[applicationform.id]}
                                             inspectionno={applicationform.inspection_no}
                                             controlno={applicationform.control_no}
-                                            buildingpermitno={applicationform.building_no}
+                                            buildingpermino={applicationform.building_no}
+
                                             applicantname={applicationform.applicant_name}
                                             projecname={applicationform.project_name}
                                             address={applicationform.address}
@@ -404,6 +405,7 @@ const OccupancyListClerk: React.FC = () => {
                                             deficiencies={applicationform.deficiencies}
                                             receivedby={applicationform.received_name}
                                             receiveddate={applicationform.receivednod_date}
+                                            remarks={applicationform.remarks}
                                             handleClose={() => handleCloseViewEvalUpdate(applicationform.id)}
                                             remarks = {applicationform.remarks}
                                         />

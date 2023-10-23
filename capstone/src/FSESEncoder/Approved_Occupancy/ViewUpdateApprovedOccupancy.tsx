@@ -40,6 +40,7 @@ export interface formdetails {
   recommendations: string[];
   open: boolean;
   activity: string;
+  remarks:string;
   handleClose: () => void;
 }
 
@@ -141,7 +142,7 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
         recommendations: inputRecommendationArray,
-        remarks: 'FSIC Not Printed'
+        remarks: props.remarks
       }
     ).then(res => {
       console.log(res.data);
