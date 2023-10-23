@@ -9,19 +9,25 @@ interface DeleteProps {
     value: number;
     open: boolean;
     form: string;
-    remarks: string;
+    agency: string;
     handleClose: () => void;
 }
 
-const DeletePaymentPopup: React.FC<DeleteProps> = ({ remarks, form, value, open, handleClose }) => {
+const DeletePaymentPopup: React.FC<DeleteProps> = ({ agency, form, value, open, handleClose }) => {
 
     let records =''
     if(form === 'New'){
-        if(remarks === 'Pending'){
-            records = 'occupancyPendingclerk' 
+        if(agency === 'NEW'){
+            records = 'newBusinessPayment' 
         }
-        else if (remarks === 'Disapproved'){
-            records = 'occupancyDisapprovedClerk'
+        else if (agency === 'BFP'){
+            records = 'newRenewalBusinessPayment'
+        }
+        else if (agency === 'OCU'){
+            records = 'OccupancyPayment'
+        }
+        else if (agency === 'BRL'){
+            records = 'BuildingPermitPayment'
         }
     }
 

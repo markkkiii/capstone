@@ -229,9 +229,9 @@ const BusinessRenewalPayment: React.FC = () => {
                         <tr>
                             <th>No.</th>
                             <th>Business Permit #</th>
-                            <th>Payor #</th>
-                            <th>OR #</th>
-                            <th>OPS #</th>
+                            <th>Payor</th>
+                            <th>O.R. Number</th>
+                            <th>OPS Number</th>
                             <th>Payment Date</th>
                             <th>Agency</th>
                             <th></th>
@@ -279,6 +279,13 @@ const BusinessRenewalPayment: React.FC = () => {
                                         <PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
+                                        />
+                                        <DeletePaymentPopup
+                                            open={deleteit}
+                                            value={applicationform.id}
+                                            form = "New"
+                                            handleClose={() => handleDeleteClose()}
+                                            agency={applicationform.agency}
                                         />
                                         <ViewPayment
                                             open={openViewPayment[applicationform.id]}
