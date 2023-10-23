@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './ClerkCSS.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Button, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
 import EvaluateClosurePopup from './Dissapproved_New-Renewal_Business/EvaluateClosure';
 import PrintClerkPopup from './PrintClerkPopup';
 import DeleteClerkPopup from './DeleteClerkPopup';
-import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
-import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
 import axios from 'axios';
 import EvaluateNTCPopup from './Dissapproved_New-Renewal_Business/EvaluateNTC';
 import EvaluateChoicePopup from './Dissapproved_New-Renewal_Business/EvaluateChoicePopup';
@@ -19,8 +17,9 @@ import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
 import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
 import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-UpdateAbatement';
 import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-UpdateClosure';
-import ViewEvaluate from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewEvaluate';
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
+import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 
 
 //Header Part
@@ -48,7 +47,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewOccupancy, setopenViewOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
     const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
@@ -58,7 +57,6 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<number, boolean>>({}); //Opens NTCV Form
     const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
     const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
-    const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});// Opens Approved Form
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});
     const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
@@ -191,6 +189,23 @@ const DisapprovedNewBusiness: React.FC = () => {
             [no]: false,
         }));
         handleRender();
+    };
+
+    //VIEW Popup
+    const handleOpenViewPending = (no: number) => {
+        setopenViewPending((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
+    };
+
+    //View Popup Close
+    const handleCloseViewPending = (no: number) => {
+        setopenViewPending((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
     };
 
 
@@ -413,7 +428,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         if (status === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
-                handleOpenView(value);
+                handleOpenViewPending(value);
             }
             else if (selectedValue === 'Update') {
                 handleOpenUpdate(value);
@@ -427,7 +442,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV' || status === 'Issued NTCV' || status === 'Complied')) {
+        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV') || (status === 'Issued NTCV') || (status === 'Complied')) {
             if ((selectedValue === 'Evaluate') && (status === 'For Issuance NTCV')) {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
@@ -436,16 +451,16 @@ const DisapprovedNewBusiness: React.FC = () => {
                 handleOpenViewUpdateNTC(value);
             }
         }
-        else if ((sortBy === 'NTCV Records' && status === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && status === 'Issued Abatement' || sortBy === 'NTCV Records' && status === 'Complied')) {
+        else if ((sortBy === 'NTCV Records' && status === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && status === 'Issued Abatement') || (sortBy === 'NTCV Records' && status === 'Complied')) {
             //Completed function condition goes here
             if ((selectedValue === 'Evaluate') && (status === 'For Issuance Abatement')) {
                 handleOpenEvalChoice(value);
             }
-            else if (selectedValue === 'View' || selectedValue === 'Update') {
+            else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
                 handleOpenViewUpdateNTCV(value);
             }
         }
-        else if ((sortBy === 'Abatement Records' && status === 'For Issuance Closure') || (sortBy === 'Abatement Records' && status === 'Issued Closure' || sortBy === 'Abatement Records' && status === 'Complied')) {
+        else if ((sortBy === 'Abatement Records' && status === 'For Issuance Closure') || (sortBy === 'Abatement Records' && status === 'Issued Closure') || (sortBy === 'Abatement Records' && status === 'Complied')) {
             //Completed function condition goes here
             if ((selectedValue === 'Evaluate') && (status === 'For Issuance Closure')) {
                 handleOpenEvalChoice(value);
@@ -456,7 +471,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                 console.log(sortBy)
             }
         }
-        else if ((sortBy === 'Closure Records' && status === 'For Issuance Closure') || (sortBy === 'Closure Records' && status === 'Issued Closure' || sortBy === 'Closure Records' && status === 'Complied')) {
+        else if ((sortBy === 'Closure Records' && status === 'For Issuance Closure') || (sortBy === 'Closure Records' && status === 'Issued Closure') || (sortBy === 'Closure Records' && status === 'Complied')) {
             if ((selectedValue === 'Evaluate') && (status === 'Issued Closure')) {
                 handleOpenEvalChoice(value);
 
@@ -559,8 +574,34 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList open={openViewOccupancy[applicationform.id]} handleClose={() => handleCloseView(applicationform.id)} />
-                                        <UpdatePendingOccupancyPopup open={openUpdateOccupancy[applicationform.id]} handleClose={() => handleCloseUpdate(applicationform.id)} />
+                                        <ViewRenewalApplication 
+                                        open={openViewPending[applicationform.id]} 
+                                        handleClose={() => handleCloseViewPending(applicationform.id)} 
+                                        bspermit_no={applicationform.bspermit_no}
+                                        permitee={applicationform.permittee}
+                                        businessname={applicationform.business_name}
+                                        address={applicationform.address}
+                                        natureofbusiness={applicationform.nature_business}
+                                        typeofoccupancy={applicationform.type_occupancy}
+                                        contactno={applicationform.contact_no}
+                                        email={applicationform.email}
+                                        datereceived={applicationform.date_received}
+                                        />
+                                        <UpdateRenewalApplication 
+                                        open={openUpdateOccupancy[applicationform.id]} 
+                                        handleClose={() => handleCloseUpdate(applicationform.id)} 
+                                        bspermit_no={applicationform.bspermit_no}
+                                        permitee={applicationform.permittee}
+                                        businessname={applicationform.business_name}
+                                        address={applicationform.address}
+                                        natureofbusiness={applicationform.nature_business}
+                                        typeofoccupancy={applicationform.type_occupancy}
+                                        contactno={applicationform.contact_no}
+                                        email={applicationform.email}
+                                        datereceived={applicationform.date_received}
+                                        id={applicationform.id}
+                                        form ="New"
+                                        />
                                         <EvaluateNTCPopup
                                             bpid={applicationform.id}
                                             form='New'

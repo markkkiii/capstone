@@ -5,11 +5,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { IconButton } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ClerkNavbar from './ClerkNavbar';
-import AddOccupancy from './Pending_Occupancy/AddOccupancy';
-import ViewPendingOccupancyList from './Pending_Occupancy/ViewPendingOccupancyPopup';
-import UpdatePendingOccupancyPopup from './Pending_Occupancy/UpdatePendingOccupancyPopup';
-import EvaluateDisapprovedOccupancy from './Disapproved_Occupancy/EvaluateDisapprovedOccupancy';
-import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/View-UpdateDissaprovedOccupancy';
 import DeleteClerkPopup from './DeleteClerkPopup';
 import PrintClerkPopup from './PrintClerkPopup';
 import axios from 'axios';
@@ -22,7 +17,6 @@ import ViewUpdateNTC from './Dissapproved_New-Renewal_Business/View-UpdateNTC';
 import ViewUpdateNTCVPopup from './Dissapproved_New-Renewal_Business/View-UpdateNTCV';
 import ViewUpdateAbatementPopup from './Dissapproved_New-Renewal_Business/View-UpdateAbatement';
 import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-UpdateClosure';
-import ViewEvaluate from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewEvaluate';
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
@@ -55,8 +49,6 @@ const DisapprovedRenewalList: React.FC = () => {
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
     const [openUpdatePending, setopenUpdatePending] = useState<Record<number, boolean>>({});
-    const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
-    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens Update/View NTCV Form
     const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens Update/View NTC Form
     const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<number, boolean>>({}); //Opens Update/Vew NTCV Form
@@ -66,7 +58,6 @@ const DisapprovedRenewalList: React.FC = () => {
     const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
     const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
     const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});//Open NTC Choice Pop up
-    const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});// Opens Approved Form
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
     const [deleteit, setDelete] = useState(false);
@@ -367,24 +358,6 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
 
-    //VIEW/Update Evaluate Popup Open
-    const handleOpenViewUpdate = (no: number) => {
-        setopenViewUpdOccupancy((prevOpenView) => ({
-            ...prevOpenView,
-            [no]: true,
-        }));
-        handleRender();
-    };
-
-    //VIEW/Update Evaluate Popup Close
-    const handleCloseViewUpdate = (no: number) => {
-        setopenViewUpdOccupancy((prevOpenView) => ({
-            ...prevOpenView,
-            [no]: false,
-        }));
-        handleRender();
-    };
-
     //Update Popup 
     const handleOpenUpdate = (no: number) => {
         setopenUpdatePending((prevOpenUpdate) => ({
@@ -398,24 +371,6 @@ const DisapprovedRenewalList: React.FC = () => {
     const handleCloseUpdate = (no: number) => {
         setopenUpdatePending((prevOpenUpdate) => ({
             ...prevOpenUpdate,
-            [no]: false,
-        }));
-        handleRender();
-    };
-
-    //Evaluate Popup 
-    const handleOpenEval = (no: number) => {
-        setopenEvalOccupancy((prevOpenEval) => ({
-            ...prevOpenEval,
-            [no]: true,
-        }));
-        handleRender();
-    };
-
-    //Evaluate Popup
-    const handleCloseEval = (no: number) => {
-        setopenEvalOccupancy((prevOpenEval) => ({
-            ...prevOpenEval,
             [no]: false,
         }));
         handleRender();
