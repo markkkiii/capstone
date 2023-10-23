@@ -36,7 +36,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
 
     const AddForm = async () => {
-       let NEW_URL = 'http://localhost:8080/occupancyPending/insertPendingOccupancy';
+       let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertPendingOccupancy';
         axios
             .post(NEW_URL, {
                 control_no: applicantionnoRef.current?.value,
@@ -57,8 +57,8 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
             .then(res => {
                 if (res.data) {
                     console.log(applicantionnoRef.current?.value)
-                    alert("Successfully Added!" + JSON.stringify(res.data));
-                    handleClose()
+                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    handleClose();
                 }
 
             })
@@ -76,9 +76,9 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
                         <CancelIcon sx={{ color: 'red' }} />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'400px'}} >
+                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
                     <Card style={cardStyle} elevation={0}>
-                        <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
+                        <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-80px' }} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>

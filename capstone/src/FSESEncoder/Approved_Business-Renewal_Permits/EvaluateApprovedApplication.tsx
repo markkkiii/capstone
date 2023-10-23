@@ -225,55 +225,55 @@ const updatefunc = () =>{
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Business Permit Number</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Business Permit Number</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_no} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Name of Owner/Permitee</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Name of Owner/Permitee</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.permitee} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Business Name</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Business Name</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.business_name} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Address</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Address</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.address} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Nature of Business</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Nature of Business</p>
                       <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.natureofbusiness} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Type of Occupancy</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Type of Occupancy</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.typeofoccupancy} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Contact Number</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Contact Number</p>
                       <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.contactno} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Email</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Email</p>
                       <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.email} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px', paddingTop: '20px' }}>Date Received</p>
                       <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
                     </Stack>
                   </Grid>

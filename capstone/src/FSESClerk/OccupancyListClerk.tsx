@@ -75,12 +75,12 @@ const OccupancyListClerk: React.FC = () => {
 
     useEffect(() => {
         if (sortBy === 'Pending Records') {
-            axios.get('http://localhost:8080/occupancyPending/getAllPendingOccupancy').then(res => {
+            axios.get('http://localhost:8080/occupancyPendingclerk/getAllOccupancyPendingClerk').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }
         else if (sortBy === 'Disapproved Records') {
-            axios.get('http://localhost:8080/disaprovalapp/getAllOccupancyDisapprovedClerk').then(res => {
+            axios.get('http://localhost:8080/occupancyDisapprovedClerk/getAllOccupancyDisapprovedClerk').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }
@@ -235,7 +235,7 @@ const OccupancyListClerk: React.FC = () => {
                 handlePrintOpen();
 
             }
-        } else if (status === 'NOD Not Yet Printed'|| status ==='NOD Printed') {
+        } else if (status === 'Disapproved') {
             //Completed function condition goes here
             if (selectedValue === 'Update' || selectedValue === 'View') {
                 handleOpenViewEvalUpdate(value);
@@ -243,7 +243,7 @@ const OccupancyListClerk: React.FC = () => {
 
             }
             else if(selectedValue === 'Evaluate'){
-                alert('Already Evaluated');
+                alert('Already evaluated!');
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
@@ -308,7 +308,7 @@ const OccupancyListClerk: React.FC = () => {
                         <tr>
                             <th>No.</th>
                             <th>Building Permit #</th>
-                            <th>Owner's Name</th>
+                            <th>Applicant Name</th>
                             <th>Project Name</th>
                             <th>FSIC #</th>
                             <th>Remarks</th>
@@ -386,7 +386,6 @@ const OccupancyListClerk: React.FC = () => {
                                             address={applicationform.location}
                                             contactnumber={applicationform.contact_no}
                                             datereceived={applicationform.date_received}
-
                                         />
                                         <ViewUpdateDisapprovedOccupancy
                                             open={openViewUpdEvalOccupancy[applicationform.id]}
@@ -395,6 +394,7 @@ const OccupancyListClerk: React.FC = () => {
                                             inspectionno={applicationform.inspection_no}
                                             controlno={applicationform.control_no}
                                             buildingpermino={applicationform.building_no}
+
                                             applicantname={applicationform.applicant_name}
                                             projecname={applicationform.project_name}
                                             address={applicationform.address}
@@ -407,6 +407,7 @@ const OccupancyListClerk: React.FC = () => {
                                             receiveddate={applicationform.receivednod_date}
                                             remarks={applicationform.remarks}
                                             handleClose={() => handleCloseViewEvalUpdate(applicationform.id)}
+                                            remarks = {applicationform.remarks}
                                         />
                                         <DeleteClerkPopup
                                             open={deleteit}

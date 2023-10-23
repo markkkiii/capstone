@@ -95,7 +95,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
   };
 
   const updatePermit = async () => {
-    axios.put('http://localhost:8080/occupancyPending/updatePendingOccupancy?id=' + props.id,
+    axios.put('http://localhost:8080/occupancyPendingclerk/updateOccupancyPendingClerk?id=' + props.id,
       {
         control_no: applicantionnoRef.current?.value,
         buildingpermitno: buildingnoRef.current?.value,

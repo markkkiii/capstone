@@ -22,7 +22,7 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
             records = 'occupancyPendingclerk' 
         }
         else if (remarks === 'Disapproved'){
-            records = 'occupancydisapprovedclerk'
+            records = 'occupancyDisapprovedClerk'
         }
     }
     else if(form === "NewBP"){

@@ -276,6 +276,8 @@ const BuildingPayment: React.FC = () => {
                                         <DeletePaymentPopup
                                             open={deleteit}
                                             value={applicationform.id}
+                                            form = "New"
+                                            remarks={applicationform.status}
                                             handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintPaymentPopup

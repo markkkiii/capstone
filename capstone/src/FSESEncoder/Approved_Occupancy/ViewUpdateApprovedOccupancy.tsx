@@ -185,19 +185,19 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Control No.</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Control No.</p>
                       <TextField className='custom-outlined-input' inputRef={controlnoRef} sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.controlno} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Building Permit No.</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Building Permit No.</p>
                       <TextField className='custom-outlined-input' inputRef={buildingpermnoRef} sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.buildingpermino} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'>Applicant's Name</p>
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Applicant's Name</p>
                       <TextField fullWidth className='custom-outlined-input' inputRef={applicantnameRef} sx={{ borderRadius: '11px' }} defaultValue={props.applicantname} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>

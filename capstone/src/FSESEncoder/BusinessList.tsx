@@ -253,7 +253,8 @@ const BusinessList: React.FC = () => {
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
             }
-        } else if (remarks === 'FSIC Printed' || remarks === 'FSIC Not Printed') {
+        } 
+        else if ((remarks === 'FSIC Not Printed' || remarks === 'FSIC Printed')) {
             //Completed function condition goes here
             if (selectedValue === 'Evaluate') {
                 alert('Application already evaluated!');
@@ -261,17 +262,16 @@ const BusinessList: React.FC = () => {
             else if ((selectedValue === 'View')||(selectedValue === 'Update') ) {
                 handleOpenViewEval(value);
             }
-
         }
-        
         else if (selectedValue === 'Print') {
-            handleDeleteOpen();
+            handlePrintOpen();
         }
         else if (selectedValue === 'Delete') {
             // Perform delete logic here
             handleDeleteOpen();
         }
     }
+}
     return (
         <>
             <AdditionalTab />
