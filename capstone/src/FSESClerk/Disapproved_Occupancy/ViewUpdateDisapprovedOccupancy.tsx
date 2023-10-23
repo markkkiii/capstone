@@ -37,7 +37,6 @@ export interface formdetails {
   deficiencies: string[];
   receivedby:string;
   receiveddate:string;
-  remarks:string;
   handleClose: () => void;
   remarks: string;
 }

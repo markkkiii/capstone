@@ -273,13 +273,7 @@ const BuildingPayment: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.business_permitno)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <DeletePaymentPopup
-                                            open={deleteit}
-                                            value={applicationform.id}
-                                            form = "New"
-                                            remarks={applicationform.status}
-                                            handleClose={() => handleDeleteClose()}
-                                        />
+                                        
                                         <PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}

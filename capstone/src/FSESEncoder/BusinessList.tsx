@@ -271,7 +271,7 @@ const BusinessList: React.FC = () => {
             handleDeleteOpen();
         }
     }
-}
+
     return (
         <>
             <AdditionalTab />
