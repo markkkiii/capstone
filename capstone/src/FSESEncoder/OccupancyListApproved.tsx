@@ -395,6 +395,7 @@ const OccupancyListApproved: React.FC = () => {
                                             fsic_no={applicationform.fsic_no}
                                             amount={applicationform.amount}
                                             or_no={applicationform.or_no}
+                                            remarks={applicationform.remarks}
                                             payment_date={applicationform.payment_date}
                                             recommendations={applicationform.recommendations}
                                             activity={selectedAction[applicationform.id]}

@@ -56,33 +56,32 @@ const AddPaymentPopup: React.FC<formdetails> = ({open, handleClose, add}) => {
         newData[rowIndex][key] = e.target.value;
         setTableData(newData);
       };
-    
-    
-
     const AddForm = async () => {
+        const convertedTableData = tableData.map(item => [item.natureOfCollection, item.accountCode, item.amount]);
+
         let NEW_URL = '';
         if(add === 'New'){
-            NEW_URL = 'http://localhost:8080/BPPending/insertBPPermit';
+            NEW_URL = 'http://localhost:8080/newBusinessPayment/insertNewBpPayment';
         }
         else if (add === 'Renewal'){
-            NEW_URL = 'http://localhost:8080/Renewal/insertRenewalPermit';
+            NEW_URL = 'http://localhost:8080/newRenewalBusinessPayment/insertRenewalBpPayment';
         }
-        axios
-            .post(NEW_URL, {
-                bspermit_no: bspermitnoRef.current?.value,
+        else if (add === 'Occupancy'){
+            NEW_URL = 'http://localhost:8080/OccupancyPayment/insertOccupancyPayment';
+        }
+        else if (add === 'Building'){
+            NEW_URL = 'http://localhost:8080/BuildingPermitPayment/insertBuildingPayment';
+        }
+        axios.post(NEW_URL, {
+                business_permitno: bspermitnoRef.current?.value,
                 payor: payorRef.current?.value,
-                business_name: businessnameRef.current?.value,
-                ornumber:ornumberRef.current?.value,
-                opsnumber: opsnumberRef.current?.value,
+                or_no:ornumberRef.current?.value,
+                ops_no: opsnumberRef.current?.value,
                 agency: agencyRef.current?.value,
-                natureOfCollection: natureOfCollectionRef.current?.value,
-                accountCode: accountCodeRef.current?.value,
-                date: dateRef.current?.value,
-                amount: amountRef.current?.value,
-                remarks: "Pending"  
+                payment_date: dateRef.current?.value,
+                payment:convertedTableData
             })
             .then(res => {
-
                 if (res.data) {
                     console.log(bspermitnoRef.current?.value)
                     console.log("Successfully Added!" + JSON.stringify(res.data));

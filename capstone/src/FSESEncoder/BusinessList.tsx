@@ -69,15 +69,15 @@ const BusinessList: React.FC = () => {
         fsic_date: '2023-01-01',
         ntc_no: 2,
         ntc_date: '2023-01-01',
-        ntcv_no:2,
+        ntcv_no: 2,
         ntcv_date: '2023-01-01',
         or_no: 2,
-        amount:2000,
+        amount: 2000,
         payment_date: '2023-01-01',
         abatement_no: 2,
-        abatement_date:'01/01/2001',
-        closure_no:2,
-        closure_date:'01/01/2001',
+        abatement_date: '01/01/2001',
+        closure_no: 2,
+        closure_date: '01/01/2001',
         remarks: "Pending",
         team_leader: "Jobert",
         fireInspectors: ["test", "test1"],
@@ -105,8 +105,8 @@ const BusinessList: React.FC = () => {
         setTest(prevTest => !prevTest);
     };
 
-     //Evaluate Popup
-     const handleOpenEvaluate = (no: number) => {
+    //Evaluate Popup
+    const handleOpenEvaluate = (no: number) => {
         setopenEvaluateBusiness((prevOpenEvaluate) => ({
             ...prevOpenEvaluate,
             [no]: true,
@@ -174,8 +174,8 @@ const BusinessList: React.FC = () => {
         handleRender()
     };
 
-       //VIEW Evaliate Popup
-       const handleOpenViewEval = (no: number) => {
+    //VIEW Evaliate Popup
+    const handleOpenViewEval = (no: number) => {
         setopenViewEvaluate((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -183,7 +183,7 @@ const BusinessList: React.FC = () => {
     };
 
     //View Evaluate  Close
-    const handleCloseViewEval= (no: number) => {
+    const handleCloseViewEval = (no: number) => {
         setopenViewEvaluate((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -217,7 +217,7 @@ const BusinessList: React.FC = () => {
             ...prevOpenUpdate,
             [no]: true,
         }));
-        
+
     };
 
     //Update Popup
@@ -255,17 +255,15 @@ const BusinessList: React.FC = () => {
             }
         } else if (remarks === 'FSIC Printed' || remarks === 'FSIC Not Printed') {
             //Completed function condition goes here
-        if (selectedValue === 'Evaluate') {
-            alert('Application already evaluated!');
+            if (selectedValue === 'Evaluate') {
+                alert('Application already evaluated!');
             }
-        }
-        else if (selectedValue === 'Update') {
-            handleOpenViewEval(value);
+            else if ((selectedValue === 'View')||(selectedValue === 'Update') ) {
+                handleOpenViewEval(value);
+            }
 
         }
-        else if (selectedValue === 'View') {
-            handleOpenViewEval(value);
-        }
+        
         else if (selectedValue === 'Print') {
             handleDeleteOpen();
         }
@@ -362,7 +360,7 @@ const BusinessList: React.FC = () => {
                                     <td>{applicationform.business_name}</td>
                                     <td>{applicationform.type_occupancy}</td>
                                     <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
-                                                    'N/A'}</td>
+                                        'N/A'}</td>
                                     <td>{applicationform.remarks}</td>
                                     <td>
                                         <select
@@ -380,36 +378,36 @@ const BusinessList: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewRenewalApplication 
-                                        open={openViewRenewal[applicationform.id]} 
-                                        handleClose={() => handleCloseView(applicationform.id)} 
-                                        bspermit_no={applicationform.bspermit_no}
-                                        permitee={applicationform.permittee}
-                                        businessname={applicationform.business_name}
-                                        address={applicationform.address}
-                                        natureofbusiness={applicationform.nature_business}
-                                        typeofoccupancy={applicationform.type_occupancy}
-                                        contactno={applicationform.contact_no}
-                                        email={applicationform.email}
-                                        datereceived={applicationform.date_received}
+                                        <ViewRenewalApplication
+                                            open={openViewRenewal[applicationform.id]}
+                                            handleClose={() => handleCloseView(applicationform.id)}
+                                            bspermit_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            businessname={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
                                         />
-                                        <UpdateRenewalApplication 
-                                        open={openUpdateRenewal[applicationform.id]} 
-                                        handleClose={() => handleCloseUpdate(applicationform.id)} 
-                                        bspermit_no={applicationform.bspermit_no}
-                                        permitee={applicationform.permittee}
-                                        businessname={applicationform.business_name}
-                                        address={applicationform.address}
-                                        natureofbusiness={applicationform.nature_business}
-                                        typeofoccupancy={applicationform.type_occupancy}
-                                        contactno={applicationform.contact_no}
-                                        email={applicationform.email}
-                                        datereceived={applicationform.date_received}
-                                        id={applicationform.id}
-                                        form ="New"
+                                        <UpdateRenewalApplication
+                                            open={openUpdateRenewal[applicationform.id]}
+                                            handleClose={() => handleCloseUpdate(applicationform.id)}
+                                            bspermit_no={applicationform.bspermit_no}
+                                            permitee={applicationform.permittee}
+                                            businessname={applicationform.business_name}
+                                            address={applicationform.address}
+                                            natureofbusiness={applicationform.nature_business}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            datereceived={applicationform.date_received}
+                                            id={applicationform.id}
+                                            form="New"
                                         />
                                         <EvaluatePopup
-                                            form= 'New'
+                                            form='New'
                                             bpid={applicationform.id}
                                             activity='Pending'
                                             open={openEvaluateBusiness[applicationform.id]}
@@ -425,38 +423,38 @@ const BusinessList: React.FC = () => {
                                             handleClose={() => handleCloseEvaluate(applicationform.id)}
                                         />
                                         <ViewEvaluate
-                                            form = {selectedAction[applicationform.id]}
+                                            form={selectedAction[applicationform.id]}
                                             permit='New'
-                                            open = {openViewEvaluate[applicationform.id]}
+                                            open={openViewEvaluate[applicationform.id]}
                                             handleClose={() => handleCloseViewEval(applicationform.id)}
-                                            bpid = {applicationform.id}
+                                            bpid={applicationform.id}
                                             business_no={applicationform.bspermit_no}
                                             permitee={applicationform.permittee}
                                             business_name={applicationform.business_name}
                                             address={applicationform.address}
                                             natureofbusiness={applicationform.nature_business}
-                                            typeofoccupancy = {applicationform.type_occupancy}
-                                            contactno = {applicationform.contact_no}
-                                            email = {applicationform.email}
-                                            date_received = {applicationform.date_received}
-                                            date_inspection ={applicationform.date_inspection}
-                                            inspection_no = {applicationform.inspection_no}
-                                            fsic_no = {applicationform.fsic_no}
-                                            fsic_date = {applicationform.fsic_date}
-                                            amount = {applicationform.amount}
-                                            or_no = {applicationform.or_no}
-                                            payment_date ={applicationform.payment_date}
-                                            remarks = {applicationform.remarks}
-                                            team_leader = {applicationform.team_leader}
-                                            fireInspectors = {applicationform.fireInspectors}
-                                            recommendation = {applicationform.recommendation}
+                                            typeofoccupancy={applicationform.type_occupancy}
+                                            contactno={applicationform.contact_no}
+                                            email={applicationform.email}
+                                            date_received={applicationform.date_received}
+                                            date_inspection={applicationform.date_inspection}
+                                            inspection_no={applicationform.inspection_no}
+                                            fsic_no={applicationform.fsic_no}
+                                            fsic_date={applicationform.fsic_date}
+                                            amount={applicationform.amount}
+                                            or_no={applicationform.or_no}
+                                            payment_date={applicationform.payment_date}
+                                            remarks={applicationform.remarks}
+                                            team_leader={applicationform.team_leader}
+                                            fireInspectors={applicationform.fireInspectors}
+                                            recommendation={applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup
                                             open={deleteit}
                                             value={applicationform.id}
                                             remarks={applicationform.remarks}
-                                            form = "New"
-                                            handleClose={() => handleDeleteClose()}      
+                                            form="New"
+                                            handleClose={() => handleDeleteClose()}
                                         />
                                         <PrintEncoderPopup
                                             open={print}
@@ -469,7 +467,7 @@ const BusinessList: React.FC = () => {
                 </table>
 
                 <AddApplication open={open} handleClose={handleClickClose} add="New" />
-                
+
             </div>
         </>
     )
