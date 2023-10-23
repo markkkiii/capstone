@@ -58,7 +58,7 @@ const OccupancyListClerk: React.FC = () => {
         location: 'Default',
         address:'',
         contact_no: 'Default',
-        date_received: 'Default',
+        date_received: '2023-09-01',
         team_leader: 'default',
         fireInspectors: ['default', 'default1'],
         inspection_no: 0,
@@ -131,6 +131,7 @@ const OccupancyListClerk: React.FC = () => {
             ...prevOpenView,
             [no]: true,
         }));
+        handleRender();
     };
 
     //View Popup Close
@@ -139,6 +140,7 @@ const OccupancyListClerk: React.FC = () => {
             ...prevOpenView,
             [no]: false,
         }));
+        handleRender();
     };
 
 
@@ -183,6 +185,7 @@ const OccupancyListClerk: React.FC = () => {
             ...prevOpenEval,
             [no]: true,
         }));
+        handleRender();
     };
 
     //Evaluate Popup
@@ -191,6 +194,7 @@ const OccupancyListClerk: React.FC = () => {
             ...prevOpenEval,
             [no]: false,
         }));
+        handleRender();
     };
 
     // Print Popup 
@@ -234,8 +238,12 @@ const OccupancyListClerk: React.FC = () => {
         } else if (status === 'NOD Not Yet Printed'|| status ==='NOD Printed') {
             //Completed function condition goes here
             if (selectedValue === 'Update' || selectedValue === 'View') {
-                handleOpenViewEvalUpdate(value)
+                handleOpenViewEvalUpdate(value);
+                handleRender();
 
+            }
+            else if(selectedValue === 'Evaluate'){
+                alert('Already Evaluated');
             }
             else if (selectedValue === 'Print') {
                 handlePrintOpen();

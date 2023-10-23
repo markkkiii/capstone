@@ -82,7 +82,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' >Application No.</p>
+                                        <p className='custom-paragraph' >Control No.</p>
                                         <OutlinedInput inputRef={applicantionnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
