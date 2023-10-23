@@ -23,9 +23,9 @@ const cardStyle = {
 export interface formdetails {
   id: number;
   activity: string;
+  buildingpermitno:string;
   inspectionno: number;
   controlno: number;
-  buildingpermitno: string;
   applicantname: string;
   projecname: string;
   address: string;
