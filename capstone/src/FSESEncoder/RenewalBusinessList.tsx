@@ -248,13 +248,14 @@ const RenewalBusinessList: React.FC = () => {
                 handlePrintOpen();
 
             }
-        } else if ((status === 'FSIC Not Printed') || (status === 'FSIC Printed')) {
+        } else if ((status === 'FSIC Not Printed' || status === 'FSIC Printed')) {
             //Completed function condition goes here
-            if ((selectedValue === 'Update')||(selectedValue === 'View') ) {
-                handleOpenViewEval(value);
-    
+            if (selectedValue === 'Evaluate') {
+                alert('Application already evaluated!');
             }
-        }
+            else if ((selectedValue === 'View')||(selectedValue === 'Update') ) {
+                handleOpenViewEval(value);
+            }
         else if (selectedValue === 'Print') {
             handlePrintOpen();
         }
@@ -263,6 +264,7 @@ const RenewalBusinessList: React.FC = () => {
             handleDeleteOpen();
         }
     }
+}
     return (
         <>
             <AdditionalTab />
