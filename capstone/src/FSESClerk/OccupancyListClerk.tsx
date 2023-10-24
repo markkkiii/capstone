@@ -75,12 +75,12 @@ const OccupancyListClerk: React.FC = () => {
 
     useEffect(() => {
         if (sortBy === 'Pending Records') {
-            axios.get('http://localhost:8080/occupancyPendingclerk/getAllOccupancyPendingClerk').then(res => {
+            axios.get('http://localhost:8080/occupancyPending/getAllPendingOccupancy').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }
         else if (sortBy === 'Disapproved Records') {
-            axios.get('http://localhost:8080/occupancyDisapprovedClerk/getAllOccupancyDisapprovedClerk').then(res => {
+            axios.get('http://localhost:8080/disaprovalapp/getAllOccupancyDisapprovedClerk').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }

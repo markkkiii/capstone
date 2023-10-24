@@ -36,7 +36,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
 
     const AddForm = async () => {
-       let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertPendingOccupancy';
+       let NEW_URL = 'http://localhost:8080/occupancyPending/insertPendingOccupancy';
         axios
             .post(NEW_URL, {
                 control_no: applicantionnoRef.current?.value,
