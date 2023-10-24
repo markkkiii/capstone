@@ -283,7 +283,7 @@ const BusinessRenewalPayment: React.FC = () => {
                                         <DeletePaymentPopup
                                             open={deleteit}
                                             value={applicationform.id}
-                                            form = "New"
+                                            form = "Renewal"
                                             handleClose={() => handleDeleteClose()}
                                             agency={applicationform.agency}
                                         />

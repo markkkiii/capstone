@@ -15,25 +15,24 @@ interface DeleteProps {
 
 const DeletePaymentPopup: React.FC<DeleteProps> = ({ agency, form, value, open, handleClose }) => {
 
-    let records =''
-    if(form === 'New'){
-        if(agency === 'NEW'){
-            records = 'newBusinessPayment' 
-        }
-        else if (agency === 'BFP'){
-            records = 'newRenewalBusinessPayment'
-        }
-        else if (agency === 'OCU'){
-            records = 'OccupancyPayment'
-        }
-        else if (agency === 'BRL'){
-            records = 'BuildingPermitPayment'
-        }
+    let records = ''
+    if (form === 'New') {
+        records = 'newBusinessPayment'
     }
+    else if (form === 'Renewal') {
+        records = 'newRenewalBusinessPayment'
+    }
+    else if (form === 'Occupancy') {
+        records = 'OccupancyPayment'
+    }
+    else if (form === 'Building') {
+        records = 'BuildingPermitPayment'
+    }
+
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
+        axios.delete('http://localhost:8080/' + records + '/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()
