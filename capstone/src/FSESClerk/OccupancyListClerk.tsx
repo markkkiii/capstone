@@ -79,7 +79,7 @@ const OccupancyListClerk: React.FC = () => {
             }).catch(err => console.log(err))
         }
         else if (sortBy === 'Disapproved Records') {
-            axios.get('http://localhost:8080/disaprovalapp/getAllOccupancyDisapprovedClerk').then(res => {
+            axios.get('http://localhost:8080/occupancyDisapprovedClerk/getAllOccupancyDisapprovedClerk').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }

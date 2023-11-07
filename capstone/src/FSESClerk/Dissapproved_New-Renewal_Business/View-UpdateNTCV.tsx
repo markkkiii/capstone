@@ -73,7 +73,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
   const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const EmailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const DateRecievedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const [selectedRemarks, setselectedRemarks] = useState(props?.remarks ||'');//handles dropboxfield
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -171,7 +171,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
         contact_no: ContactnoRef.current?.value,
         email: EmailRef.current?.value,
         date_received: DateRecievedRef.current?.value,
-        date_inspection: dateInspectionRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: NTCRef.current?.value,
         ntc_date: NTCDateRef.current?.value,
@@ -179,10 +179,10 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
         ntcv_date: NTCVDateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         defects: arrayList,
-        received_name: ReceivedByRef.current?.value,
-        receivedntcv_date: ReceivedDateRef.current?.value
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);

@@ -120,10 +120,10 @@ export default function EvaluatePopup(props: formdetails) {
         fsic_date: fsicDateRef.current?.value,
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
-        payment_date: dateRef.current?.value,
+        date: dateRef.current?.value,
         remarks: "FSIC Not Printed",
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         recommendation: inputrecommendationarray
       }
     ).then(res => {
@@ -274,7 +274,7 @@ const updatefunc = () =>{
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ marginLeft: '-15px', paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>

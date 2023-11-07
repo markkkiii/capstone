@@ -151,7 +151,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
         contact_no: props.contactno,
         email: props.email,
         date_received: props.datereceived,
-        date_inspection: dateInspectionRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: props.ntc,
         ntc_date: props.ntc_date,
@@ -159,10 +159,10 @@ export default function EvaluateNTCVPopup(props: formdetails) {
         ntcv_date: NTCVDateRef.current?.value,
         remarks: "For Issuance Abatement",
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         defects: arrayList,
-        received_name: ReceivedByRef.current?.value,
-        receivedabatement_date: ReceivedDateRef.current?.value
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
@@ -249,7 +249,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -267,13 +267,13 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc} readOnly />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ?  new Date(props.ntc_date).toISOString().split('T')[0] : ''} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ?  new Date(props.ntc_date).toISOString().split('T')[0] : ''} readOnly/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>

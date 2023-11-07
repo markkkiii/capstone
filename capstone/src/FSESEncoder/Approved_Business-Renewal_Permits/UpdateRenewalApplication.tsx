@@ -68,15 +68,6 @@ const UpdateRenewalApplication: React.FC<formdetails> = (props:formdetails) => {
             ).then(res => {
                 console.log(res.data);
                 alert("Update Successful!");
-                console.log(buildingpermRef.current?.value);
-                console.log(permiteeRef.current?.value);
-                console.log(businessnameRef.current?.value);
-                console.log(addressRef.current?.value);
-                console.log(naturebusinessRef.current?.value);
-                console.log(typeofoccupancyRef.current?.value);
-                console.log(contactnoRef.current?.value);
-                console.log(emailRef.current?.value);
-                console.log(dateReceivedRef.current?.value);
                 props.handleClose()
             }).catch(err => console.log(err))
            

@@ -328,7 +328,9 @@ const OccupancyListApproved: React.FC = () => {
                                     <td>{applicationform.project_name}</td>
                                     <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
                                         'N/A'}</td>
-                                    <td>{applicationform.remarks}</td>
+                                    <td style={{ color: applicationform.remarks === 'Complied' || applicationform.remarks === 'FSIC Printed' ? 'green' : 
+                                    applicationform.remarks === 'Pending' ? 'black' 
+                                    : 'red'}}>{applicationform.remarks}</td>
                                     <td>
                                         <select
                                             value={selectedAction[applicationform.id] || ''}

@@ -74,7 +74,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
   const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const EmailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const DateRecievedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const [selectedRemarks, setselectedRemarks] = useState(props?.remarks || '');//handles dropboxfield
   const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCVRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -173,7 +173,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
         contact_no: ContactnoRef.current?.value,
         email: EmailRef.current?.value,
         date_received: DateRecievedRef.current?.value,
-        date_inspection: dateInspectionRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: NTCRef.current?.value,
         ntc_date: NTCDateRef.current?.value,
@@ -183,10 +183,10 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
         abatement_date: AbatementDateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         defects: arrayList,
-        received_name: ReceivedByRef.current?.value,
-        receivedabatement_date: ReceivedDateRef.current?.value
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
@@ -295,7 +295,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -319,7 +319,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={AbatementRef} defaultValue={props.abatement_no} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={AbatementRef} defaultValue={props.abatement_no} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
