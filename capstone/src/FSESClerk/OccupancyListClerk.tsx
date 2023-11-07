@@ -75,7 +75,7 @@ const OccupancyListClerk: React.FC = () => {
 
     useEffect(() => {
         if (sortBy === 'Pending Records') {
-            axios.get('http://localhost:8080/occupancyPending/getAllPendingOccupancy').then(res => {
+            axios.get('http://localhost:8080/occupancyPendingclerk/getAllOccupancyPendingClerk').then(res => {
                 SetApplicationForm(res.data)
             }).catch(err => console.log(err))
         }

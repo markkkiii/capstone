@@ -190,7 +190,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
       }
     ).then(res => {
       console.log(res.data);
-      alert("Evaluation Successful!");
+      alert("Update Successful!");
       props.handleClose();
     }).catch(err => console.log(err))
   }
