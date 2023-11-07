@@ -93,7 +93,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         closure_date: '01/01/2001',
         remarks: "Pending",
         team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
+        fire_inspector: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
         defects: [['test'], ['test2']],
         received_name: 'Default',
@@ -741,7 +741,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntc_no={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
                                             teamleader={applicationform.team_leader}
-                                            fireinspectors={applicationform.fireInspectors}
+                                            fireinspectors={applicationform.fire_inspector}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
                                             receivedby={applicationform.received_name}
@@ -769,7 +769,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntcv_no={applicationform.ntcv_no}
                                             ntcv_date={applicationform.ntcv_date}
                                             teamleader={applicationform.team_leader}
-                                            fireinspectors={applicationform.fireInspectors}
+                                            fireinspectors={applicationform.fire_inspector}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
                                             receivedby={applicationform.received_name}
@@ -799,7 +799,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             abatement_no={applicationform.abatement_no}
                                             abatement_date={applicationform.abatement_date}
                                             teamleader={applicationform.team_leader}
-                                            fireinspectors={applicationform.fireInspectors}
+                                            fireinspectors={applicationform.fire_inspector}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
                                             receivedby={applicationform.received_name}
@@ -831,7 +831,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             closure_no={applicationform.closure_no}
                                             closure_date={applicationform.closure_date}
                                             teamleader={applicationform.team_leader}
-                                            fireinspectors={applicationform.fireInspectors}
+                                            fireinspectors={applicationform.fire_inspector}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
                                             receivedby={applicationform.received_name}

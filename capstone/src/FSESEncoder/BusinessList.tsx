@@ -67,12 +67,20 @@ const BusinessList: React.FC = () => {
         inspection_no: 2,
         fsic_no: 2,
         fsic_date: '2023-01-01',
+        ntc_no: 2,
+        ntc_date: '2023-01-01',
+        ntcv_no: 2,
+        ntcv_date: '2023-01-01',
         or_no: 2,
         amount: 2000,
         payment_date: '2023-01-01',
+        abatement_no: 2,
+        abatement_date: '01/01/2001',
+        closure_no: 2,
+        closure_date: '01/01/2001',
         remarks: "Pending",
         team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
+        fire_inspector: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
         defects: [['test'], ['test2']]
     }])
@@ -438,7 +446,7 @@ const BusinessList: React.FC = () => {
                                             payment_date={applicationform.payment_date}
                                             remarks={applicationform.remarks}
                                             team_leader={applicationform.team_leader}
-                                            fireInspectors={applicationform.fireInspectors}
+                                            fire_inspector={applicationform.fire_inspector}
                                             recommendation={applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup

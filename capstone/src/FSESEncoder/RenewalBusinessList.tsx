@@ -76,7 +76,7 @@ const RenewalBusinessList: React.FC = () => {
         closure_date:'01/01/2001',
         remarks: "Pending",
         team_leader: "Jobert",
-        fireInspectors: ["test", "test1"],
+        fire_inspector: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
         defects: [['test'], ['test2']]
     }]) 
@@ -440,7 +440,7 @@ const RenewalBusinessList: React.FC = () => {
                                             payment_date ={applicationform.payment_date}
                                             remarks = {applicationform.remarks}
                                             team_leader = {applicationform.team_leader}
-                                            fireInspectors = {applicationform.fireInspectors}
+                                            fire_inspector = {applicationform.fire_inspector}
                                             recommendation = {applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup
