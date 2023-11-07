@@ -42,7 +42,7 @@ export interface formdetails {
   payment_date: string;
   remarks: string;
   team_leader: string;
-  fire_inspector?: string[];
+  fire_inspectors?: string[];
   recommendation?: string[];
   open: boolean;
   handleClose: () => void;
@@ -68,7 +68,7 @@ export default function ViewEvaluate(props: formdetails) {
   const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [inputInspector, setInputInspector] = useState<string>(props.fire_inspector?.join('\n') || ''); // State to store the input value as a single string
+  const [inputInspector, setInputInspector] = useState<string>(props.fire_inspectors?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [inputrecommendation, setinputrecommendation] = useState<string>(props.recommendation?.join('\n') || ' '); // State to store the input value as a single string
   const [inputrecommendationarray, setrecommendationarray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
@@ -141,7 +141,7 @@ export default function ViewEvaluate(props: formdetails) {
         payment_date: dateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
-        fire_inspector: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         recommendation: inputrecommendationarray
       }
     ).then(res => {

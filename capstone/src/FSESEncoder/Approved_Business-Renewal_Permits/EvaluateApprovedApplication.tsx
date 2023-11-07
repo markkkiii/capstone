@@ -123,7 +123,7 @@ export default function EvaluatePopup(props: formdetails) {
         payment_date: dateRef.current?.value,
         remarks: "FSIC Not Printed",
         team_leader: teamLeaderRef.current?.value,
-        fire_inspector: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         recommendation: inputrecommendationarray
       }
     ).then(res => {

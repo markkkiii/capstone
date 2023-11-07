@@ -47,7 +47,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
                 contact_no: contactnoRef.current?.value,
                 date_received: dateReceivedRef.current?.value,
                 team_leader: '',
-                fire_inspector: [],
+                fire_inspectors: [],
                 inspection_no: 0,
                 date_inspection: '',
                 received_name: '',
