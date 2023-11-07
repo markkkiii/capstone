@@ -442,7 +442,8 @@ const RenewalBusinessList: React.FC = () => {
                                             payment_date ={applicationform.payment_date}
                                             remarks = {applicationform.remarks}
                                             team_leader = {applicationform.team_leader}
-                                            fireInspectors = {applicationform.fire_inspectors}
+
+                                            fire_inspectors = {applicationform.fire_inspectors}
                                             recommendation = {applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup

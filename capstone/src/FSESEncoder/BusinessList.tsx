@@ -67,6 +67,10 @@ const BusinessList: React.FC = () => {
         inspection_no: 2,
         fsic_no: 2,
         fsic_date: '2023-01-01',
+        ntc_no: 2,
+        ntc_date: '2023-01-01',
+        ntcv_no: 2,
+        ntcv_date: '2023-01-01',
         or_no: 2,
         amount: 2000,
         date: '2023-01-01',
@@ -440,7 +444,8 @@ const BusinessList: React.FC = () => {
                                             payment_date={applicationform.date}
                                             remarks={applicationform.remarks}
                                             team_leader={applicationform.team_leader}
-                                            fireInspectors={applicationform.fire_inspectors}
+
+                                            fire_inspectors={applicationform.fire_inspectors}
                                             recommendation={applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup
