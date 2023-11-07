@@ -97,8 +97,8 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
     axios.post('http://localhost:8080/occupancyDisapprovedClerk/insertNODPermit',
       {
         control_no: props.controlno,
-        applicant_name: props.applicantname,
-        building_no: props.buildingpermino,
+        applicants_name: props.applicantname,
+        bldgpermit_no: props.buildingpermino,
         address: props.address,
         project_name: props.projecname,
         date_received: props.datereceived,

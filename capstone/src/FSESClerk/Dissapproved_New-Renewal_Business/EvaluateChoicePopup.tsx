@@ -63,7 +63,7 @@ const EvaluateChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
                         {props.remarks === 'NTC Records'?'NTCV':
                         props.remarks === 'NTCV Records'?'Abatement':
                         props.remarks === 'Abatement Records'?'Closure':
-                        'NA'}
+                        'N/A'}
                         </Button>
                 </DialogActions>
             </Dialog>

@@ -51,9 +51,8 @@ const OccupancyListClerk: React.FC = () => {
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
         control_no: 20,
-        buildingpermitno: '20-2',
-        building_no: '',
-        applicant_name: 'Default',
+        bldgpermit_no: '',
+        applicants_name: 'Default',
         project_name: 'Default',
         location: 'Default',
         address:'',
@@ -324,17 +323,17 @@ const OccupancyListClerk: React.FC = () => {
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
-                                        applicationform.buildingpermitno.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.applicant_name.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.bldgpermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        applicationform.applicants_name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
                             .map((applicationform) => (
                                 <tr key={applicationform.id}>
                                     <td>{applicationform.id}</td>
-                                    <td>{sortBy === 'Disapproved Records' ? applicationform.building_no :
-                                        applicationform.buildingpermitno}</td>
-                                    <td>{applicationform.applicant_name}</td>
+                                    <td>{sortBy === 'Disapproved Records' ? applicationform.bldgpermit_no :
+                                        applicationform.bldgpermit_no}</td>
+                                    <td>{applicationform.applicants_name}</td>
                                     <td>{applicationform.project_name}</td>
                                     <td>{sortBy === 'Disapproved Records' ? applicationform.nod_no :
                                         'N/A'}</td>
@@ -352,7 +351,7 @@ const OccupancyListClerk: React.FC = () => {
                                             <option value="Print">Print</option>
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.buildingpermitno)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bldgpermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                         <ViewPendingOccupancyList
@@ -361,8 +360,8 @@ const OccupancyListClerk: React.FC = () => {
                                             handleClose={() => handleCloseView(applicationform.id)}
                                             activity={selectedAction[applicationform.id]}
                                             controlno={applicationform.control_no}
-                                            buildingno={applicationform.buildingpermitno}
-                                            applicantname={applicationform.applicant_name}
+                                            buildingno={applicationform.bldgpermit_no}
+                                            applicantname={applicationform.applicants_name}
                                             projectname={applicationform.project_name}
                                             location={applicationform.location}
                                             contact_no={applicationform.contact_no}
@@ -380,8 +379,8 @@ const OccupancyListClerk: React.FC = () => {
                                             id={applicationform.id}
                                             inspectionno={applicationform.inspection_no}
                                             controlno={applicationform.control_no}
-                                            buildingpermino={applicationform.buildingpermitno}
-                                            applicantname={applicationform.applicant_name}
+                                            buildingpermino={applicationform.bldgpermit_no}
+                                            applicantname={applicationform.applicants_name}
                                             projecname={applicationform.project_name}
                                             address={applicationform.location}
                                             contactnumber={applicationform.contact_no}
@@ -393,8 +392,8 @@ const OccupancyListClerk: React.FC = () => {
                                             activity={selectedAction[applicationform.id]}
                                             inspectionno={applicationform.inspection_no}
                                             controlno={applicationform.control_no}
-                                            buildingpermitno={applicationform.building_no}
-                                            applicantname={applicationform.applicant_name}
+                                            buildingpermitno={applicationform.bldgpermit_no}
+                                            applicantname={applicationform.applicants_name}
                                             projecname={applicationform.project_name}
                                             address={applicationform.address}
                                             contactnumber={applicationform.contact_no}
