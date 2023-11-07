@@ -73,11 +73,7 @@ const BusinessList: React.FC = () => {
         ntcv_date: '2023-01-01',
         or_no: 2,
         amount: 2000,
-        payment_date: '2023-01-01',
-        abatement_no: 2,
-        abatement_date: '01/01/2001',
-        closure_no: 2,
-        closure_date: '01/01/2001',
+        date: '2023-01-01',
         remarks: "Pending",
         team_leader: "Jobert",
         fire_inspectors: ["test", "test1"],
@@ -361,7 +357,9 @@ const BusinessList: React.FC = () => {
                                     <td>{applicationform.type_occupancy}</td>
                                     <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
                                         'N/A'}</td>
-                                    <td>{applicationform.remarks}</td>
+                                    <td style={{ color: applicationform.remarks === 'Complied' || applicationform.remarks === 'FSIC Printed' ? 'green' : 
+                                    applicationform.remarks === 'Pending' ? 'black' 
+                                    : 'red'}}>{applicationform.remarks}</td>
                                     <td>
                                         <select
                                             value={selectedAction[applicationform.id] || ''}
@@ -443,9 +441,10 @@ const BusinessList: React.FC = () => {
                                             fsic_date={applicationform.fsic_date}
                                             amount={applicationform.amount}
                                             or_no={applicationform.or_no}
-                                            payment_date={applicationform.payment_date}
+                                            payment_date={applicationform.date}
                                             remarks={applicationform.remarks}
                                             team_leader={applicationform.team_leader}
+
                                             fire_inspectors={applicationform.fire_inspectors}
                                             recommendation={applicationform.recommendation}
                                         />

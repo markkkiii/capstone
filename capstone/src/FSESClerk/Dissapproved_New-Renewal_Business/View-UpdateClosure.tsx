@@ -76,7 +76,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
   const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const EmailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const DateRecievedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const [selectedRemarks, setselectedRemarks] = useState(props?.remarks || '');//handles dropboxfield
   const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCVRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -190,7 +190,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
         contact_no: ContactnoRef.current?.value,
         email: EmailRef.current?.value,
         date_received: DateRecievedRef.current?.value,
-        date_inspection: dateInspectionRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: NTCRef.current?.value,
         ntc_date: NTCDateRef.current?.value,
@@ -202,10 +202,10 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
         closure_date: closureDateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         defects: arrayList,
-        received_name: ReceivedByRef.current?.value,
-        receivedclosure_date: ReceivedDateRef.current?.value
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
       }
     ).then(res => {
       console.log(res.data);
@@ -309,7 +309,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} disabled={props.activity !== 'Update'}  />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -362,7 +362,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={3} direction={'row'} sx={{ alignItems: 'flex-start' }}>
                       <h3 className='custom-paragraph' style={{ marginTop: 0 }}>Team Leader</h3>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} defaultValue={props.teamleader} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "500px" }} inputRef={teamLeaderRef} defaultValue={props.teamleader}  disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -381,6 +381,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                         value={inputInspector}
                         onChange={handleInputChange}
                         multiline
+                        disabled={props.activity !== 'Update'} 
                         placeholder={`F03 John Doe\nType in the name then press enter to move next line`}
                         rows={2}
                       />
@@ -428,7 +429,6 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                         disabled={props.activity !== 'Update'}
                       >
                         <MenuItem value="Complied">Complied</MenuItem>
-                        <MenuItem value="For Issuance Closure">For Issuance Closure</MenuItem>
                         <MenuItem value="Issued Closure">Issued Closure</MenuItem>
                       </Select>
                     </Stack>

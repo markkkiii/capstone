@@ -76,7 +76,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         contact_no: '09123123123',
         email: 'test@gmail',
         date_received: '2023-01-01',
-        date_inspection: "2023-01-01",
+        date_inspected: "2023-01-01",
         inspection_no: 2,
         fsic_no: 2,
         fsic_date: '2023-01-01',
@@ -96,11 +96,8 @@ const DisapprovedNewBusiness: React.FC = () => {
         fire_inspectors: ["test", "test1"],
         recommendation: ["reco1", "reco2", "reco3"],
         defects: [['test'], ['test2']],
-        received_name: 'Default',
-        receivedntc_date: '01/01/2001',
-        receivedntcv_date: '01/01/2001',
-        receivedabatement_date: '01/01/2001',
-        receivedclosure_date: '01/01/2001',
+        name: 'Default',
+        date: '2023-01-01',
         status: 'default'
     }])
 
@@ -445,7 +442,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV') || (status === 'Issued NTCV') || (status === 'Complied')) {
+        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV') || (sortBy === 'NTC Records' && status === 'Issued NTCV') || (sortBy === 'NTC Records' && status === 'Complied')) {
             if ((selectedValue === 'Evaluate') && (status === 'For Issuance NTCV')) {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
@@ -578,7 +575,10 @@ const DisapprovedNewBusiness: React.FC = () => {
                                                 'Abatement Records' ? applicationform.abatement_no :
                                                     'Closure Records' ? applicationform.closure_no :
                                                         'N/A'}</td>
-                                    <td>{applicationform.remarks}</td>
+                                    <td style={{ color: applicationform.remarks === 'Complied' || applicationform.remarks === 'FSIC Printed' ? 'green' : 
+                                    applicationform.remarks === 'Pending' || applicationform.remarks === 'For Issuance NTCV' || applicationform.remarks === 'For Issuance Abatement' || applicationform.remarks === 'For Issuance Closure' ? 'black' 
+                                    : 'red'}}
+                                    >{applicationform.remarks}</td>
                                     <td>
                                         <select
                                             value={selectedAction[applicationform.id] || ''}
@@ -737,15 +737,15 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             inspection_no={applicationform.inspection_no}
-                                            inspectiondate={applicationform.date_inspection}
+                                            inspectiondate={applicationform.date_inspected}
                                             ntc_no={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
                                             teamleader={applicationform.team_leader}
                                             fireinspectors={applicationform.fire_inspectors}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
-                                            receivedby={applicationform.received_name}
-                                            receiveddate={applicationform.receivedntc_date}
+                                            receivedby={applicationform.name}
+                                            receiveddate={applicationform.date}
                                             handleClose={() => handleCloseViewUpdateNTC(applicationform.id)}
                                         />
                                         <ViewUpdateNTCVPopup
@@ -763,7 +763,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             inspection_no={applicationform.inspection_no}
-                                            inspectiondate={applicationform.date_inspection}
+                                            inspectiondate={applicationform.date_inspected}
                                             ntc_no={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
                                             ntcv_no={applicationform.ntcv_no}
@@ -772,8 +772,8 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             fireinspectors={applicationform.fire_inspectors}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
-                                            receivedby={applicationform.received_name}
-                                            receiveddate={applicationform.receivedntcv_date}
+                                            receivedby={applicationform.name}
+                                            receiveddate={applicationform.date}
                                             handleClose={() => handleCloseViewUpdateNTCV(applicationform.id)}
                                         />
                                         <ViewUpdateAbatementPopup
@@ -791,7 +791,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             inspection_no={applicationform.inspection_no}
-                                            inspectiondate={applicationform.date_inspection}
+                                            inspectiondate={applicationform.date_inspected}
                                             ntc_no={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
                                             ntcv_no={applicationform.ntcv_no}
@@ -802,8 +802,8 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             fireinspectors={applicationform.fire_inspectors}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
-                                            receivedby={applicationform.received_name}
-                                            receiveddate={applicationform.receivedabatement_date}
+                                            receivedby={applicationform.name}
+                                            receiveddate={applicationform.date}
                                             handleClose={() => handleCloseViewUpdateAbatement(applicationform.id)}
                                         />
                                         <ViewUpdateClosurePopup
@@ -821,7 +821,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             inspection_no={applicationform.inspection_no}
-                                            inspectiondate={applicationform.date_inspection}
+                                            inspectiondate={applicationform.date_inspected}
                                             ntc_no={applicationform.ntc_no}
                                             ntc_date={applicationform.ntc_date}
                                             ntcv_no={applicationform.ntcv_no}
@@ -834,8 +834,8 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             fireinspectors={applicationform.fire_inspectors}
                                             defects={applicationform.defects}
                                             remarks={applicationform.remarks}
-                                            receivedby={applicationform.received_name}
-                                            receiveddate={applicationform.receivedclosure_date}
+                                            receivedby={applicationform.name}
+                                            receiveddate={applicationform.date}
                                             handleClose={() => handleCloseViewUpdateClosure(applicationform.id)}
                                         />
 

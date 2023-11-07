@@ -138,7 +138,7 @@ export default function ViewEvaluate(props: formdetails) {
         fsic_date: fsicDateRef.current?.value,
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
-        payment_date: dateRef.current?.value,
+        date: dateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
         fire_inspectors: inputInspectorArray,

@@ -354,7 +354,9 @@ const RenewalBusinessList: React.FC = () => {
                                     <td>{applicationform.type_occupancy}</td>
                                     <td>{sortBy === 'Approved Records' ? applicationform.fsic_no :
                                         'N/A'}</td>
-                                    <td>{applicationform.remarks}</td>
+                                    <td style={{ color: applicationform.remarks === 'Complied' || applicationform.remarks === 'FSIC Printed' ? 'green' : 
+                                    applicationform.remarks === 'Pending' ? 'black' 
+                                    : 'red'}}>{applicationform.remarks}</td>
                                     <td>
                                         <select
                                             value={selectedAction[applicationform.id] || ''}
@@ -440,6 +442,7 @@ const RenewalBusinessList: React.FC = () => {
                                             payment_date ={applicationform.payment_date}
                                             remarks = {applicationform.remarks}
                                             team_leader = {applicationform.team_leader}
+
                                             fire_inspectors = {applicationform.fire_inspectors}
                                             recommendation = {applicationform.recommendation}
                                         />

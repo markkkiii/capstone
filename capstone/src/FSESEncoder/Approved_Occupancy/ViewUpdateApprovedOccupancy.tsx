@@ -222,7 +222,7 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >FSIC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} defaultValue={props.fsic_no} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={fsicRef} defaultValue={props.fsic_no}  disabled={props.activity !== 'Update'}/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>

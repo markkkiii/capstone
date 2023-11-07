@@ -56,7 +56,7 @@ interface DefectData {
 
 export default function ViewUpdateNTC(props: formdetails) {
 
-  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const [selectedRemarks, setselectedRemarks] = useState(props?.remarks || '');//handles dropboxfield
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
   const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(([defects, period]) => ({ defects, period })) : []); // handles ObjectList Data
@@ -169,16 +169,16 @@ export default function ViewUpdateNTC(props: formdetails) {
         contact_no: ContactnoRef.current?.value,
         email: EmailRef.current?.value,
         date_received: dateReceivedRef.current?.value,
-        date_inspection: dateInspectionRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: NTCRef.current?.value,
         ntc_date: NTCDateRef.current?.value,
         remarks: selectedRemarks,
         team_leader: teamLeaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspectors: inputInspectorArray,
         defects: arrayList,
-        received_name: ReceivedByRef.current?.value,
-        receivedntc_date: ReceivedDateRef.current?.value
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
 
       }
     ).then(res => {
