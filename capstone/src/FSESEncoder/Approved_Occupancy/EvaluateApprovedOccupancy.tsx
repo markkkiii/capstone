@@ -110,7 +110,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
   const deletefunc = () => {
     //function here
 
-    let NEW_URL ='http://localhost:8080/occupancyPending/deletePermit/'
+    let NEW_URL ='http://localhost:8080/occupancyPendingclerk/deletePermit/'
     axios.delete(NEW_URL + props.id).then(res => {
         console.log(res.data);
     }).catch(err => console.log(err))
@@ -122,7 +122,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
     axios.post('http://localhost:8080/approved/insertApprovedPermit',
       {
         control_no: props.contactnumber,
-        applicant_name: props.applicantname,
+        applicants_name: props.applicantname,
         building_no: props.buildingpermino,
         address: props.address,
         project_name: props.projecname,

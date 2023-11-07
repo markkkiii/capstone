@@ -98,8 +98,8 @@ export default function ViewPendingOccupancyList(props: formdetails) {
     axios.put('http://localhost:8080/occupancyPendingclerk/updateOccupancyPendingClerk?id=' + props.id,
       {
         control_no: applicantionnoRef.current?.value,
-        buildingpermitno: buildingnoRef.current?.value,
-        applicant_name: applicantnameRef.current?.value,
+        bldgpermit_no: buildingnoRef.current?.value,
+        applicants_name: applicantnameRef.current?.value,
         project_name: projectnameRef.current?.value,
         location: locationRef.current?.value,
         contact_no: contactnoRef.current?.value,
