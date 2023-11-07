@@ -29,7 +29,7 @@ export interface formdetails {
   contact_no: string;
   date_received: string;
   team_leader: string;
-  fireInspectors: string[];
+  fire_inspector: string[];
   inspection_no: number;
   date_inspection: string;
   received_name: string;
@@ -67,7 +67,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
   const inspectionNoRef = useRef<HTMLInputElement | null>(null);
   const ReceivedbyRef = useRef<HTMLInputElement | null>(null);
   const teamleaderRef = useRef<HTMLInputElement | null>(null);
-  const [inputInspector, setInputInspector] = useState<string>(props.fireInspectors?.join('\n') || ''); // State to store the input value as a single string
+  const [inputInspector, setInputInspector] = useState<string>(props.fire_inspector?.join('\n') || ''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
 
@@ -105,7 +105,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
         contact_no: contactnoRef.current?.value,
         date_received: dateReceivedRef.current?.value,
         team_leader: teamleaderRef.current?.value,
-        fireInspectors: inputInspectorArray,
+        fire_inspector: inputInspectorArray,
         inspection_no: inspectionNoRef.current?.value,
         date_inspection: inspectionRef.current?.value,
         received_name: ReceivedbyRef.current?.value,

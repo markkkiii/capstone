@@ -59,7 +59,7 @@ const OccupancyListClerk: React.FC = () => {
         contact_no: 'Default',
         date_received: '2023-09-01',
         team_leader: 'default',
-        fireInspectors: ['default', 'default1'],
+        fire_inspector: ['default', 'default1'],
         inspection_no: 0,
         date_inspection: '2023-09-01',
         received_name: 'Default',
@@ -367,7 +367,7 @@ const OccupancyListClerk: React.FC = () => {
                                             contact_no={applicationform.contact_no}
                                             date_received={applicationform.date_received}
                                             team_leader={applicationform.team_leader}
-                                            fireInspectors={applicationform.fireInspectors}
+                                            fire_inspector={applicationform.fire_inspector}
                                             inspection_no={applicationform.inspection_no}
                                             date_inspection={applicationform.date_inspection}
                                             received_name={applicationform.received_name}
