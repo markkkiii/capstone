@@ -387,6 +387,7 @@ const OccupancyListApproved: React.FC = () => {
                                             address={applicationform.location}
                                             contactnumber={applicationform.contact_no}
                                             datereceived={applicationform.date_received}
+                                            disapproved= {false}
                                         />
                                         <ViewUpdateApprovedOccupancy
                                             open={openViewUpdateEvalOccupancy[applicationform.id]}
