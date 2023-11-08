@@ -45,11 +45,12 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
 
     const deletefunc = (value: number) => {
         //function here
-        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
+       axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()
         }).catch(err => console.log(err))
+     
     }
 
     return (

@@ -62,11 +62,13 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
 
     const deletefunc = (value: number) => {
         //function here
+        /*
         axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
             console.log(res.data);
             alert("Deleted Successfully!");
             handleClose()
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err))*/
+        console.log(value);
     }
 
     return (

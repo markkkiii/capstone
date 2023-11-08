@@ -46,7 +46,7 @@ const BusinessList: React.FC = () => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [deleteit, setDelete] = useState(false);
+    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
 
 
@@ -195,14 +195,22 @@ const BusinessList: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-    // Delete Popup
-    const handleDeleteOpen = () => {
-        setDelete(true);
+
+    //Delete Popup
+       const handleOpenDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
     };
-    // Delete Popup
-    const handleDeleteClose = () => {
-        setDelete(false);
-        handleRender();
+
+    //Delete Popup Close
+    const handleCloseDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
     };
 
 
@@ -232,7 +240,7 @@ const BusinessList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
         } else if (remarks === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
@@ -261,10 +269,7 @@ const BusinessList: React.FC = () => {
         }
         else if (selectedValue === 'Print') {
             handlePrintOpen();
-        }
-        else if (selectedValue === 'Delete') {
-            // Perform delete logic here
-            handleDeleteOpen();
+            console.log('test')
         }
     }
 
@@ -449,11 +454,11 @@ const BusinessList: React.FC = () => {
                                             recommendation={applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup
-                                            open={deleteit}
+                                            open={openDelete[applicationform.id]}
                                             value={applicationform.id}
                                             remarks={applicationform.remarks}
                                             form="New"
-                                            handleClose={() => handleDeleteClose()}
+                                            handleClose={() => handleCloseDelete(applicationform.id)}
                                         />
                                         <PrintEncoderPopup
                                             open={print}
