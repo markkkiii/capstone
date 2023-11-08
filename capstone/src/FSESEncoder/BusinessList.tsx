@@ -195,9 +195,9 @@ const BusinessList: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-
+    
     //Delete Popup
-       const handleOpenDelete = (no: number) => {
+    const handleOpenDelete = (no: number) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -269,7 +269,10 @@ const BusinessList: React.FC = () => {
         }
         else if (selectedValue === 'Print') {
             handlePrintOpen();
-            console.log('test')
+        }
+        else if (selectedValue === 'Delete') {
+            // Perform delete logic here
+            handleOpenDelete(value);
         }
     }
 

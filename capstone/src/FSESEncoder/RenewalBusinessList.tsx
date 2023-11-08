@@ -45,7 +45,7 @@ const RenewalBusinessList: React.FC = () => {
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
     const [openViewEvaluate, setopenViewEvaluate] = useState<Record<number, boolean>>({});
-    const [deleteit, setDelete] = useState(false);
+    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -212,13 +212,21 @@ const RenewalBusinessList: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-    // Delete Popup
-    const handleDeleteOpen = () => {
-        setDelete(true);
+
+    //Delete Popup
+    const handleOpenDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
     };
-    // Delete Popup
-    const handleDeleteClose = () => {
-        setDelete(false);
+
+    //Delete Popup Close
+    const handleCloseDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
         handleRender()
     };
 
@@ -229,7 +237,7 @@ const RenewalBusinessList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -261,7 +269,7 @@ const RenewalBusinessList: React.FC = () => {
         }
         else if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
         }
     }
 }
@@ -442,16 +450,15 @@ const RenewalBusinessList: React.FC = () => {
                                             payment_date ={applicationform.payment_date}
                                             remarks = {applicationform.remarks}
                                             team_leader = {applicationform.team_leader}
-
                                             fire_inspectors = {applicationform.fire_inspectors}
                                             recommendation = {applicationform.recommendation}
                                         />
                                         <DeleteEncoderPopup
-                                            open={deleteit}
+                                            open={openDelete[applicationform.id]}
                                             value={applicationform.id}
                                             remarks={applicationform.remarks}
-                                            form = "Renewal"
-                                            handleClose={() => handleDeleteClose()}
+                                            form="Renewal"
+                                            handleClose={() => handleCloseDelete(applicationform.id)}
                                         />
                                         <PrintEncoderPopup
                                             open={print}

@@ -29,10 +29,10 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
         if (remarks ==='Pending'){
             records = 'BPPending'
         }
-        else if (remarks === 'Issued NTCV' || remarks === 'For Issuance NTCV' || remarks === 'Complied'){
+        else if ((sortby === 'NTC Records' && remarks === 'Issued NTCV') || (sortby === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortby === 'NTC Records' && remarks === 'Complied')){
             records = 'newbpnoticetocomply'
         }
-        else if (remarks === 'Issued Abatement' || remarks === 'For Issuance Abatement' || remarks === 'Complied'){
+        else if ((sortby === 'NTCV  Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV  Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV  Records' && remarks === 'Complied')){
             records = 'newbpnoticecorrectviolation'
         }
         else if ((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')){
@@ -46,10 +46,10 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
         if (remarks ==='Pending'){
             records = 'Renewal'
         }
-        else if (remarks === 'Issued NTCV' || remarks === 'For Issuance NTCV' || remarks === 'Complied'){
+        else if ((sortby === 'NTC Records' && remarks === 'Issued NTCV') || (sortby === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortby === 'NTC Records' && remarks === 'Complied')){
             records = 'renewalbpnoticetocomply'
         }
-        else if (remarks === 'Issued Abatement' || remarks === 'For Issuance Abatement' || remarks === 'Complied'){
+        else if ((sortby === 'NTCV  Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV  Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV  Records' && remarks === 'Complied')){
             records = 'renewalbpnoticetocorrectviolation'
         }
         else if ((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')) {
