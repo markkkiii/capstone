@@ -33,6 +33,7 @@ export interface formdetails {
   contactnumber: string;
   datereceived: string;
   open: boolean;
+  disapproved: boolean;
   handleClose: () => void;
 }
 
@@ -110,11 +111,21 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
   const deletefunc = () => {
     //function here
 
-    let NEW_URL ='http://localhost:8080/occupancyPendingclerk/deletePermit/'
+    let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/deletePermit/'
     axios.delete(NEW_URL + props.id).then(res => {
-        console.log(res.data);
+      console.log(res.data);
     }).catch(err => console.log(err))
-}
+  }
+
+  const updateRemarksDisapprovedOccupancy = async () => {
+    let new_url = 'http://localhost:8080/occupancyDisapprovedClerk/putOccupancyDisapprovedClerk?id=';
+
+    axios.put(new_url + props.id,
+      {
+        remarks: "Complied",
+      }
+    )
+  }
 
 
   // uploads data to db
@@ -132,7 +143,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
         inspection_no: props.inspectionno,
         fsic_no: fsicRef.current?.value,
         amount: AmountRef.current?.value,
-        or_no:OrNoRef.current?.value,
+        or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
         recommendations: inputInspectorArray,
         remarks: 'FSIC Not Printed'
@@ -140,8 +151,14 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
+      if(props.disapproved){
+        updateRemarksDisapprovedOccupancy();
+      }
+      else{
+        deletefunc();
+      }
       props.handleClose();
-      deletefunc();
+      
     }).catch(err => console.log(err))
   }
 

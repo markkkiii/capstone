@@ -113,18 +113,18 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
     axios.put('http://localhost:8080/occupancyDisapprovedClerk/updateOccupancyDisapprovedClerk?id=' + props.id,
       {
         control_no: contronoRef.current?.value,
-        applicant_name: applicantRef.current?.value,
-        buildingpermit_no: businsspermitRef.current?.value,
-        address: addressRef.current?.value,
+        applicants_name: applicantRef.current?.value,
+        bldgpermit_no: businsspermitRef.current?.value,
+        location: addressRef.current?.value,
         project_name: projectRef.current?.value,
         date_received: dateReceivedRef.current?.value,
         nod_date: NodDateRef.current?.value,
         contact_no: contactnoRef.current?.value,
         inspection_no: inspectnoRef.current?.value,
         nod_no: NodRef.current?.value,
-        deficiencies: inputInspectorArray,
-        received_name: ReceivedNameRef.current?.value,
-        receivednod_date: ReceivedDateRef.current?.value,
+        defects: inputInspectorArray,
+        name: ReceivedNameRef.current?.value,
+        date: ReceivedDateRef.current?.value,
 
         remarks: props.remarks
 

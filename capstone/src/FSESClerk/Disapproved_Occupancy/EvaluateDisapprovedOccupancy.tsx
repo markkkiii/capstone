@@ -99,15 +99,15 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
         control_no: props.controlno,
         applicants_name: props.applicantname,
         bldgpermit_no: props.buildingpermino,
-        address: props.address,
+        location: props.address,
         project_name: props.projecname,
         date_received: props.datereceived,
         nod_date: NodDateRef.current?.value,
         inspection_no: props.inspectionno,
         nod_no:NodRef.current?.value,
-        deficiencies: inputInspectorArray,
-        received_name: ReceivedNameRef.current?.value,
-        receivednod_date: ReceivedDateRef.current?.value,
+        defects: inputInspectorArray,
+        name: ReceivedNameRef.current?.value,
+        date: ReceivedDateRef.current?.value,
         remarks: 'Disapproved'
       }
     ).then(res => {
