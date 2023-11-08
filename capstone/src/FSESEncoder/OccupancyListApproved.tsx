@@ -44,7 +44,7 @@ const OccupancyListApproved: React.FC = () => {
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openEvalOccupancy, setopenEvalOccupancy] = useState<Record<number, boolean>>({});
     const [openViewUpdateEvalOccupancy, setopenViewUpdateEvalOccupancy] = useState<Record<number, boolean>>({});
-    const [deleteit, setDelete] = useState(false);
+    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
     const [test, setTest] = useState<boolean>(false);
 
@@ -190,14 +190,22 @@ const OccupancyListApproved: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-    // Delete Popup
-    const handleDeleteOpen = () => {
-        setDelete(true);
+    
+    //Delete Popup
+    const handleOpenDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
     };
-    // Delete Popup
-    const handleDeleteClose = () => {
-        setDelete(false);
-        handleRender();
+
+    //Delete Popup Close
+    const handleCloseDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
     };
 
 
@@ -235,7 +243,7 @@ const OccupancyListApproved: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -401,14 +409,12 @@ const OccupancyListApproved: React.FC = () => {
                                             recommendations={applicationform.recommendations}
                                             activity={selectedAction[applicationform.id]}
                                         />
-
-
                                         <DeleteEncoderPopup
-                                            open={deleteit}
+                                            open={openDelete[applicationform.id]}
                                             value={applicationform.id}
                                             remarks={applicationform.remarks}
                                             form="Occupancy"
-                                            handleClose={() => handleDeleteClose()}
+                                            handleClose={() => handleCloseDelete(applicationform.id)}
                                         />
                                         <PrintEncoderPopup
                                             open={print}

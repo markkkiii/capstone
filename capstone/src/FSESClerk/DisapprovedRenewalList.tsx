@@ -60,7 +60,7 @@ const DisapprovedRenewalList: React.FC = () => {
     const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});//Open NTC Choice Pop up
     const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [deleteit, setDelete] = useState(false);
+    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
 
 
@@ -381,16 +381,23 @@ const DisapprovedRenewalList: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-    // Delete Popup
-    const handleDeleteOpen = () => {
-        setDelete(true);
-    };
-    // Delete Popup
-    const handleDeleteClose = () => {
-        setDelete(false);
-        handleRender();
+    
+    //Delete Popup
+    const handleOpenDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
     };
 
+    //Delete Popup Close
+    const handleCloseDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
+    };
 
     //Handles the button Logic 
     const handleNext = (value: number, status: string, buildingno: string) => {
@@ -398,7 +405,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
 
         } else if (status === 'Pending') {
             //Pending function condition goes here
@@ -810,12 +817,12 @@ const DisapprovedRenewalList: React.FC = () => {
                                         />
 
                                         <DeleteClerkPopup
-                                            open={deleteit}
+                                            open={openDelete[applicationform.id]}
                                             value={applicationform.id}
                                             form="NewBR"
                                             sortby = {sortBy}
                                             remarks={applicationform.remarks}
-                                            handleClose={() => handleDeleteClose()}
+                                            handleClose={() => handleCloseDelete(applicationform.id)}
                                         />
                                         <PrintClerkPopup
                                             open={print}
