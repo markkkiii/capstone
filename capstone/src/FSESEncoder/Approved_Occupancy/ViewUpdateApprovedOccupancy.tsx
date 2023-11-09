@@ -129,9 +129,9 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
     axios.put('http://localhost:8080/approved/putApprovedApplication?id=' + props.id,
       {
         control_no: controlnoRef.current?.value,
-        applicant_name: applicantnameRef.current?.value,
-        building_no: buildingpermnoRef.current?.value,
-        address: addressRef.current?.value,
+        applicants_name: applicantnameRef.current?.value,
+        bldgpermit_no: buildingpermnoRef.current?.value,
+        location: addressRef.current?.value,
         project_name: projectRef.current?.value,
         date_received: dateReceivedRef.current?.value,
         fsic_date: fsicDateRef.current?.value,

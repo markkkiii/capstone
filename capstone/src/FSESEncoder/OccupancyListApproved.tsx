@@ -56,7 +56,6 @@ const OccupancyListApproved: React.FC = () => {
         applicants_name: 'Default',
         project_name: 'Default',
         location: 'Default',
-        address: '',
         contact_no: 'Default',
         date_received: '2023-09-01',
         team_leader: 'default',
@@ -398,7 +397,7 @@ const OccupancyListApproved: React.FC = () => {
                                             buildingpermino={applicationform.bldgpermit_no}
                                             applicantname={applicationform.applicants_name}
                                             projecname={applicationform.project_name}
-                                            address={applicationform.address}
+                                            address={applicationform.location}
                                             contactnumber={applicationform.contact_no}
                                             datereceived={applicationform.date_received}
                                             fsic_date={applicationform.fsic_date}

@@ -41,10 +41,11 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [openViewEvaluate, setOpenViewEvaluate] = useState<Record<number, boolean>>({});
   const [print, setPrint] = useState(false);
   const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
+  const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
   const [deleteit, setDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const [test, setTest] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('Pending Records');
   const [searchText, setSearchText] = useState('');
 
   const [applicationform, SetApplicationForm] = useState([{
@@ -82,6 +83,24 @@ const BuildingApplicationListComponent: React.FC = () => {
     setTest(prevTest => !prevTest);
   };
 
+  //Delete Popup
+  const handleOpenDelete = (no: number) => {
+    setOpenDelete((prevRenewal) => ({
+      ...prevRenewal,
+      [no]: true,
+    }));
+  };
+
+  //Delete Popup Close
+  const handleCloseDelete = (no: number) => {
+    setOpenDelete((prevRenewal) => ({
+      ...prevRenewal,
+      [no]: false,
+    }));
+    handleRender()
+  };
+
+
   //VIEW Popup
   const handleOpen = (no: number) => {
     setOpenStates((prevOpenStates) => ({
@@ -106,7 +125,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       [no]: true,
     }));
   };
- //Update Popup
+  //Update Popup
   const handleCloseUpdate = (no: number) => {
     setOpenUpdate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -114,14 +133,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
- //Evaluate Popup
+  //Evaluate Popup
   const handleOpenEvaluate = (no: number) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
-//Evaluate Popup
+  //Evaluate Popup
   const handleCloseEvaluate = (no: number) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -129,14 +148,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
-//View Popup After Evaluation
+  //View Popup After Evaluation
   const handleOpenViewEvaluate = (no: number) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
-//View Popup After Evaluation
+  //View Popup After Evaluation
   const handleCloseViewEvaluate = (no: number) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
@@ -144,28 +163,28 @@ const BuildingApplicationListComponent: React.FC = () => {
     }));
     handleRender()
   };
-// Add Application
+  // Add Application
   const handleClickOpen = () => {
     setOpen(true);
   };
-// Close Add Application
+  // Close Add Application
   const handleClickClose = () => {
     setOpen(false);
     handleRender()
   };
-// Print Popup 
+  // Print Popup 
   const handlePrintOpen = () => {
     setPrint(true);
   };
-// Print Popup
+  // Print Popup
   const handlePrintClose = () => {
     setPrint(false);
   };
-// Delete Popup
+  // Delete Popup
   const handleDeleteOpen = () => {
     setDelete(true);
   };
-// Delete Popup
+  // Delete Popup
   const handleDeleteClose = () => {
     setDelete(false);
     handleRender()
@@ -200,7 +219,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
     if (selectedValue === 'Delete') {
       // Perform delete logic here
-      handleDeleteOpen();
+      handleOpenDelete(value);
     } else if (status === 'Pending') {
       //Pending function condition goes here
       if (selectedValue === 'View') {
@@ -385,7 +404,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       open={openStates[applicationform.controlno]}
                       handleClose={() => handleClose(applicationform.controlno)}
                     />
-                    
+
                     <UpdateApplicationPopup
                       no={applicationform.controlno}
                       buildingPermitNo={applicationform.buildingpermitno}
@@ -448,14 +467,14 @@ const BuildingApplicationListComponent: React.FC = () => {
                       handleClose={() => handlePrintClose()}
                     />
                     <DeletePopup
-                      open={deleteit}
+                      open={openDelete[applicationform.controlno]}
                       value={applicationform.controlno}
-                      handleClose={() => handleDeleteClose()}
+                      handleClose={() => handleCloseDelete(applicationform.controlno)}
                     />
                   </td>
                 </tr>
               ))}
-              <AddApplicationPopup open={open} handleClose={handleClickClose} />
+            <AddApplicationPopup open={open} handleClose={handleClickClose} />
           </tbody>
         </table>
       </div>

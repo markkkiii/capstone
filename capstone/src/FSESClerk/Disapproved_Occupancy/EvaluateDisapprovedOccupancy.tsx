@@ -180,7 +180,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.datereceived} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>

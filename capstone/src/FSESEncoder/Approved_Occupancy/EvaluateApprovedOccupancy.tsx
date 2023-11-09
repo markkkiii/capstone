@@ -134,8 +134,8 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
       {
         control_no: props.contactnumber,
         applicants_name: props.applicantname,
-        building_no: props.buildingpermino,
-        address: props.address,
+        bldgpermit_no: props.buildingpermino,
+        location: props.address,
         project_name: props.projecname,
         date_received: props.datereceived,
         fsic_date: fsicDateRef.current?.value,
