@@ -264,8 +264,9 @@ const OccupancyListApproved: React.FC = () => {
     
             }
             if(selectedValue === 'Evaluate'){
-                alert('Already Evaluated');
+                alert('Already evaluated!');
             }
+            
         }
 
         else if (selectedValue === 'Print') {
