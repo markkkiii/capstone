@@ -366,7 +366,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       <option value="View">View</option>
                       <option value="Update">Update</option>
                       <option value="Evaluate">Evaluate</option>
-                      <option value="Print">Print</option>
+                      {/* <option value="Print">Print</option>*/}
                       <option value="Delete">Delete</option>
                     </select>
                     <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.buildingpermitno)}>
@@ -385,7 +385,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                       open={openStates[applicationform.controlno]}
                       handleClose={() => handleClose(applicationform.controlno)}
                     />
-                    <AddApplicationPopup open={open} handleClose={handleClickClose} />
+                    
                     <UpdateApplicationPopup
                       no={applicationform.controlno}
                       buildingPermitNo={applicationform.buildingpermitno}
@@ -455,6 +455,7 @@ const BuildingApplicationListComponent: React.FC = () => {
                   </td>
                 </tr>
               ))}
+              <AddApplicationPopup open={open} handleClose={handleClickClose} />
           </tbody>
         </table>
       </div>

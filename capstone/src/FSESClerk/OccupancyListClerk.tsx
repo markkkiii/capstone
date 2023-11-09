@@ -379,7 +379,7 @@ const OccupancyListClerk: React.FC = () => {
                                             <option value="View">View</option>
                                             <option value="Update">Update</option>
                                             <option value="Evaluate">Evaluate</option>
-                                            <option value="Print">Print</option>
+                                           {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bldgpermit_no)}>
