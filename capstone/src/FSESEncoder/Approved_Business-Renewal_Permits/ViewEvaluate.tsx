@@ -50,7 +50,7 @@ export interface formdetails {
 
 export default function ViewEvaluate(props: formdetails) {
 
-  const [selectedRemarks, setselectedRemarks] = useState(props.remarks);//handles dropboxfield
+  const [selectedRemarks, setselectedRemarks] = useState(props?.remarks || '');//handles dropboxfield
   const business_noRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const permiteeRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const business_nameRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -108,7 +108,10 @@ export default function ViewEvaluate(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-
+  const test = () => {
+    console.log(props.remarks)
+    console.log(props.fire_inspectors)
+  };
 
   // uploads data to db
   const evaluateApproved = async () => {
