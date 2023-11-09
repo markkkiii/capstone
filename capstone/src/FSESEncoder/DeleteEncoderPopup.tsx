@@ -36,8 +36,8 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
         if (remarks ==='Pending'){
             records = 'occupancyPendingclerk'
         }
-        else if (remarks === 'Approved' || remarks === 'Disapproved'){
-            records = 'occupancydisapprovedclerk'
+        else if (remarks === 'FSIC Not Printed' || remarks === 'FSIC Printed'){
+            records = 'approved'
         }
     }
     
