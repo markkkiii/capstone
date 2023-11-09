@@ -145,7 +145,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '1000px'
+          height: '1200px'
         }}
         >
           <>
