@@ -23,10 +23,13 @@ export interface formdetails {
     payment_date: string;
     agency: string;
     payment: string[][];
+    update: string;
+    form: string;
+    id: number;
     handleClose: () => void;
 
 }
-const accountCodeOptions = ["628-BFP-01", "628-BFP-02", "628-BFP-03","628-BFP-04", "628-BFP-05", "628-BFP-06","628-BFP-07", "628-BFP-08", "628-BFP-09","628-BFP-10", "628-BFP-11a", "628-BFP-11b"];
+const accountCodeOptions = ["628-BFP-01", "628-BFP-02", "628-BFP-03", "628-BFP-04", "628-BFP-05", "628-BFP-06", "628-BFP-07", "628-BFP-08", "628-BFP-09", "628-BFP-10", "628-BFP-11a", "628-BFP-11b"];
 
 const accountCodeToNatureOfCollectionMap: { [key: string]: string } = {
     "628-BFP-01": "Fire Code Construction Tax ",
@@ -42,12 +45,12 @@ const accountCodeToNatureOfCollectionMap: { [key: string]: string } = {
     "628-BFP-11a": "Other Fees",
     "628-BFP-11b": "Certificate of Competency (COC)",
     // Add more mappings as needed
-  };
+};
 
 
 
 
-const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business_permitno, ops_no, or_no, agency, payment_date, payment }) => {
+const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business_permitno, ops_no, or_no, agency, payment_date, payment, form, update, id }) => {
 
     const [tableData, setTableData] = useState<Array<{ natureOfCollection: string; accountCode: string; amount: string }>>(
         payment.map(item => ({
@@ -63,6 +66,47 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
     const opsnumberRef = useRef<HTMLInputElement | null>(null);
     const agencyRef = useRef<HTMLInputElement | null>(null);
     const dateRef = useRef<HTMLInputElement | null>(null);
+
+    const updateForm = async () => {
+        const convertedTableData = tableData.map(item => [item.natureOfCollection, item.accountCode, item.amount]);
+
+        let NEW_URL = '';
+        if (form === 'New') {
+            NEW_URL = 'http://localhost:8080/newBusinessPayment/updateNewBpPayment?id=';
+        }
+        else if (form === 'Renewal') {
+            NEW_URL = 'http://localhost:8080/newRenewalBusinessPayment/updateRenewalBpPayment?id=';
+        }
+        else if (form === 'Occupancy') {
+            NEW_URL = 'http://localhost:8080/OccupancyPayment/updateOccupancyPayment?id=';
+        }
+        else if (form === 'Building') {
+            NEW_URL = 'http://localhost:8080/BuildingPermitPayment/updateBuildingPayment?id=';
+        }
+        axios.put(NEW_URL + id, {
+            business_permitno: bspermitnoRef.current?.value,
+            payor: payorRef.current?.value,
+            or_no: ornumberRef.current?.value,
+            ops_no: opsnumberRef.current?.value,
+            agency: agencyRef.current?.value,
+            payment_date: dateRef.current?.value,
+            payment: convertedTableData
+        })
+            .then(res => {
+                if (res.data) {
+                    console.log(bspermitnoRef.current?.value)
+                    console.log("Successfully Added!" + JSON.stringify(res.data));
+                    handleClose()
+                }
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+
+
 
 
     const handleAddRow = () => {
@@ -80,24 +124,32 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>,
         rowIndex: number,
         key: keyof typeof tableData[0]
-      ) => {
+    ) => {
         const newData = [...tableData];
-      
+
         if ('target' in e) {
-          newData[rowIndex][key] = e.target.value;
-      
-          // Update natureOfCollection when accountCode changes
-          if (key === 'accountCode') {
-            const selectedAccountCode = e.target.value;
-            newData[rowIndex].natureOfCollection = accountCodeToNatureOfCollectionMap[selectedAccountCode];
-          }
+            newData[rowIndex][key] = e.target.value;
+
+            // Update natureOfCollection when accountCode changes
+            if (key === 'accountCode') {
+                const selectedAccountCode = e.target.value;
+                newData[rowIndex].natureOfCollection = accountCodeToNatureOfCollectionMap[selectedAccountCode];
+            }
         } else {
-          newData[rowIndex][key] = e;
+            newData[rowIndex][key] = e;
         }
-      
+
         setTableData(newData);
-      };
-      
+    };
+
+    const handleForm = () => {
+        if(update!= 'Update'){
+            handleClose();
+        }
+        else{
+            updateForm();
+        }
+    }
 
 
     return (
@@ -114,37 +166,37 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Payor</p>
-                                    <OutlinedInput inputRef={payorRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} defaultValue={payor} readOnly />
+                                    <OutlinedInput inputRef={payorRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} defaultValue={payor} readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' >Business Permit No.</p>
-                                    <OutlinedInput inputRef={bspermitnoRef} defaultValue={business_permitno} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly/>
+                                    <OutlinedInput inputRef={bspermitnoRef} defaultValue={business_permitno} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' style={{ marginLeft: '100px' }}>O.R. No.</p>
-                                    <OutlinedInput inputRef={ornumberRef} defaultValue={or_no} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} readOnly/>
+                                    <OutlinedInput inputRef={ornumberRef} defaultValue={or_no} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' >OPS Number</p>
-                                    <OutlinedInput inputRef={opsnumberRef} defaultValue={ops_no} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly/>
+                                    <OutlinedInput inputRef={opsnumberRef} defaultValue={ops_no} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Date</p>
-                                    <OutlinedInput inputRef={dateRef} defaultValue={payment_date  ? new Date(payment_date).toISOString().split('T')[0] : ''}  fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' readOnly/>
+                                    <OutlinedInput inputRef={dateRef} defaultValue={payment_date ? new Date(payment_date).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                     <p className='custom-paragraph' >Agency</p>
-                                    <OutlinedInput inputRef={agencyRef} defaultValue={agency}  fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }}readOnly />
+                                    <OutlinedInput inputRef={agencyRef} defaultValue={agency} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
                                 </Stack>
                             </Grid>
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
@@ -167,7 +219,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 fullWidth
                                                                 value={row.natureOfCollection}
                                                                 onChange={(e) => handleTableChange(e, rowIndex, 'natureOfCollection')}
-                                                                readOnly
+                                                                readOnly={update != "Update"}
                                                             />
                                                         </TableCell>
                                                         <TableCell sx={{ font: 'Oswald', fontSize: '15px' }} >
@@ -178,7 +230,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 className='custom-outlined-input'
                                                                 sx={{ borderRadius: '11px', height: '50px', textAlign: 'center' }}
                                                                 style={{ alignSelf: 'center' }}
-                                                                readOnly
+                                                                readOnly={update != "Update"}
                                                             >
                                                                 {accountCodeOptions.map((option) => (
                                                                     <MenuItem key={option} value={option}>
@@ -193,7 +245,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 fullWidth
                                                                 value={row.amount}
                                                                 onChange={(e) => handleTableChange(e, rowIndex, 'amount')}
-                                                                readOnly
+                                                                readOnly={update != "Update"}
                                                             />
                                                         </TableCell>
                                                         <TableCell>
@@ -201,7 +253,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 variant="contained"
                                                                 sx={{ borderRadius: '13px', height: '30px', backgroundColor: 'blue' }}
                                                                 onClick={() => handleDeleteRow(rowIndex)}
-                                                                disabled
+                                                                disabled={update != "Update"}
                                                             >
                                                                 Delete
                                                             </Button>
@@ -211,6 +263,16 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
+                                    <Grid item xs={12} marginTop={'1rem'}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}
+                                            onClick={handleAddRow} // Call the handleAddRow function to add a new row
+                                            disabled={update != "Update"}
+                                        >
+                                            Add Row
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -218,7 +280,9 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                 </Card>
             </DialogContent>
             <DialogActions style={{ justifyContent: 'center' }}>
-                <Button variant='contained' onClick={handleClose} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Close Payment</Button>
+                <Button variant='contained' onClick={handleForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
+                {update === 'Update' ? 'Update Payment' : 'Close Payment'}
+                </Button>
             </DialogActions>
         </Dialog>
 

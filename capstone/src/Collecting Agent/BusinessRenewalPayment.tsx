@@ -171,7 +171,7 @@ const BusinessRenewalPayment: React.FC = () => {
 
         }
         //Pending function condition goes here
-        else if (selectedValue === 'View') {
+        else if (selectedValue === 'View' || selectedValue === 'Update') {
             handleOpenView(value);
         }
 
@@ -268,7 +268,7 @@ const BusinessRenewalPayment: React.FC = () => {
                                         >
                                             <option value="">-select-</option>
                                             <option value="View">View</option>
-                                            {/*<option value="Update">Update</option>*/}
+                                            <option value="Update">Update</option>
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
@@ -297,6 +297,9 @@ const BusinessRenewalPayment: React.FC = () => {
                                             payment_date={applicationform.payment_date}
                                             agency={applicationform.agency}
                                             payment={applicationform.payment}
+                                            form = "Renewal"
+                                            id={applicationform.id}
+                                            update ={selectedAction[applicationform.id]}
                                         />
                                     </td>
                                 </tr>
