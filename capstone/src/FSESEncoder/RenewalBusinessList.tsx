@@ -14,6 +14,8 @@ import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedA
 import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
 import DeleteEncoderPopup from './DeleteEncoderPopup';
 import PrintEncoderPopup from './PrintEncoderPopup';
+import RenewalChoicePopup from './RenewalChoicePopup';
+import RenewPermit from './RenewPermit';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -39,6 +41,8 @@ const RenewalBusinessList: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
+    const [renewopen, setrenewOpen] = useState(false);
+    const [openRenewChoice, setOpenRenewChoice] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
     const [openViewRenewal, setopenViewRenewal] = useState<Record<number, boolean>>({});
     const [openUpdateRenewal, setopenUpdateRenewal] = useState<Record<number, boolean>>({});
@@ -150,6 +154,29 @@ const RenewalBusinessList: React.FC = () => {
         setOpen(false);
         handleRender();
     };
+
+    const handleClickOpenRenewChoice = () => {
+        setOpenRenewChoice(true);
+    };
+
+    //Close Add Application Popup
+    const handleClickCloseRenewChoice = () => {
+        setOpenRenewChoice(false);
+        handleRender();
+    };
+
+       //Open Add Application Popup
+    const handleClickOpenrenew = () => {
+        setrenewOpen(true);
+    };
+
+    //Close Add Application Popup
+    const handleClickCloserenew = () => {
+        setrenewOpen(false);
+        handleRender();
+    };
+    
+ 
 
     //VIEW Popup
     const handleOpenView = (no: number) => {
@@ -302,7 +329,7 @@ const RenewalBusinessList: React.FC = () => {
                             <Button
                                 variant="outlined"
                                 startIcon={<AddCircleOutlineIcon />}
-                                onClick={handleClickOpen}
+                                onClick={handleClickOpenRenewChoice}
                                 disableElevation
                                 sx={{
                                     color: 'lightgrey',
@@ -469,7 +496,15 @@ const RenewalBusinessList: React.FC = () => {
                             ))}
                     </tbody>
                 </table>
+                <RenewalChoicePopup 
+                open={openRenewChoice} 
+                handleClose={handleClickCloseRenewChoice}
+                handleOpenAddRenewal={handleClickOpen}
+                handleOpenFindRenewal={handleClickOpenrenew}
+                />
                 <AddApplication open={open} handleClose={handleClickClose} add="Renewal" />
+                <RenewPermit open = {renewopen} handleClose={handleClickCloserenew}/>
+                
             </div>
         </>
     )

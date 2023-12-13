@@ -9,11 +9,11 @@ interface DeleteProps {
     value: number;
     open: boolean;
     form: string;
-    agency: string;
+    agency?: string;
     handleClose: () => void;
 }
 
-const DeletePaymentPopup: React.FC<DeleteProps> = ({ agency, form, value, open, handleClose }) => {
+const DeletePaymentPopup: React.FC<DeleteProps> = ({form, value, open, handleClose }) => {
 
     let records = ''
     if (form === 'New') {

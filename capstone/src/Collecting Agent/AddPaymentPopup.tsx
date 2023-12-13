@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, OutlinedInput, Radio, RadioGroup, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axios from 'axios';
 
 const cardStyle = {
@@ -28,13 +28,24 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
         { natureOfCollection: '', accountCode: '', amount: '' },
     ]);
 
-    const payorRef = useRef<HTMLInputElement | null>(null);
-    const bspermitnoRef = useRef<HTMLInputElement | null>(null);
-    const businessnameRef = useRef<HTMLInputElement | null>(null);
-    const ornumberRef = useRef<HTMLInputElement | null>(null);
     const opsnumberRef = useRef<HTMLInputElement | null>(null);
-    const agencyRef = useRef<HTMLInputElement | null>(null);
-    const dateRef = useRef<HTMLInputElement | null>(null);
+    const opsdateRef = useRef<HTMLInputElement | null>(null);
+    const establishmentRef = useRef<HTMLInputElement | null>(null);
+    const locationRef = useRef<HTMLInputElement | null>(null);
+    const nameRef = useRef<HTMLInputElement | null>(null);
+    const paymentdateRef = useRef<HTMLInputElement | null>(null);
+    const ornumberRef = useRef<HTMLInputElement | null>(null);
+    const amountPaidRef = useRef<HTMLInputElement | null>(null);
+    const assesorRef = useRef<HTMLInputElement | null>(null);
+    const othersRef = useRef<HTMLInputElement | null>(null);
+
+
+
+    const [totalValue, setTotalValue] = useState(0);
+    const [selectedValue, setSelectedValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
+
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     const handleAddRow = () => {
         const newRow = { natureOfCollection: '', accountCode: '', amount: '' };
@@ -47,6 +58,46 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
         setTableData(updatedData);
     };
 
+
+    const calculateTotalAmount = () => {
+        let total = 0;
+        tableData.forEach((item) => {
+            // Convert amount to a number and add it to the total
+            total += parseFloat(item.amount) || 0;
+        });
+        return total;
+    };
+
+
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
+
+    const setfscValues = () => {
+        let fscValue = "";
+        if (selectedValue === 'Other') {
+            fscValue = inputValue;
+        }
+        else {
+            fscValue = selectedValue;
+        }
+        return fscValue;
+    }
+
+
+
+    const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(selectedValue)
+        setSelectedValue(event.target.value);
+        if (event.target.value !== 'Other') {
+            setIsButtonDisabled(false);
+        } else {
+            setIsButtonDisabled(true);
+        }
+    };
+
+    const accountCodeOptions = ["628-BFP-01", "628-BFP-02", "628-BFP-03", "628-BFP-04", "628-BFP-05", "628-BFP-06", "628-BFP-07", "628-BFP-08", "628-BFP-09", "628-BFP-10", "628-BFP-11a", "628-BFP-11b"];
     const accountCodeToNatureOfCollectionMap: { [key: string]: string } = {
         "628-BFP-01": "Fire Code Construction Tax ",
         "628-BFP-02": "Fire Code Realty Tax",
@@ -61,34 +112,41 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
         "628-BFP-11a": "Other Fees",
         "628-BFP-11b": "Certificate of Competency (COC)",
         // Add more mappings as needed
-      };
+    };
 
-    
-      const handleTableChange = (
+
+    const handleTableChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>,
         rowIndex: number,
         key: keyof typeof tableData[0]
-      ) => {
+    ) => {
         const newData = [...tableData];
-      
+
         if ('target' in e) {
-          newData[rowIndex][key] = e.target.value;
-      
-          // Update natureOfCollection when accountCode changes
-          if (key === 'accountCode') {
-            const selectedAccountCode = e.target.value;
-            newData[rowIndex].natureOfCollection = accountCodeToNatureOfCollectionMap[selectedAccountCode];
-          }
+            newData[rowIndex][key] = e.target.value;
+
+            // Update natureOfCollection when accountCode changes
+            if (key === 'accountCode') {
+                const selectedAccountCode = e.target.value;
+                newData[rowIndex].natureOfCollection = accountCodeToNatureOfCollectionMap[selectedAccountCode];
+            }
         } else {
-          newData[rowIndex][key] = e;
+            newData[rowIndex][key] = e;
         }
-      
+
         setTableData(newData);
-      };
+    };
+
+    const resetValues = () => {
       
+
+        setTableData([{ natureOfCollection: '', accountCode: '', amount: '' }]);
+    };
+
     const AddForm = async () => {
         const convertedTableData = tableData.map(item => [item.natureOfCollection, item.accountCode, item.amount]);
-
+        const totalAmount = calculateTotalAmount();
+        const fscValue = setfscValues();
         let NEW_URL = '';
         if (add === 'New') {
             NEW_URL = 'http://localhost:8080/newBusinessPayment/insertNewBpPayment';
@@ -103,34 +161,39 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
             NEW_URL = 'http://localhost:8080/BuildingPermitPayment/insertBuildingPayment';
         }
         axios.post(NEW_URL, {
-            business_permitno: bspermitnoRef.current?.value,
-            payor: payorRef.current?.value,
+            projectname: establishmentRef.current?.value,
+            location: locationRef.current?.value,
+            name: nameRef.current?.value,
+            fsc: fscValue,
             or_no: ornumberRef.current?.value,
             ops_no: opsnumberRef.current?.value,
-            agency: agencyRef.current?.value,
-            payment_date: dateRef.current?.value,
+            ops_date: opsdateRef.current?.value,
+            payment_date: paymentdateRef.current?.value,
+            amount_paid: amountPaidRef.current?.value,
+            total_amount: totalAmount,
+            assessor_name: assesorRef.current?.value,
             payment: convertedTableData
         })
             .then(res => {
                 if (res.data) {
-                    console.log(bspermitnoRef.current?.value)
                     console.log("Successfully Added!" + JSON.stringify(res.data));
-                    handleClose()
+                    resetValues();
+                    handleClose(); // Ensure handleClose is accessible in this scope
+                   
+                  
                 }
-
             })
             .catch(err => {
                 console.log(err)
             })
-
     }
 
-    const accountCodeOptions = ["628-BFP-01", "628-BFP-02", "628-BFP-03","628-BFP-04", "628-BFP-05", "628-BFP-06","628-BFP-07", "628-BFP-08", "628-BFP-09","628-BFP-10", "628-BFP-11a", "628-BFP-11b"];
+
 
 
     return (
         <div>
-            <Dialog open={open} fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey', maxWidth:'1200px'} }}>
+            <Dialog open={open} fullWidth PaperProps={{ style: { backgroundColor: 'lightgrey', maxWidth: '1200px' } }}>
                 <DialogTitle sx={{ height: '0px' }}>
                     <IconButton sx={{ marginTop: '-25px', marginLeft: '-25px' }} onClick={handleClose}>
                         <CancelIcon sx={{ color: 'red' }} />
@@ -140,43 +203,64 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
                     <Card style={cardStyle} elevation={0}>
                         <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-90px' }} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
-                                <Grid item xs={10} sm={6}>
+                                <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' style={{marginLeft:'100px'}} >Payor</p>
-                                        <OutlinedInput inputRef={payorRef} fullWidth className='custom-outlined-input' style={{marginLeft:'100px', borderRadius: '11px', width: '340px'}} />
+                                        <p style={{ alignSelf: 'center', fontSize: '1.5em', fontWeight: 'bold' }}>Order of Payment</p>
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' >Business Permit No.</p>
-                                        <OutlinedInput inputRef={bspermitnoRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} />
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }}>OPS Number</p>
+                                        <OutlinedInput inputRef={opsnumberRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'  style={{marginLeft:'100px'}}>O.R. No.</p>
-                                        <OutlinedInput inputRef={ornumberRef} fullWidth className='custom-outlined-input' style={{marginLeft:'100px', borderRadius: '11px', width: '340px'}} />
+                                        <p className='custom-paragraph' >Date</p>
+                                        <OutlinedInput inputRef={opsdateRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} placeholder='EX: YEAR-MONTH-DAY' />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={10} sm={6}>
+                                <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' >OPS Number</p>
-                                        <OutlinedInput inputRef={opsnumberRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} />
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Name of Establishment</p>
+                                        <OutlinedInput inputRef={establishmentRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '81%' }} />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={10} sm={6}>
+                                <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph'  style={{marginLeft:'100px'}}>Date</p>
-                                        <OutlinedInput inputRef={dateRef} fullWidth className='custom-outlined-input' style={{marginLeft:'100px', borderRadius: '11px', width: '340px'}} placeholder='EX: YEAR-MONTH-DAY' />
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Location</p>
+                                        <OutlinedInput inputRef={locationRef} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} />
                                     </Stack>
                                 </Grid>
-                                <Grid item xs={10} sm={6}>
+                                <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                        <p className='custom-paragraph' >Agency</p>
-                                        <OutlinedInput inputRef={agencyRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} />
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Owner/Name of Representative</p>
+                                        <OutlinedInput inputRef={nameRef} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} />
                                     </Stack>
                                 </Grid>
-                                <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
+                                <Grid item xs={10} sm={11}>
+                                    <Stack spacing={-1} style={{ alignItems: 'flex-start', marginLeft: '100px' }}>
+                                        <RadioGroup
+                                            row
+                                            aria-labelledby="demo-row-radio-buttons-group-label"
+                                            name="row-radio-buttons-group"
+                                            value={selectedValue}
+                                            onChange={handleRadioChange}
+
+                                        >
+                                            <FormControlLabel value="Fire Safety Evaluation Clearance" style={{ marginRight: '60px', paddingTop: '15px' }} control={<Radio />} label="Fire Safety Evaluation Clearance" />
+                                            <FormControlLabel value="Fire Safety Inspection Certificate" style={{ marginRight: '60px', paddingTop: '15px' }} control={<Radio />} label="Fire Safety Inspection Certificate" />
+                                            <FormControlLabel value="Other" style={{ marginRight: '50px', paddingTop: '15px' }} control={<Radio />} label="Other" />
+                                        </RadioGroup>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={11}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Others</p>
+                                        <OutlinedInput value={inputValue} onChange={handleInputChange} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '360px', marginLeft: '100px' }} disabled={selectedValue !== 'Other'} placeholder="Please Indacate Others" />
+                                    </Stack>
+                                </Grid>
+                                <Grid container marginTop={'2rem'} style={{ height: '100%' }}>
                                     <Grid item xs={12}>
                                         <TableContainer>
                                             <Table sx={{ width: '100%', border: '1px solid #e0e0e0' }}>
@@ -198,14 +282,14 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                                                     onChange={(e) => handleTableChange(e, rowIndex, 'natureOfCollection')}
                                                                 />
                                                             </TableCell>
-                                                            <TableCell sx={{ font: 'Oswald', fontSize: '15px'}} >
+                                                            <TableCell sx={{ font: 'Oswald', fontSize: '15px' }} >
                                                                 <Select
                                                                     value={row.accountCode}
                                                                     onChange={(e) => handleTableChange(e, rowIndex, 'accountCode')}
                                                                     fullWidth
                                                                     className='custom-outlined-input'
-                                                                    sx={{ borderRadius: '11px', height:'50px', textAlign: 'center' }}
-                                                                    style={{alignSelf:'center'}}
+                                                                    sx={{ borderRadius: '11px', height: '50px', textAlign: 'center' }}
+                                                                    style={{ alignSelf: 'center' }}
                                                                 >
                                                                     {accountCodeOptions.map((option) => (
                                                                         <MenuItem key={option} value={option}>
@@ -214,9 +298,9 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                                                     ))}
                                                                 </Select>
                                                             </TableCell>
-                                                            <TableCell sx={{ fontFamily: 'Oswald', fontSize: '15px', alignItems:'center' }}>
+                                                            <TableCell sx={{ fontFamily: 'Oswald', fontSize: '15px', alignItems: 'center' }}>
                                                                 <OutlinedInput
-                                                                    style={{  margin: 'auto', textAlign: 'center' }}
+                                                                    style={{ margin: 'auto', textAlign: 'center' }}
                                                                     fullWidth
                                                                     value={row.amount}
                                                                     onChange={(e) => handleTableChange(e, rowIndex, 'amount')}
@@ -247,12 +331,42 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Total Amount of Fire Code Fees</p>
+                                        <OutlinedInput fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} value={calculateTotalAmount().toLocaleString()} readOnly />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' >Payment Date</p>
+                                        <OutlinedInput inputRef={paymentdateRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Official Receipt No</p>
+                                        <OutlinedInput inputRef={ornumberRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' >Amount Paid</p>
+                                        <OutlinedInput inputRef={amountPaidRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={11}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Name of Fire Code Fee Assessor</p>
+                                        <OutlinedInput inputRef={assesorRef} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} />
+                                    </Stack>
+                                </Grid>
                             </Grid>
                         </CardContent>
                     </Card>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Application</Button>
+                    <Button variant='contained' onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>Add Payment</Button>
                 </DialogActions>
             </Dialog>
 

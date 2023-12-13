@@ -62,6 +62,9 @@ const OccupancyListApproved: React.FC = () => {
         fire_inspectors: ['default', 'default1'],
         inspection_no: 0,
         date_inspection: '2023-09-01',
+        amount_additional:0,
+        or_no_additional:"",
+        payment_date_additional:'2023-09-01',
         received_name: 'Default',
         receivedoccu_date: '2023-09-01',
         recommendations: ['default', 'default1'],
@@ -407,6 +410,9 @@ const OccupancyListApproved: React.FC = () => {
                                             or_no={applicationform.or_no}
                                             remarks={applicationform.remarks}
                                             payment_date={applicationform.payment_date}
+                                            addtional_paymentdate={applicationform.payment_date_additional}
+                                            additional_amount= {applicationform.amount_additional}
+                                            additional_or_no={applicationform.or_no_additional}
                                             recommendations={applicationform.recommendations}
                                             activity={selectedAction[applicationform.id]}
                                         />

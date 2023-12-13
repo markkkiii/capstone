@@ -145,6 +145,9 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
+        amount_additional: additionalpaymentRef.current?.value,
+        or_no_additional:additionalOrnoRef.current?.value,
+        payment_date_additional:additionalpaymentRef.current?.value,
         recommendations: inputInspectorArray,
         remarks: 'FSIC Not Printed'
       }
@@ -260,7 +263,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
                     </Stack>
                   </Grid>
 
-                  {/*<Grid item xs={10} sm={11}>
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
                       <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Additional Fees (If Any)</h2>
                     </Stack>
@@ -282,7 +285,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
                       <p className='custom-paragraph'  >Amount</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={additionalpaymentRef} />
                     </Stack>
-                  </Grid>
+                  </Grid>{/*
                   {/*<Grid item xs={10} sm={11}>
                     <table>
                       <thead style={{ textAlign: "center" }}>

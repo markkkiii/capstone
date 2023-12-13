@@ -37,6 +37,9 @@ export interface formdetails {
   amount: number;
   or_no: string;
   payment_date: string;
+  additional_amount:number;
+  additional_or_no:string;
+  addtional_paymentdate:string;
   recommendations: string[];
   open: boolean;
   activity: string;
@@ -141,6 +144,9 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
         amount: AmountRef.current?.value,
         or_no: OrNoRef.current?.value,
         payment_date: dateRef.current?.value,
+        amount_additional: additionalpaymentRef.current?.value,
+        or_no_additional:additionalOrnoRef.current?.value,
+        payment_date_additional:additionaldateRef.current?.value,
         recommendations: inputRecommendationArray,
         remarks: props.remarks
       }
@@ -148,7 +154,8 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
       console.log(res.data);
       alert("Update Successful!");
       props.handleClose();
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      console.log(err)})
   }
 
   // Sets the values of the array and uploads data to db
@@ -255,7 +262,7 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                     </Stack>
                   </Grid>
 
-                  {/*<Grid item xs={10} sm={11}>
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
                       <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Additional Fees (If Any)</h2>
                     </Stack>
@@ -263,21 +270,21 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={additionaldateRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={additionaldateRef} disabled={props.activity !== 'Update'} defaultValue={props.addtional_paymentdate ? new Date(props.addtional_paymentdate).toISOString().split('T')[0] : ''}/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >O.R. No.</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={additionalOrnoRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={additionalOrnoRef} disabled={props.activity !== 'Update'} defaultValue={props.additional_or_no}/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Amount</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={additionalpaymentRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={additionalpaymentRef} disabled={props.activity !== 'Update'}defaultValue={props.amount}/>
                     </Stack>
-                  </Grid>
+                  </Grid>{/*
                   {/*<Grid item xs={10} sm={11}>
                     <table>
                       <thead style={{ textAlign: "center" }}>
