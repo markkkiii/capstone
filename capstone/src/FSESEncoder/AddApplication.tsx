@@ -19,10 +19,18 @@ export interface formdetails {
     open: boolean;
     add: string;
     handleClose: () => void;
+    buildingpermit?:string;
+    name?:string;
+    businessname?:string;
+    address?: string;
+    natureofbusiness?:string;
+    typeofoccupancy?:string;
+    contactno?:string;
+    email?:string;
 }
 
 
-const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
+const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, buildingpermit,businessname ,address, natureofbusiness, typeofoccupancy, contactno, email }) => {
 
     const buildingpermRef = useRef<HTMLInputElement | null>(null);
     const permiteeRef = useRef<HTMLInputElement | null>(null);
@@ -61,6 +69,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
                     console.log(buildingpermRef.current?.value)
                     console.log("Successfully Added!" + JSON.stringify(res.data));
                     handleClose()
+                   
                 }
 
             })
@@ -85,49 +94,49 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Building Permit Number</p>
-                                        <OutlinedInput inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={buildingpermit || ""} inputRef={buildingpermRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Name of Owner/Permitee</p>
-                                        <OutlinedInput inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={name ||""} inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Business Name</p>
-                                        <OutlinedInput inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={businessname || ""}inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Address</p>
-                                        <OutlinedInput inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={address || ""} inputRef={addressRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Nature of Business</p>
-                                        <OutlinedInput inputRef={naturebusinessRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput defaultValue={natureofbusiness || ""} inputRef={naturebusinessRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={5}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Type of Occupancy</p>
-                                        <OutlinedInput inputRef={typeofoccupancyRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={typeofoccupancy || ""} inputRef={typeofoccupancyRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Contact Number</p>
-                                        <OutlinedInput inputRef={contactnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
+                                        <OutlinedInput defaultValue={contactno || ""} inputRef={contactnoRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Email</p>
-                                        <OutlinedInput inputRef={emailRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} />
+                                        <OutlinedInput defaultValue={email || ""} inputRef={emailRef} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>

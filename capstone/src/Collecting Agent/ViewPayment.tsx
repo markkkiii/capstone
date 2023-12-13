@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Card, CardContent, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, OutlinedInput, Radio, RadioGroup, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axios from 'axios';
 
 const cardStyle = {
@@ -16,16 +16,22 @@ const cardStyle = {
 
 export interface formdetails {
     open: boolean;
-    payor: string;
-    business_permitno: string;
-    or_no: string;
-    ops_no: string;
-    payment_date: string;
-    agency: string;
-    payment: string[][];
+    id: number;
     update: string;
     form: string;
-    id: number;
+    projectname: string;
+    location: string;
+    name: string;
+    fsc: string;
+    or_no: string;
+    ops_no: string;
+    ops_date: string;
+    payment_date: string;
+    amount_paid: number;
+    total_amount: number;
+    assessor_name: string;
+    payment: string[][];
+
     handleClose: () => void;
 
 }
@@ -50,7 +56,36 @@ const accountCodeToNatureOfCollectionMap: { [key: string]: string } = {
 
 
 
-const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business_permitno, ops_no, or_no, agency, payment_date, payment, form, update, id }) => {
+const ViewPayment: React.FC<formdetails> = ({ open, handleClose, ops_no, or_no, payment_date, payment, form, update, id, projectname, location, name, fsc, assessor_name, total_amount, ops_date, amount_paid }) => {
+
+    const options = [
+        'Fire Safety Evaluation Clearance',
+        'Fire Safety Inspection Certificate',
+        'Other'
+    ];
+    const [selectedValue, setSelectedValue] = useState(
+        options.includes(fsc) ? fsc : 'Other'
+    );
+    const [inputValue, setInputValue] = useState(
+        fsc === 'Fire Safety Evaluation Clearance' || fsc === 'Fire Safety Inspection Certificate' ? "":fsc
+    );
+  
+
+    const opsnumberRef = useRef<HTMLInputElement | null>(null);
+    const opsdateRef = useRef<HTMLInputElement | null>(null);
+    const establishmentRef = useRef<HTMLInputElement | null>(null);
+    const locationRef = useRef<HTMLInputElement | null>(null);
+    const nameRef = useRef<HTMLInputElement | null>(null);
+    const paymentdateRef = useRef<HTMLInputElement | null>(null);
+    const ornumberRef = useRef<HTMLInputElement | null>(null);
+    const amountPaidRef = useRef<HTMLInputElement | null>(null);
+    const assesorRef = useRef<HTMLInputElement | null>(null);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const othersRef = useRef<HTMLInputElement | null>(null);
+
+   
+
+
 
     const [tableData, setTableData] = useState<Array<{ natureOfCollection: string; accountCode: string; amount: string }>>(
         payment.map(item => ({
@@ -60,15 +95,48 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
         })),
     );
 
-    const payorRef = useRef<HTMLInputElement | null>(null);
-    const bspermitnoRef = useRef<HTMLInputElement | null>(null);
-    const ornumberRef = useRef<HTMLInputElement | null>(null);
-    const opsnumberRef = useRef<HTMLInputElement | null>(null);
-    const agencyRef = useRef<HTMLInputElement | null>(null);
-    const dateRef = useRef<HTMLInputElement | null>(null);
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+      };
+
+    const calculateTotalAmount = () => {
+        let total = 0;
+        tableData.forEach((item) => {
+            // Convert amount to a number and add it to the total
+            total += parseFloat(item.amount) || 0;
+        });
+        return total;
+    };
+
+    const setfscValues = () =>{
+        let fscValue = "";
+        if(selectedValue === 'Other'){
+            fscValue = inputValue;
+        }
+        else{
+            fscValue = selectedValue;
+        }
+        return fscValue;
+    }
+
+
+
+
+    const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedValue(event.target.value);
+        console.log(selectedValue)
+        if (event.target.value !== 'other') {
+            setIsButtonDisabled(false);
+        } else {
+            setIsButtonDisabled(true);
+        }
+    };
+
 
     const updateForm = async () => {
         const convertedTableData = tableData.map(item => [item.natureOfCollection, item.accountCode, item.amount]);
+        const totalAmount = calculateTotalAmount();
+        const fscValue = setfscValues();
 
         let NEW_URL = '';
         if (form === 'New') {
@@ -84,17 +152,22 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
             NEW_URL = 'http://localhost:8080/BuildingPermitPayment/updateBuildingPayment?id=';
         }
         axios.put(NEW_URL + id, {
-            business_permitno: bspermitnoRef.current?.value,
-            payor: payorRef.current?.value,
+            projectname: establishmentRef.current?.value,
+            location: locationRef.current?.value,
+            name: nameRef.current?.value,
+            fsc: fscValue,
             or_no: ornumberRef.current?.value,
             ops_no: opsnumberRef.current?.value,
-            agency: agencyRef.current?.value,
-            payment_date: dateRef.current?.value,
+            ops_date: opsdateRef.current?.value,
+            payment_date: paymentdateRef.current?.value,
+            amount_paid: amountPaidRef.current?.value,
+            total_amount:totalAmount,
+            assessor_name: assesorRef.current?.value,
             payment: convertedTableData
         })
             .then(res => {
                 if (res.data) {
-                    console.log(bspermitnoRef.current?.value)
+                    console.log(ornumberRef.current?.value)
                     console.log("Successfully Added!" + JSON.stringify(res.data));
                     handleClose()
                 }
@@ -102,6 +175,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
             })
             .catch(err => {
                 console.log(err)
+                alert("Unable to Update Form")
             })
 
     }
@@ -143,10 +217,10 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
     };
 
     const handleForm = () => {
-        if(update!= 'Update'){
+        if (update !== 'Update') {
             handleClose();
         }
-        else{
+        else {
             updateForm();
         }
     }
@@ -163,40 +237,61 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                 <Card style={cardStyle} elevation={0}>
                     <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-90px' }} >
                         <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
-                            <Grid item xs={10} sm={6}>
+                            <Grid item xs={10} sm={11}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Payor</p>
-                                    <OutlinedInput inputRef={payorRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} defaultValue={payor} readOnly={update != "Update"} />
+                                    <p style={{ alignSelf: 'center', fontSize: '1.5em', fontWeight: 'bold' }}>Order of Payment</p>
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' >Business Permit No.</p>
-                                    <OutlinedInput inputRef={bspermitnoRef} defaultValue={business_permitno} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
+                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }}>OPS Number</p>
+                                    <OutlinedInput inputRef={opsnumberRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} defaultValue={ops_no} readOnly = {update !=='Update'} />
                                 </Stack>
                             </Grid>
                             <Grid item xs={10} sm={6}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }}>O.R. No.</p>
-                                    <OutlinedInput inputRef={ornumberRef} defaultValue={or_no} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} readOnly={update != "Update"} />
+                                    <p className='custom-paragraph' >Date</p>
+                                    <OutlinedInput inputRef={opsdateRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} placeholder='EX: YEAR-MONTH-DAY' defaultValue={ops_date ? new Date(ops_date).toISOString().split('T')[0] : ''} readOnly = {update !=='Update'}/>
                                 </Stack>
                             </Grid>
-                            <Grid item xs={10} sm={6}>
+                            <Grid item xs={10} sm={11}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' >OPS Number</p>
-                                    <OutlinedInput inputRef={opsnumberRef} defaultValue={ops_no} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
+                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Name of Establishment</p>
+                                    <OutlinedInput inputRef={establishmentRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '81%' }} defaultValue={projectname} readOnly = {update !=='Update'}/>
                                 </Stack>
                             </Grid>
-                            <Grid item xs={10} sm={6}>
+                            <Grid item xs={10} sm={11}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Date</p>
-                                    <OutlinedInput inputRef={dateRef} defaultValue={payment_date ? new Date(payment_date).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' readOnly={update != "Update"} />
+                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Location</p>
+                                    <OutlinedInput inputRef={locationRef}  defaultValue={location} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} readOnly = {update !=='Update'}/>
                                 </Stack>
                             </Grid>
-                            <Grid item xs={10} sm={6}>
+                            <Grid item xs={10} sm={11}>
                                 <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                                    <p className='custom-paragraph' >Agency</p>
-                                    <OutlinedInput inputRef={agencyRef} defaultValue={agency} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly={update != "Update"} />
+                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Owner/Name of Representative</p>
+                                    <OutlinedInput inputRef={nameRef} fullWidth  defaultValue={name} className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} readOnly = {update !=='Update'}/>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={10} sm={11}>
+                                <Stack spacing={-1} style={{ alignItems: 'flex-start', marginLeft: '100px' }}>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="row-radio-buttons-group"
+                                        value={selectedValue}
+                                        onChange={handleRadioChange}
+                                        
+                                    >
+                                        <FormControlLabel value="Fire Safety Evaluation Clearance" style={{ marginRight: '60px', paddingTop: '15px' }} control={<Radio />} label="Fire Safety Evaluation Clearance" disabled={update !== "Update"}/>
+                                        <FormControlLabel value="Fire Safety Inspection Certificate" style={{ marginRight: '60px', paddingTop: '15px' }} control={<Radio />} label="Fire Safety Inspection Certificate" disabled={update !== "Update"}/>
+                                        <FormControlLabel value="Other" style={{ marginRight: '50px', paddingTop: '15px' }} control={<Radio />} label="Other" disabled={update !== "Update"}/>
+                                    </RadioGroup>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={10} sm={11}>
+                                <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                    <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Others</p>
+                                    <OutlinedInput value={inputValue} onChange={handleInputChange} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '360px', marginLeft: '100px' }} disabled={selectedValue !== 'Other' || update !=='Update'} placeholder="Please Indacate Others" />
                                 </Stack>
                             </Grid>
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
@@ -219,7 +314,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 fullWidth
                                                                 value={row.natureOfCollection}
                                                                 onChange={(e) => handleTableChange(e, rowIndex, 'natureOfCollection')}
-                                                                readOnly={update != "Update"}
+                                                                readOnly={update !== "Update"}
                                                             />
                                                         </TableCell>
                                                         <TableCell sx={{ font: 'Oswald', fontSize: '15px' }} >
@@ -230,7 +325,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 className='custom-outlined-input'
                                                                 sx={{ borderRadius: '11px', height: '50px', textAlign: 'center' }}
                                                                 style={{ alignSelf: 'center' }}
-                                                                readOnly={update != "Update"}
+                                                                readOnly={update !== "Update"}
                                                             >
                                                                 {accountCodeOptions.map((option) => (
                                                                     <MenuItem key={option} value={option}>
@@ -245,7 +340,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 fullWidth
                                                                 value={row.amount}
                                                                 onChange={(e) => handleTableChange(e, rowIndex, 'amount')}
-                                                                readOnly={update != "Update"}
+                                                                readOnly={update !== "Update"}
                                                             />
                                                         </TableCell>
                                                         <TableCell>
@@ -253,7 +348,7 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                                                 variant="contained"
                                                                 sx={{ borderRadius: '13px', height: '30px', backgroundColor: 'blue' }}
                                                                 onClick={() => handleDeleteRow(rowIndex)}
-                                                                disabled={update != "Update"}
+                                                                disabled={update !== "Update"}
                                                             >
                                                                 Delete
                                                             </Button>
@@ -268,20 +363,50 @@ const ViewPayment: React.FC<formdetails> = ({ open, handleClose, payor, business
                                             variant="contained"
                                             sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}
                                             onClick={handleAddRow} // Call the handleAddRow function to add a new row
-                                            disabled={update != "Update"}
+                                            disabled={update !== "Update"}
                                         >
                                             Add Row
                                         </Button>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid>  
+                            <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Total Amount of Fire Code Fees</p>
+                                        <OutlinedInput fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} value={calculateTotalAmount().toLocaleString()} readOnly />
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' >Payment Date</p>
+                                        <OutlinedInput inputRef={paymentdateRef}  defaultValue={payment_date ? new Date(payment_date).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly = {update !=='Update'}/>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Official Receipt No</p>
+                                        <OutlinedInput inputRef={ornumberRef} fullWidth  defaultValue={or_no} className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' readOnly = {update !=='Update'}/>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={6}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' >Amount Paid</p>
+                                        <OutlinedInput inputRef={amountPaidRef}  defaultValue={amount_paid} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px', width: '360px' }} readOnly = {update !=='Update'}/>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={10} sm={11}>
+                                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
+                                        <p className='custom-paragraph' style={{ marginLeft: '100px' }} >Name of Fire Code Fee Assessor</p>
+                                        <OutlinedInput inputRef={assesorRef}  defaultValue={assessor_name} fullWidth className='custom-outlined-input' style={{ borderRadius: '11px', width: '81%', marginLeft: '100px' }} readOnly = {update !=='Update'}/>
+                                    </Stack>
+                                </Grid>     
                         </Grid>
                     </CardContent>
                 </Card>
             </DialogContent>
             <DialogActions style={{ justifyContent: 'center' }}>
                 <Button variant='contained' onClick={handleForm} sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }}>
-                {update === 'Update' ? 'Update Payment' : 'Close Payment'}
+                    {update === 'Update' ? 'Update Payment' : 'Close Payment'}
                 </Button>
             </DialogActions>
         </Dialog>

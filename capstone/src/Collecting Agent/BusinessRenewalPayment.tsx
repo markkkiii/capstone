@@ -43,17 +43,22 @@ const BusinessRenewalPayment: React.FC = () => {
     const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
     const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [deleteit, setDelete] = useState(false);
+    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
-        payor: 'Default',
-        business_permitno: "",
+        projectname: "",
+        location: "",
+        name: "",
+        fsc: "",
         or_no: "",
         ops_no: "",
+        ops_date: "2023-02-01",
         payment_date: "2023-02-01",
-        agency: "",
+        amount_paid: 2000,
+        total_amount: 2000,
+        assessor_name: "",
         payment: [['Test1', 'Test2', 'Test3']]
     }])
 
@@ -149,25 +154,32 @@ const BusinessRenewalPayment: React.FC = () => {
         setPrint(false);
     };
 
-    // Delete Popup
-    const handleDeleteOpen = () => {
-        setDelete(true);
+ 
+     //Delete Popup
+     const handleOpenDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: true,
+        }));
     };
 
-    // Delete Popup
-    const handleDeleteClose = () => {
-        setDelete(false);
-        handleRender();
+    //Delete Popup Close
+    const handleCloseDelete = (no: number) => {
+        setOpenDelete((prevRenewal) => ({
+            ...prevRenewal,
+            [no]: false,
+        }));
+        handleRender()
     };
 
 
     //Handles the button Logic 
-    const handleNext = (value: number, buildingno: string) => {
+    const handleNext = (value: number) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
             // Perform delete logic here
-            handleDeleteOpen();
+            handleOpenDelete(value);
 
         }
         //Pending function condition goes here
@@ -228,12 +240,11 @@ const BusinessRenewalPayment: React.FC = () => {
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Business Permit #</th>
+                            <th>OR No #</th>
                             <th>Payor</th>
-                            <th>O.R. Number</th>
-                            <th>OPS Number</th>
+                            <th>Project Name</th>
+                            <th>Total</th>
                             <th>Payment Date</th>
-                            <th>Agency</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -246,20 +257,19 @@ const BusinessRenewalPayment: React.FC = () => {
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
                                     return (
-                                        applicationform.business_permitno.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.payor.toLowerCase().includes(searchText.toLowerCase())
+                                        applicationform.ops_no.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        applicationform.name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
                             .map((applicationform, key = applicationform.id) => (
                                 <tr key={applicationform.id}>
                                     <td>{applicationform.id}</td>
-                                    <td>{applicationform.business_permitno}</td>
-                                    <td>{applicationform.payor}</td>
                                     <td>{applicationform.or_no}</td>
-                                    <td>{applicationform.ops_no}</td>
+                                    <td>{applicationform.name}</td>
+                                    <td>{applicationform.projectname}</td>
+                                    <td>{applicationform.total_amount}</td>
                                     <td>{applicationform.payment_date ? new Date(applicationform.payment_date).toISOString().split('T')[0] : ''}</td>
-                                    <td>{applicationform.agency}</td>
                                     <td>
                                         <select
                                             value={selectedAction[applicationform.id] || ''}
@@ -272,34 +282,38 @@ const BusinessRenewalPayment: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.business_permitno)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                       
+
                                         <PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
                                         />
                                         <DeletePaymentPopup
-                                            open={deleteit}
+                                            open={openDelete[applicationform.id]}
                                             value={applicationform.id}
-                                            form = "Renewal"
-                                            handleClose={() => handleDeleteClose()}
-                                            agency={applicationform.agency}
+                                            form="Renewal"
+                                            handleClose={() => handleCloseDelete(applicationform.id)}
                                         />
                                         <ViewPayment
-                                            open={openViewPayment[applicationform.id]}
-                                            handleClose={() => handleCloseView(applicationform.id)}
-                                            payor={applicationform.payor}
-                                            business_permitno = {applicationform.business_permitno}
-                                            or_no={applicationform.or_no}
-                                            ops_no={applicationform.ops_no}
-                                            payment_date={applicationform.payment_date}
-                                            agency={applicationform.agency}
-                                            payment={applicationform.payment}
-                                            form = "Renewal"
-                                            id={applicationform.id}
-                                            update ={selectedAction[applicationform.id]}
+                                         open ={openViewPayment[applicationform.id]}
+                                         id ={applicationform.id}
+                                         update = {selectedAction[applicationform.id]}
+                                         form = "Renewal"
+                                         projectname={applicationform.projectname}
+                                         location={applicationform.location}
+                                         name = {applicationform.name}
+                                         fsc={applicationform.fsc}
+                                         or_no={applicationform.or_no}
+                                         ops_no={applicationform.ops_no}
+                                         ops_date={applicationform.ops_date}
+                                         payment_date={applicationform.payment_date}
+                                         amount_paid={applicationform.amount_paid}
+                                         total_amount={applicationform.total_amount}
+                                         assessor_name={applicationform.assessor_name}
+                                         payment={applicationform.payment}
+                                         handleClose={() =>handleCloseView(applicationform.id)}
                                         />
                                     </td>
                                 </tr>
