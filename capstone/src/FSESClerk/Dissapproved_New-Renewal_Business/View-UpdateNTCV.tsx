@@ -177,7 +177,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
         ntc_date: NTCDateRef.current?.value,
         ntcv_no: NTCVRef.current?.value,
         ntcv_date: NTCVDateRef.current?.value,
-        remarks: selectedRemarks,
+        remarks: props.remarks,
         team_leader: teamLeaderRef.current?.value,
         fire_inspectors: inputInspectorArray,
         defects: arrayList,
@@ -373,11 +373,11 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Received By</p>
+                      <p className='custom-paragraph'>Received By</p>
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.receivedby} inputRef={ReceivedByRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
-                  <Grid item xs={10} sm={5}>
+                  {/*<Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start', marginTop: '18px' }}>
                       <p className='custom-paragraph' >Status after Grace Period</p>
                       <Select
@@ -391,7 +391,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                         <MenuItem value="Issued Abatement">Issued Abatement</MenuItem>
                       </Select>
                     </Stack>
-                  </Grid>
+                        </Grid>*/}
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Received Date</p>
