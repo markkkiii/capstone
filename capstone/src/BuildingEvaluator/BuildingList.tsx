@@ -14,6 +14,9 @@ import ViewPopup from '../BuildingEvaluator/ViewPopup';
 import PrintPopup from '../PrintPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import ViewEvaluatePopup from '../BuildingEvaluator/ViewEvaluatePopup';
+import { NewBusinessListPending } from '../types/buildingEvaluator';
+import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
+import { buildingEvalCollection } from '../lib/controller';
 
 
 const AdditionalTab: React.FC = () => {
@@ -190,18 +193,23 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
 
-  // const handleEvaluateClick = (buildingnoval:string, updateval:boolean, testval?:string) => {
-  //   // Navigate to the EvaluateApplicationForm with props
-  //   const state: EvaluateProps = { update: updateval, buildingno: buildingnoval, testvalue: testval};
-  //   navigate('/evaluate',{ state });
-  // };
+  const [buildingEvaluator, setBuildingEvaluator] = useState<NewBusinessListPending[]>([]);
 
-  // const handleViewEvaluateClick = (buildingnoval:string) => {
-  //   // Navigate to the EvaluateApplicationForm with props
-  //   const state: ViewEvaluateProps = {  buildingno: buildingnoval};
-  //   navigate('/viewevaluate',{ state });
-  // };
-
+  useEffect(
+    () => 
+      onSnapshot(buildingEvalCollection, (snapshot:
+        QuerySnapshot<DocumentData>) => {
+          setBuildingEvaluator(
+            snapshot.docs.map((doc) => {
+              return {
+                id: doc.id,
+                ...doc.data(),
+              };
+            })
+          );
+        }),
+      []
+  )
 
   //Handles the selection of each Record, so that it doesnt change all the drop down option each change
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
