@@ -1,4 +1,4 @@
-# Bureau of Fire Protection Online Management System - Frontend
+# Bureau of Fire Protection Online Management System
 
 ![image](https://github.com/ArtSkyes/capstone/assets/89622081/6d54de4c-c7a6-4837-95d0-6f795f5fb16a)
 
