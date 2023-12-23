@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack } from '@mui/material';
 import axios from 'axios';
+import { updateBuildingPermit } from '../lib/controller';
 
 
 const cardStyle = {
@@ -20,7 +21,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-    no: number;
+    no: string;
     buildingPermitNo: string;
     applicantName: string;
     projectName: string;
@@ -34,7 +35,7 @@ export interface formdetails {
     numberstorey?: number;
     newconsreno?: string;
     buildcons?: boolean;
-    defects?: string;
+    defects?: string[];
     open: boolean;
     update: string;
     handleClose: () => void;
@@ -85,7 +86,7 @@ export default function EvaluatePopup(props: formdetails) {
     };
 
     const updatePermit = async () => {
-        axios.put('http://localhost:8080/BFP/updatePermit?id=' + props.no,
+        /*axios.put('http://localhost:8080/BFP/updatePermit?id=' + props.no,
             {
                 buildingpermitno: buildingpermRef.current?.value,
                 namepermitee: permiteeRef.current?.value,
@@ -107,7 +108,27 @@ export default function EvaluatePopup(props: formdetails) {
             console.log(res.data);
             alert("Evaluation Successful!");
             props.handleClose()
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err))*/
+
+        updateBuildingPermit(props.no,
+            {
+                applicantName: (permiteeRef.current?.value || ''),
+                buildingNo: (buildingpermRef.current?.value || ''),
+                dateReceived: (dateReceivedRef.current?.value || ''),
+                projectName: (businessnameRef.current?.value || ''),
+                remarks: "Not Printed",
+                status: (selectedValue || ''),
+                address: (addressRef.current?.value || ''),
+                receivedby: (receivedbyRef.current?.value || ''),
+                typeofoccupancy: (typeofoccupancyRef.current?.value || ''),
+                contactno: (contactnoRef.current?.value || ''),
+                evaluator: (EvaluatorRef.current?.value || ''),
+                nostorey: parseInt(NumberStoreyRef.current?.value || '0'),
+                constructrenovate: (selectedConsReno || ''),
+                structureconstructed: (selectedCons || false),
+                defects: [DefectsRef.current?.value || ''],
+            })
+            props.handleClose();
     }
     return (
         <div>

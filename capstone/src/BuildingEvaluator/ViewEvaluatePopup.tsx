@@ -19,7 +19,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-    no: number;
+    no: string;
     buildingPermitNo: string;
     applicantName: string;
     projectName: string;
@@ -33,7 +33,7 @@ export interface formdetails {
     numberstorey?: number;
     newconsreno?: string;
     buildcons?: boolean;
-    defects?: string;
+    defects?: string[];
     open: boolean;
     update: string;
     handleClose: () => void;

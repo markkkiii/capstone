@@ -17,6 +17,7 @@ import ViewEvaluatePopup from '../BuildingEvaluator/ViewEvaluatePopup';
 import { NewBusinessListPending } from '../types/buildingEvaluator';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
 import { buildingEvalCollection } from '../lib/controller';
+import { Key } from '@mui/icons-material';
 
 
 const AdditionalTab: React.FC = () => {
@@ -38,56 +39,26 @@ const AdditionalTab: React.FC = () => {
 };
 
 const BuildingApplicationListComponent: React.FC = () => {
-  const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-  const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-  const [openEvaluate, setOpenEvaluate] = useState<Record<number, boolean>>({});
-  const [openViewEvaluate, setOpenViewEvaluate] = useState<Record<number, boolean>>({});
+  const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({}); // View
+  const [openEvaluate, setOpenEvaluate] = useState<Record<string, boolean>>({});//Evaluate
+  const [openViewEvaluate, setOpenViewEvaluate] = useState<Record<string, boolean>>({});
   const [print, setPrint] = useState(false);
-  const [openUpdate, setOpenUpdate] = useState<Record<number, boolean>>({});
-  const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+  const [openUpdate, setOpenUpdate] = useState<Record<string, boolean>>({});
+  const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
   const [deleteit, setDelete] = useState(false);
   const [open, setOpen] = useState(false);
   const [test, setTest] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState('Pending Records');
   const [searchText, setSearchText] = useState('');
-
-  const [applicationform, SetApplicationForm] = useState([{
-    controlno: 100,
-    buildingpermitno: '100',
-    namepermitee: "default",
-    businessname: "veryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy longggggggggggggggggggggg nameeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    address: "default",
-    typeofoccupancy: "default ",
-    contactno: "default",
-    datereceived: "2023-05-27",
-    receivedby: "default",
-    status: "Approved",
-    evaluator: "-",
-    nostorey: 0,
-    constructrenovate: "New Construction",
-    structureconstructed: false,
-    remarks: "Not Printed",
-    defects: "-"
-  }])
-
-
-  // Gets Building Application List 
-  const getApplications = async () => {
-    axios.get('http://localhost:8080/BFP/displayAllPermits').then(res => {
-      SetApplicationForm(res.data)
-    }).catch(err => console.log(err))
-  }
-
-  useEffect(() => {
-    getApplications()
-  }, [test]);
+  const [buildingEvaluator, setBuildingEvaluator] = useState<NewBusinessListPending[]>([]);
 
   const handleRender = () => {
     setTest(prevTest => !prevTest);
   };
 
   //Delete Popup
-  const handleOpenDelete = (no: number) => {
+  const handleOpenDelete = (no: string) => {
     setOpenDelete((prevRenewal) => ({
       ...prevRenewal,
       [no]: true,
@@ -95,7 +66,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   };
 
   //Delete Popup Close
-  const handleCloseDelete = (no: number) => {
+  const handleCloseDelete = (no: string) => {
     setOpenDelete((prevRenewal) => ({
       ...prevRenewal,
       [no]: false,
@@ -104,32 +75,31 @@ const BuildingApplicationListComponent: React.FC = () => {
   };
 
 
-  //VIEW Popup
-  const handleOpen = (no: number) => {
+  // VIEW Popup
+  const handleOpen = (no: string) => {
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
       [no]: true,
     }));
   };
 
-  //View Popup Close
-  const handleClose = (no: number) => {
+  // View Popup Close
+  const handleClose = (no: string) => {
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
       [no]: false,
     }));
-    getApplications()
   };
 
   //Update Popup 
-  const handleOpenUpdate = (no: number) => {
+  const handleOpenUpdate = (no: string) => {
     setOpenUpdate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
   //Update Popup
-  const handleCloseUpdate = (no: number) => {
+  const handleCloseUpdate = (no: string) => {
     setOpenUpdate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: false,
@@ -137,14 +107,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
   //Evaluate Popup
-  const handleOpenEvaluate = (no: number) => {
+  const handleOpenEvaluate = (no: string) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
   //Evaluate Popup
-  const handleCloseEvaluate = (no: number) => {
+  const handleCloseEvaluate = (no: string) => {
     setOpenEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: false,
@@ -152,14 +122,14 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
   //View Popup After Evaluation
-  const handleOpenViewEvaluate = (no: number) => {
+  const handleOpenViewEvaluate = (no: string) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: true,
     }));
   };
   //View Popup After Evaluation
-  const handleCloseViewEvaluate = (no: number) => {
+  const handleCloseViewEvaluate = (no: string) => {
     setOpenViewEvaluate((prevOpenUpdate) => ({
       ...prevOpenUpdate,
       [no]: false,
@@ -193,26 +163,27 @@ const BuildingApplicationListComponent: React.FC = () => {
     handleRender()
   };
 
-  const [buildingEvaluator, setBuildingEvaluator] = useState<NewBusinessListPending[]>([]);
+
 
   useEffect(
-    () => 
+    () =>
       onSnapshot(buildingEvalCollection, (snapshot:
         QuerySnapshot<DocumentData>) => {
-          setBuildingEvaluator(
-            snapshot.docs.map((doc) => {
-              return {
-                id: doc.id,
-                ...doc.data(),
-              };
-            })
-          );
-        }),
-      []
+        setBuildingEvaluator(
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+            };
+          })
+        );
+        console.log(buildingEvaluator)
+      }),
+    []
   )
 
   //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
     const value = event.target.value;
     setSelectedAction((prevSelectedAction) => ({
       ...prevSelectedAction,
@@ -222,7 +193,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
 
   //Handles the button Logic 
-  const handleNext = (value: number, status: string, buildingno: string) => {
+  const handleNext = (value: string, status: string) => {
     const selectedValue = selectedAction[value];
 
     if (selectedValue === 'Delete') {
@@ -242,7 +213,7 @@ const BuildingApplicationListComponent: React.FC = () => {
       else if (selectedValue === 'Evaluate') {
         handleOpenEvaluate(value)
       }
-      else if (selectedValue === 'Print') {
+      else if (value === 'Print') {
         alert("Evaluate Application First!")
       }
     } else if (status === 'Approved' || status === 'Disapproved') {
@@ -257,22 +228,17 @@ const BuildingApplicationListComponent: React.FC = () => {
       else if (selectedValue === 'View') {
         handleOpenViewEvaluate(value)
       }
-      else if (selectedValue === 'Print') {
+      else if (value === 'Print') {
         handlePrintOpen()
       }
 
 
     }
-    getApplications();
     // Perform logic for the "Next" button click here
   };
 
 
 
-  const handleSearch = () => {
-    // Perform search logic here based on the searchText value
-    // For example, you can filter the buildingApplications array based on the searchText
-  };
 
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
@@ -280,7 +246,7 @@ const BuildingApplicationListComponent: React.FC = () => {
 
   const handleSearchInputKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleSearch();
+
     }
   };
 
@@ -302,7 +268,7 @@ const BuildingApplicationListComponent: React.FC = () => {
               onChange={handleSearchInputChange}
               onKeyPress={handleSearchInputKeyPress}
             />
-            <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearch} />
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
           </div>
           <div className="title-container">
             <h1 className="title">Building Application List</h1>
@@ -341,7 +307,6 @@ const BuildingApplicationListComponent: React.FC = () => {
         <table>
           <thead>
             <tr>
-              <th>No.</th>
               <th>Building Permit #</th>
               <th>Applicant's Name</th>
               <th>Project Name</th>
@@ -352,133 +317,138 @@ const BuildingApplicationListComponent: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {applicationform
-              .filter((applicationform) => {
+            {buildingEvaluator
+              .filter((buildingEvaluator) => {
                 if (sortBy === 'Pending Records') {
-                  return applicationform.status === 'Pending';
+                  return buildingEvaluator.status === 'Pending';
                 } else if (sortBy === 'Completed Records') {
-                  return applicationform.status === 'Approved' || applicationform.status === 'Disapproved';
+                  return buildingEvaluator.status === 'Approved' || buildingEvaluator.status === 'Disapproved';
                 } else {
                   return true; // Show all records if no sortBy value is selected
                 }
               })
-              .filter((applicationform) => {
+              .filter((buildingEvaluator) => {
                 // Filter based on the searchText value
                 if (searchText === '') {
                   return true; // Show all records if no search text is entered
                 } else {
                   // Filter based on the buildingPermitNo or applicantName containing the searchText
+                  const buildingNo = buildingEvaluator?.buildingNo || '';
+                  const applicantName = buildingEvaluator?.applicantName || '';
                   return (
-                    applicationform.buildingpermitno.toLowerCase().includes(searchText.toLowerCase()) ||
-                    applicationform.namepermitee.toLowerCase().includes(searchText.toLowerCase())
+                    buildingNo.toLowerCase().includes(searchText.toLowerCase()) ||
+                    applicantName.toLowerCase().includes(searchText.toLowerCase())
                   );
                 }
               })
-              .map((applicationform) => (
-                <tr key={applicationform.controlno}>
-                  <td>{applicationform.controlno}</td>
-                  <td>{applicationform.buildingpermitno}</td>
-                  <td>{applicationform.namepermitee}</td>
-                  <td>{applicationform.businessname}</td>
-                  <td>{new Date(applicationform.datereceived).toISOString().split('T')[0]}</td>
-                  <td>{applicationform.status}</td>
-                  <td>{applicationform.remarks}</td>
+              .map((buildingEvaluator) => (
+                <tr key={buildingEvaluator.id}>
+                  <td>{buildingEvaluator.buildingNo}</td>
+                  <td>{buildingEvaluator.applicantName}</td>
+                  <td>{buildingEvaluator.projectName}</td>
+                  {/*<td>{new Date(buildingEvaluator.dateReceived ? buildingEvaluator.dateReceived : "").toISOString().split('T')[0]}</td>*/}
+                  <td>{buildingEvaluator.dateReceived}</td>
+                  <td>{buildingEvaluator.status}</td>
+                  <td>{buildingEvaluator.remarks}</td>
                   <td>
                     <select
-                      value={selectedAction[applicationform.controlno] || ''}
-                      onChange={(event) => handleActionChange(event, applicationform.controlno)}
+                      value={(buildingEvaluator.id && selectedAction[buildingEvaluator.id]) || ''}
+                      onChange={(event) => handleActionChange(event, buildingEvaluator.id || '')}
                       style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                     >
                       <option value="">-select-</option>
                       <option value="View">View</option>
                       <option value="Update">Update</option>
                       <option value="Evaluate">Evaluate</option>
-                      {/* <option value="Print">Print</option>*/}
                       <option value="Delete">Delete</option>
                     </select>
-                    <IconButton className="next-button" onClick={() => handleNext(applicationform.controlno, applicationform.status, applicationform.buildingpermitno)}>
+                    <IconButton className="next-button" onClick={() => handleNext((buildingEvaluator.id || ''), (buildingEvaluator.status || ''))}>
                       <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                     </IconButton>
                     <ViewPopup
-                      no={applicationform.controlno}
-                      buildingPermitNo={applicationform.buildingpermitno}
-                      applicantName={applicationform.namepermitee}
-                      projectName={applicationform.businessname}
-                      address={applicationform.address}
-                      typeofoccupancy={applicationform.typeofoccupancy}
-                      contactno={applicationform.contactno}
-                      datereceived={applicationform.datereceived}
-                      receivedby={applicationform.receivedby}
-                      open={openStates[applicationform.controlno]}
-                      handleClose={() => handleClose(applicationform.controlno)}
+                      no={buildingEvaluator.id || ""}
+                      buildingPermitNo={buildingEvaluator.buildingNo || ""}
+                      applicantName={buildingEvaluator.applicantName || ""}
+                      projectName={buildingEvaluator.projectName || ''}
+                      address={buildingEvaluator.address || ''}
+                      typeofoccupancy={buildingEvaluator.typeofoccupancy || ''}
+                      contactno={buildingEvaluator.contactno || ''}
+                      datereceived={buildingEvaluator.dateReceived || ''}
+                      receivedby={buildingEvaluator.receivedby || ''}
+                      open={openStates[buildingEvaluator.id || '']}
+                      handleClose={() => handleClose(buildingEvaluator.id || '')}
                     />
-
+                    <DeletePopup
+                      open={openDelete[buildingEvaluator.id || ""]}
+                      value={buildingEvaluator.id || ""}
+                      handleClose={() => handleCloseDelete(buildingEvaluator.id || "")}
+                    />
                     <UpdateApplicationPopup
-                      no={applicationform.controlno}
-                      buildingPermitNo={applicationform.buildingpermitno}
-                      applicantName={applicationform.namepermitee}
-                      projectName={applicationform.businessname}
-                      address={applicationform.address}
-                      typeofoccupancy={applicationform.typeofoccupancy}
-                      contactno={applicationform.contactno}
-                      datereceived={applicationform.datereceived}
-                      receivedby={applicationform.receivedby}
-                      open={openUpdate[applicationform.controlno]}
-                      handleClose={() => handleCloseUpdate(applicationform.controlno)
+                      no={buildingEvaluator.id || ""}
+                      buildingPermitNo={buildingEvaluator.buildingNo || ""}
+                      applicantName={buildingEvaluator.applicantName || ""}
+                      projectName={buildingEvaluator.projectName || ''}
+                      address={buildingEvaluator.address || ''}
+                      typeofoccupancy={buildingEvaluator.typeofoccupancy || ''}
+                      contactno={buildingEvaluator.contactno || ''}
+                      datereceived={buildingEvaluator.dateReceived || ''}
+                      receivedby={buildingEvaluator.receivedby || ''}
+                      open={openUpdate[buildingEvaluator.id || ""]}
+                      handleClose={() => handleCloseUpdate(buildingEvaluator.id || "")
                       }
                     />
                     <EvaluatePopup
-                      no={applicationform.controlno}
-                      buildingPermitNo={applicationform.buildingpermitno}
-                      applicantName={applicationform.namepermitee}
-                      projectName={applicationform.businessname}
-                      address={applicationform.address}
-                      typeofoccupancy={applicationform.typeofoccupancy}
-                      contactno={applicationform.contactno}
-                      datereceived={applicationform.datereceived}
-                      receivedby={applicationform.receivedby}
-                      evaluator={applicationform.evaluator}
-                      status={applicationform.status}
-                      numberstorey={applicationform.nostorey}
-                      newconsreno={applicationform.constructrenovate}
-                      buildcons={applicationform.structureconstructed}
-                      defects={applicationform.defects}
-                      update={selectedAction[applicationform.controlno]}
-                      open={openEvaluate[applicationform.controlno]}
-                      handleClose={() => handleCloseEvaluate(applicationform.controlno)
+                      no={buildingEvaluator.id || ""}
+                      buildingPermitNo={buildingEvaluator.buildingNo || ""}
+                      applicantName={buildingEvaluator.applicantName || ""}
+                      projectName={buildingEvaluator.projectName || ''}
+                      address={buildingEvaluator.address || ''}
+                      typeofoccupancy={buildingEvaluator.typeofoccupancy || ''}
+                      contactno={buildingEvaluator.contactno || ''}
+                      datereceived={buildingEvaluator.dateReceived || ''}
+                      receivedby={buildingEvaluator.receivedby || ''}
+                      evaluator={buildingEvaluator.evaluator || ''}
+                      status={buildingEvaluator.status || ''}
+                      numberstorey={buildingEvaluator.nostorey || 0}
+                      newconsreno={buildingEvaluator.constructrenovate || ''}
+                      buildcons={buildingEvaluator.structureconstructed || false}
+                      defects={buildingEvaluator.defects ? ([] as string[]).concat(buildingEvaluator.defects) : []}
+                      update={selectedAction[buildingEvaluator.id || ""]}
+                      open={openEvaluate[buildingEvaluator.id || ""]}
+                      handleClose={() => handleCloseEvaluate(buildingEvaluator.id || "")
                       }
                     />
                     <ViewEvaluatePopup
-                      no={applicationform.controlno}
-                      buildingPermitNo={applicationform.buildingpermitno}
-                      applicantName={applicationform.namepermitee}
-                      projectName={applicationform.businessname}
-                      address={applicationform.address}
-                      typeofoccupancy={applicationform.typeofoccupancy}
-                      contactno={applicationform.contactno}
-                      datereceived={applicationform.datereceived}
-                      receivedby={applicationform.receivedby}
-                      evaluator={applicationform.evaluator}
-                      status={applicationform.status}
-                      numberstorey={applicationform.nostorey}
-                      newconsreno={applicationform.constructrenovate}
-                      buildcons={applicationform.structureconstructed}
-                      defects={applicationform.defects}
-                      update={selectedAction[applicationform.controlno]}
-                      open={openViewEvaluate[applicationform.controlno]}
-                      handleClose={() => handleCloseViewEvaluate(applicationform.controlno)
-                      }
+                      no={buildingEvaluator.id || ""}
+                      buildingPermitNo={buildingEvaluator.buildingNo || ""}
+                      applicantName={buildingEvaluator.applicantName || ""}
+                      projectName={buildingEvaluator.projectName || ''}
+                      address={buildingEvaluator.address || ''}
+                      typeofoccupancy={buildingEvaluator.typeofoccupancy || ''}
+                      contactno={buildingEvaluator.contactno || ''}
+                      datereceived={buildingEvaluator.dateReceived || ''}
+                      receivedby={buildingEvaluator.receivedby || ''}
+                      evaluator={buildingEvaluator.evaluator || ''}
+                      status={buildingEvaluator.status || ''}
+                      numberstorey={buildingEvaluator.nostorey || 0}
+                      newconsreno={buildingEvaluator.constructrenovate || ''}
+                      buildcons={buildingEvaluator.structureconstructed || false}
+                      defects={buildingEvaluator.defects ? ([] as string[]).concat(buildingEvaluator.defects) : []}
+                      update={selectedAction[buildingEvaluator.id || ""]}
+                      open={openViewEvaluate[buildingEvaluator.id || ""]}
+                      handleClose={() => handleCloseViewEvaluate(buildingEvaluator.id || "")}
                     />
+                    {/*
+                    
+                    
+                    
+                    
 
                     <PrintPopup
                       open={print}
                       handleClose={() => handlePrintClose()}
                     />
-                    <DeletePopup
-                      open={openDelete[applicationform.controlno]}
-                      value={applicationform.controlno}
-                      handleClose={() => handleCloseDelete(applicationform.controlno)}
-                    />
+                    */}
                   </td>
                 </tr>
               ))}

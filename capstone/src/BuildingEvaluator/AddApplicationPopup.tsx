@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack } from '@mui/material';
 import { useRef, useState } from 'react';
 import axios from 'axios';
+import { addBuildingPermit } from '../lib/controller';
 
 const cardStyle = {
     display: 'flex',
@@ -39,36 +40,24 @@ const AddApplicationPopup: React.FC<formdetails> = ({ open, handleClose }) => {
     const NEW_URL = 'http://localhost:8080/BFP/insertPermit';
 
     const AddForm = async () => {
-
-        axios
-            .post(NEW_URL, {
-                buildingpermitno: buildingpermRef.current?.value,
-                namepermitee: permiteeRef.current?.value,
-                businessname: businessnameRef.current?.value,
-                address: addressRef.current?.value,
-                typeofoccupancy: typeofoccupancyRef.current?.value,
-                contactno: contactnoRef.current?.value,
-                datereceived: dateReceivedRef.current?.value,
-                receivedby: receivedbyRef.current?.value,
-                status: "Pending",
-                evaluator: "Default",
-                nostorey: 2,
-                constructrenovate: "Default",
-                structureconstructed: false,
-                remarks: "Not Printed",
-                defects: "N/A"
-            })
-            .then(res => {
-
-                if (res.data) {
-                    console.log("Successfully Added!" + JSON.stringify(res.data));
-                    handleClose()
-                }
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        addBuildingPermit({
+            applicantName: (permiteeRef.current?.value || ''),
+            buildingNo: (buildingpermRef.current?.value || ''),
+            dateReceived: (dateReceivedRef.current?.value || ''),
+            projectName: (businessnameRef.current?.value || ''),
+            remarks: "Not Printed",
+            status: "Pending",
+            address:( addressRef.current?.value || ''),
+            receivedby: (receivedbyRef.current?.value || ''),
+            typeofoccupancy: (typeofoccupancyRef.current?.value || ''),
+            contactno:(contactnoRef.current?.value || ''),
+            evaluator:"",
+            nostorey:2,
+            constructrenovate:"construction",
+            structureconstructed:false,
+            defects: [""]
+        })
+        handleClose();
     }
 
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
