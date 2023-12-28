@@ -4,9 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
+import { deleteBusinessPermit, deleterenewalBusinessPermit } from '../lib/controller';
 
 interface DeleteProps {
-    value: number;
+    value: string;
     open: boolean;
     remarks: string;
     form: string;
@@ -43,14 +44,25 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
     
 
 
-    const deletefunc = (value: number) => {
-        axios.delete('http://localhost:8080/' + records + '/deletePermit/' + value)
+    const deletefunc = () => {
+        /*axios.delete('http://localhost:8080/' + records + '/deletePermit/' + value)
             .then(res => {
                 console.log(res.data);
                 alert("Deleted Successfully!");
                 handleClose()
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err));*/
+
+        if(form === "New"){
+            deleteBusinessPermit(value);
+            handleClose();
+        }
+        else if(form === "Renewal"){
+            deleterenewalBusinessPermit(value);
+            handleClose();
+        }
+        
+       
     }
     
 
@@ -61,7 +73,7 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
                     <p style={{ fontFamily: 'Oswald', fontWeight: 'bold' }}>Do you want to delete this form?</p>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={() => deletefunc(value)} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'black' }}>Delete</Button>
+                    <Button variant='contained' onClick={() => deletefunc()} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'black' }}>Delete</Button>
                     <Button variant='contained' onClick={handleClose} sx={{ backgroundColor: '#BEBEBE', fontFamily: 'Oswald', color: 'black' }}>Cancel</Button>
                 </DialogActions>
             </Dialog>

@@ -14,7 +14,7 @@ import ViewPopup from '../BuildingEvaluator/ViewPopup';
 import PrintPopup from '../PrintPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import ViewEvaluatePopup from '../BuildingEvaluator/ViewEvaluatePopup';
-import { NewBusinessListPending } from '../types/buildingEvaluator';
+import { NewBusinessListPending } from '../types/Users';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
 import { buildingEvalCollection } from '../lib/controller';
 import { Key } from '@mui/icons-material';
@@ -320,9 +320,12 @@ const BuildingApplicationListComponent: React.FC = () => {
             {buildingEvaluator
               .filter((buildingEvaluator) => {
                 if (sortBy === 'Pending Records') {
+                  
                   return buildingEvaluator.status === 'Pending';
                 } else if (sortBy === 'Completed Records') {
+                
                   return buildingEvaluator.status === 'Approved' || buildingEvaluator.status === 'Disapproved';
+                  
                 } else {
                   return true; // Show all records if no sortBy value is selected
                 }

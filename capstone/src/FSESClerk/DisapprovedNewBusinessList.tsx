@@ -602,7 +602,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewRenewalApplication 
+                                        {/*<ViewRenewalApplication 
                                         open={openViewPending[applicationform.id]} 
                                         handleClose={() => handleCloseViewPending(applicationform.id)} 
                                         bspermit_no={applicationform.bspermit_no}
@@ -861,7 +861,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={applicationform.email}
                                             datereceived={applicationform.date_received}
                                             handleClose={() => handleCloseEvaluate(applicationform.id)}
-                                        />
+                                        />*/}
 
                                     </td>
                                 </tr>

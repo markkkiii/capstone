@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack } from '@mui/material';
 import { useRef, useState } from 'react';
 import axios from 'axios';
-import { addBuildingPermit } from '../lib/controller';
+import { addBuildingPermits} from '../lib/controller';
 
 const cardStyle = {
     display: 'flex',
@@ -40,7 +40,7 @@ const AddApplicationPopup: React.FC<formdetails> = ({ open, handleClose }) => {
     const NEW_URL = 'http://localhost:8080/BFP/insertPermit';
 
     const AddForm = async () => {
-        addBuildingPermit({
+        addBuildingPermits({
             applicantName: (permiteeRef.current?.value || ''),
             buildingNo: (buildingpermRef.current?.value || ''),
             dateReceived: (dateReceivedRef.current?.value || ''),

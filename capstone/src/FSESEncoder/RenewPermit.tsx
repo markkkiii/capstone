@@ -215,7 +215,7 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                                         <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                                                     </IconButton>
                                                                 </td>
-                                                                <ViewEvaluate
+                                                                {/*<ViewEvaluate
                                                                     form={selectedAction[applicationform.id]}
                                                                     permit='Renewal'
                                                                     open={openViewEvaluate[applicationform.id]}
@@ -256,7 +256,7 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                                     email={applicationform.email}
                                                                     
                                                                 />
-
+                                                        */}
                                                             </tr>
                                                         ))}
                                                 </>

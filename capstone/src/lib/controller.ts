@@ -1,15 +1,20 @@
 import {addDoc, collection, deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
 import { app } from './firebase'
-import { addBusinessPermit } from '../types/buildingEvaluator';
+import { addBuildingPermit, addbusinessPermit } from '../types/Users';
 
 export const firestore = getFirestore(app);
 
 //Building Evaluator Collection
 export const buildingEvalCollection = collection (firestore, "buildingEvaluator");
 
+//Business Permit Collection
+export const businessPermCollection = collection(firestore, "NewApprovedBusinessPermit");
+
+//Business Permit Collection
+export const renewalbusinessPermCollection = collection(firestore, "ApprovedRenewalBusinessPermit");
 
 //Add Building Permit
-export const addBuildingPermit = async (permitData: addBusinessPermit) =>{
+export const addBuildingPermits = async (permitData: addBuildingPermit) =>{
     const newPermit =await addDoc(buildingEvalCollection, {
         ...permitData
     });
@@ -23,8 +28,53 @@ export const deleteBuildingPermit = async(id: string) =>{
     console.log("Permit successfully deleted")
 }
 
-export const updateBuildingPermit = async (id: string, permitData: addBusinessPermit) => {
+//Update Building Permit
+export const updateBuildingPermit = async (id: string, permitData: addBuildingPermit) => {
     const getPermit = doc(firestore,`buildingEvaluator/${id}`);
     await setDoc(getPermit,permitData,{merge:true});
     console.log("Permit Updated Successfully");
+}
+
+//Add Business Permit
+export const addBusinessPermits = async (permitData: addbusinessPermit) =>{
+    const newPermit =await addDoc(businessPermCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update Businesss Permit
+export const updateBusinessPermit = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`NewApprovedBusinessPermit/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete Business Permit
+export const deleteBusinessPermit = async(id: string) =>{
+    const document = doc(firestore,`NewApprovedBusinessPermit/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add RenewalBusiness Permit
+export const addrenewalBusinessPermits = async (permitData: addbusinessPermit) =>{
+    const newPermit =await addDoc(renewalbusinessPermCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update RenewalBusinesss Permit
+export const updaterenewalBusinessPermit = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`ApprovedRenewalBusinessPermit/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete RenewalBusiness Permit
+export const deleterenewalBusinessPermit = async(id: string) =>{
+    const document = doc(firestore,`ApprovedRenewalBusinessPermit/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
 }

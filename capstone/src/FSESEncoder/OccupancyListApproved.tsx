@@ -358,7 +358,7 @@ const OccupancyListApproved: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bldgpermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList
+                                        {/*<ViewPendingOccupancyList
                                             id={applicationform.id}
                                             open={openViewOccupancy[applicationform.id]}
                                             handleClose={() => handleCloseView(applicationform.id)}
@@ -426,7 +426,7 @@ const OccupancyListApproved: React.FC = () => {
                                         <PrintEncoderPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
-                                        />
+                                        />*/}
                                     </td>
                                 </tr>
                             ))}
