@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
-import { deleteBusinessPermit, deleterenewalBusinessPermit } from '../lib/controller';
+import { deleteBusinessPermit, deleteOccupancyPermit, deleterenewalBusinessPermit } from '../lib/controller';
 
 interface DeleteProps {
     value: string;
@@ -61,7 +61,10 @@ const DeleteEncoderPopup: React.FC<DeleteProps> = ({ form, remarks,value, open, 
             deleterenewalBusinessPermit(value);
             handleClose();
         }
-        
+        else if(form === "Occupancy"){
+            deleteOccupancyPermit(value);
+            handleClose();
+        }
        
     }
     

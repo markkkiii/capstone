@@ -385,7 +385,7 @@ const OccupancyListClerk: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bldgpermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewPendingOccupancyList
+                                        {/*<ViewPendingOccupancyList
                                             open={openViewOccupancy[applicationform.id]}
                                             id={applicationform.id}
                                             handleClose={() => handleCloseView(applicationform.id)}
@@ -462,7 +462,7 @@ const OccupancyListClerk: React.FC = () => {
                                             contactnumber={applicationform.contact_no}
                                             datereceived={applicationform.date_received}
                                             disapproved= {true}
-                                        />
+                                        />*/}
 
                                     </td>
                                 </tr>

@@ -138,7 +138,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
                         <CancelIcon sx={{ color: 'red' }} />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                <DialogContent sx={{ justifyContent: 'center', alignItems: 'center' }} >
                     <Card style={cardStyle} elevation={0}>
                         <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-110px' }} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>

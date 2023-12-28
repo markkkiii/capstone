@@ -13,6 +13,9 @@ export const businessPermCollection = collection(firestore, "NewApprovedBusiness
 //Business Permit Collection
 export const renewalbusinessPermCollection = collection(firestore, "ApprovedRenewalBusinessPermit");
 
+//Occupancy Permit Collection
+export const occupancyPermCollection = collection(firestore, "ApprovedOccupancyPermit" );
+
 //Add Building Permit
 export const addBuildingPermits = async (permitData: addBuildingPermit) =>{
     const newPermit =await addDoc(buildingEvalCollection, {
@@ -75,6 +78,22 @@ export const updaterenewalBusinessPermit = async (id: string, permitData: any) =
 //Delete RenewalBusiness Permit
 export const deleterenewalBusinessPermit = async(id: string) =>{
     const document = doc(firestore,`ApprovedRenewalBusinessPermit/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add Occupancy Permit
+
+//Update Occupancy Permit
+export const updateoccupancyPermit = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`ApprovedOccupancyPermit/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete Occupancy Permit
+export const deleteOccupancyPermit = async(id: string) =>{
+    const document = doc(firestore,`ApprovedOccupancyPermit/${id}`);
     await deleteDoc(document);
     console.log("Permit successfully deleted")
 }

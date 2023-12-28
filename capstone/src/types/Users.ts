@@ -83,4 +83,36 @@ export interface addbusinessPermit {
     teamleader: string,
     typeoccupancy: string,
 }
+
+export interface OccupancyPermit{
+    additionalamount?:number,
+    amountpaid?:number,
+    applicantname?:string,
+    assessorname?:string,
+    bldgpermitno?:string,
+    contactno?:string,
+    dateinspection?:string,
+    datereceived?:string,
+    fireinspector?:string[],
+    fsicno?:number,
+    fsicdate?:string,
+    inspectionno?:number,
+    location?:string,
+    opsdate?:string,
+    opsno?:number,
+    orno?:number,
+    ornoadditional?:string,
+    paymentdate?:string,
+    paymentdateadditional?:string,
+    projectname?:string,
+    receivedby?:string,
+    receiveddocu?:string,
+    recommendation?:string[],
+    remarks?:string,
+    teamleader?:string,
+    totalamount?:number,
+    id:string
+
+
+}
         

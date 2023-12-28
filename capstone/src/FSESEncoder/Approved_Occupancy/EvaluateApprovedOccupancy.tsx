@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import RecommendationPopup from '../../FSESClerk/RecommendationPopup';
+import { updateoccupancyPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,9 +24,8 @@ const cardStyle = {
 
 
 export interface formdetails {
-  id: number;
+  id: string;
   inspectionno: number;
-  controlno: number;
   buildingpermino: string;
   applicantname: string;
   projecname: string;
@@ -130,7 +130,7 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
 
   // uploads data to db
   const evaluateApprovedOccupancy = async () => {
-    axios.post('http://localhost:8080/approved/insertApprovedPermit',
+    /*axios.post('http://localhost:8080/approved/insertApprovedPermit',
       {
         control_no: props.contactnumber,
         applicants_name: props.applicantname,
@@ -162,7 +162,21 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
       }
       props.handleClose();
       
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err))*/
+    updateoccupancyPermit(props.id,{
+      
+      fsicno: fsicRef.current?.value,
+      fsicdate: fsicDateRef.current?.value,
+      amount: AmountRef.current?.value,
+      paymentdate:dateRef.current?.value,
+      orno: OrNoRef.current?.value,
+      additionalamount: additionalpaymentRef.current?.value,
+      ornoadditional: additionalOrnoRef.current?.value,
+      paymentdateadditional: additionaldateRef.current?.value,
+      recommendation: inputInspector,
+      remarks: "FSIC Not Printed"
+    })
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db
@@ -191,13 +205,8 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
             <Card style={cardStyle}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
                 <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Control No.</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.controlno} variant='standard' disabled />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
+                 
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Building Permit No.</p>
                       <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.buildingpermino} variant='standard' disabled />
