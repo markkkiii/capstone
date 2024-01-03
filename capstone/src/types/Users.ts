@@ -112,7 +112,22 @@ export interface OccupancyPermit{
     teamleader?:string,
     totalamount?:number,
     id:string
+}
 
-
+export interface Payment{
+    amountpaid?:number,
+    assessorname?:string,
+    businesspermitno?:string,
+    fsc?:string,
+    location?:string,
+    name?:string,
+    opsdate?:string,
+    opsno?:string,
+    orno?:string,
+    payment?:string[][],
+    paymentdate?:string,
+    projectname?:string,
+    totalamount?:string,
+    id:string
 }
         

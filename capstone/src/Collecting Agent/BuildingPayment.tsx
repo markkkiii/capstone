@@ -11,6 +11,9 @@ import DeletePaymentPopup from './DeletePaymentPopup';
 import PrintPaymentPopup from './PrintPaymentPopup';
 import AddPaymentPopup from './AddPaymentPopup';
 import ViewPayment from './ViewPayment';
+import { Payment } from '../types/Users';
+import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { buildingEvalCollection, buildingPaymentCollection } from '../lib/controller';
 
 
 //Header Part
@@ -37,12 +40,13 @@ const BuildingPayment: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
-    const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
-    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
+    const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
+    const [openViewPayment, setopenViewPayment] = useState<Record<string, boolean>>({});
+    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<string, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+    const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
+    const [buildingPayment, setBuildingPayment] = useState<Payment[]>([]);
 
 
     const [applicationform, SetApplicationForm] = useState([{
@@ -61,11 +65,28 @@ const BuildingPayment: React.FC = () => {
         payment: [['Test1', 'Test2', 'Test3']]
     }])
 
-    useEffect(() => {
+    /*useEffect(() => {
         axios.get('http://localhost:8080/BuildingPermitPayment/getAllBuildingPayment').then(res => {
             SetApplicationForm(res.data)
         }).catch(err => console.log(err))
-    }, [test]);
+    }, [test]);*/
+
+    useEffect(
+        () =>
+          onSnapshot(buildingPaymentCollection, (snapshot:
+            QuerySnapshot<DocumentData>) => {
+            setBuildingPayment(
+              snapshot.docs.map((doc) => {
+                return {
+                  id: doc.id,
+                  ...doc.data(),
+                };
+              })
+            );
+            console.log(buildingPayment)
+          }),
+        []
+      )
 
 
 
@@ -83,7 +104,7 @@ const BuildingPayment: React.FC = () => {
 
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
         const value = event.target.value;
         setSelectedAction((prevSelectedAction) => ({
             ...prevSelectedAction,
@@ -109,7 +130,7 @@ const BuildingPayment: React.FC = () => {
     };
 
     //View Popup
-    const handleOpenView = (no: number) => {
+    const handleOpenView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -117,7 +138,7 @@ const BuildingPayment: React.FC = () => {
     };
 
     //View Popup Close
-    const handleCloseView = (no: number) => {
+    const handleCloseView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -126,7 +147,7 @@ const BuildingPayment: React.FC = () => {
     };
 
     //Update Popup 
-    const handleOpenUpdate = (no: number) => {
+    const handleOpenUpdate = (no: string) => {
         setopenUpdatePayment((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
@@ -135,7 +156,7 @@ const BuildingPayment: React.FC = () => {
     };
 
     //Update Popup
-    const handleCloseUpdate = (no: number) => {
+    const handleCloseUpdate = (no: string) => {
         setopenUpdatePayment((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: false,
@@ -153,7 +174,7 @@ const BuildingPayment: React.FC = () => {
     };
 
      //Delete Popup
-     const handleOpenDelete = (no: number) => {
+     const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -161,7 +182,7 @@ const BuildingPayment: React.FC = () => {
     };
 
     //Delete Popup Close
-    const handleCloseDelete = (no: number) => {
+    const handleCloseDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -171,7 +192,7 @@ const BuildingPayment: React.FC = () => {
 
 
     //Handles the button Logic 
-    const handleNext = (value: number) => {
+    const handleNext = (value: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -236,7 +257,6 @@ const BuildingPayment: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
                             <th>OR No #</th>
                             <th>Payor</th>
                             <th>Project Name</th>
@@ -246,31 +266,33 @@ const BuildingPayment: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {applicationform
-                            .filter((applicationform) => {
+                        {buildingPayment
+                            .filter((buildingPayment) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
+                                    const opsno =  buildingPayment?.opsno || '';
+                                    const name =  buildingPayment.name || '';
+
                                     return (
-                                        applicationform.ops_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.name.toLowerCase().includes(searchText.toLowerCase())
+                                        opsno.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
-                            .map((applicationform, key = applicationform.id) => (
-                                <tr key={applicationform.id}>
-                                    <td>{applicationform.id}</td>
-                                    <td>{applicationform.or_no}</td>
-                                    <td>{applicationform.name}</td>
-                                    <td>{applicationform.projectname}</td>
-                                    <td>{applicationform.total_amount}</td>
-                                    <td>{applicationform.payment_date ? new Date(applicationform.payment_date).toISOString().split('T')[0] : ''}</td>
+                            .map((buildingPayment) => (
+                                <tr key={buildingPayment.id}>
+                                    <td>{buildingPayment.orno}</td>
+                                    <td>{buildingPayment.name}</td>
+                                    <td>{buildingPayment.projectname}</td>
+                                    <td>{buildingPayment.totalamount}</td>
+                                    <td>{buildingPayment.paymentdate}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[applicationform.id] || ''}
-                                            onChange={(event) => handleActionChange(event, applicationform.id)}
+                                            value={selectedAction[buildingPayment.id] || ''}
+                                            onChange={(event) => handleActionChange(event, buildingPayment.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -279,11 +301,11 @@ const BuildingPayment: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(buildingPayment.id)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
 
-                                        <PrintPaymentPopup
+                                        {/*<PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
                                         />
@@ -311,7 +333,7 @@ const BuildingPayment: React.FC = () => {
                                          assessor_name={applicationform.assessor_name}
                                          payment={applicationform.payment}
                                          handleClose={() =>handleCloseView(applicationform.id)}
-                                        />
+                                        />*/}
 
                                     </td>
                                 </tr>

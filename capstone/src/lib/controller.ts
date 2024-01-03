@@ -16,6 +16,9 @@ export const renewalbusinessPermCollection = collection(firestore, "ApprovedRene
 //Occupancy Permit Collection
 export const occupancyPermCollection = collection(firestore, "ApprovedOccupancyPermit" );
 
+//Building Payment Collection
+export const buildingPaymentCollection = collection(firestore, "BuildingPermitPayment");
+
 //Add Building Permit
 export const addBuildingPermits = async (permitData: addBuildingPermit) =>{
     const newPermit =await addDoc(buildingEvalCollection, {
