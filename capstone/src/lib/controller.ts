@@ -19,6 +19,9 @@ export const occupancyPermCollection = collection(firestore, "ApprovedOccupancyP
 //Building Payment Collection
 export const buildingPaymentCollection = collection(firestore, "BuildingPermitPayment");
 
+//Disapproved New Business Collection
+export const disapprovedNewBusinessCollection = collection(firestore, "DisapprovedNewBusiness");
+
 //Building Payment Collection
 export const newBusinessPaymentCollection = collection(firestore, "NewBusinessPermitPayment");
 

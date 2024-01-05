@@ -114,6 +114,30 @@ export interface OccupancyPermit{
     id:string
 }
 
+export interface dissaprovedNewBusinessPermit {
+    address?: string,
+    amount?: number,
+    businessname?: string,
+    businessno?: string,
+    contactno?: string,
+    date?: string,
+    dateinspection?: string,
+    datereceived?: string,
+    email?: string,
+    fireinspectors?: string[],
+    fsicdate?: string,
+    fsicno?: number,
+    inspection_no?: number,
+    naturebusiness?: string,
+    orno?: number,
+    permittee?: string,
+    recommendation?: string[],
+    remarks?: string,
+    teamleader?: string,
+    typeoccupancy?: string,
+    id: string,
+}
+
 export interface Payment{
     amountpaid?:number,
     assessorname?:string,
