@@ -49,6 +49,8 @@ const BuildingPayment: React.FC = () => {
     const [buildingPayment, setBuildingPayment] = useState<Payment[]>([]);
 
 
+ 
+
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
         projectname: "",
@@ -73,20 +75,20 @@ const BuildingPayment: React.FC = () => {
 
     useEffect(
         () =>
-          onSnapshot(buildingPaymentCollection, (snapshot:
-            QuerySnapshot<DocumentData>) => {
-            setBuildingPayment(
-              snapshot.docs.map((doc) => {
-                return {
-                  id: doc.id,
-                  ...doc.data(),
-                };
-              })
-            );
-            console.log(buildingPayment)
-          }),
+            onSnapshot(buildingPaymentCollection, (snapshot:
+                QuerySnapshot<DocumentData>) => {
+                setBuildingPayment(
+                    snapshot.docs.map((doc) => {
+                        return {
+                            id: doc.id,
+                            ...doc.data(),
+                        };
+                    })
+                );
+                console.log(buildingPayment)
+            }),
         []
-      )
+    )
 
 
 
@@ -173,8 +175,8 @@ const BuildingPayment: React.FC = () => {
         setPrint(false);
     };
 
-     //Delete Popup
-     const handleOpenDelete = (no: string) => {
+    //Delete Popup
+    const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -273,8 +275,8 @@ const BuildingPayment: React.FC = () => {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
-                                    const opsno =  buildingPayment?.opsno || '';
-                                    const name =  buildingPayment.name || '';
+                                    const opsno = buildingPayment?.opsno || '';
+                                    const name = buildingPayment.name || '';
 
                                     return (
                                         opsno.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -304,36 +306,37 @@ const BuildingPayment: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(buildingPayment.id)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <ViewPayment
+                                            open={openViewPayment[buildingPayment.id]}
+                                            id={buildingPayment.id}
+                                            update={selectedAction[buildingPayment.id]}
+                                            form="Building"
+                                            projectname={buildingPayment.projectname || ''}
+                                            location={buildingPayment.location || ''}
+                                            name={buildingPayment.name || ''}
+                                            fsc={buildingPayment.fsc || ''}
+                                            or_no={buildingPayment.orno || ''}
+                                            ops_no={buildingPayment.opsno || ''}
+                                            ops_date={buildingPayment.opsdate || ''}
+                                            payment_date={buildingPayment.paymentdate || ''}
+                                            amount_paid={buildingPayment.amountpaid || 0}
+                                            total_amount={buildingPayment.totalamount || 0}
+                                            assessor_name={buildingPayment.assessorname || ''}
+                                            payment={buildingPayment.payment|| []}
+                                            handleClose={() => handleCloseView(buildingPayment.id)}
+                                        />
+                                        <DeletePaymentPopup
+                                            open={openDelete[buildingPayment.id]}
+                                            value={buildingPayment.id || ''}
+                                            form="Building"
+                                            handleClose={() => handleCloseDelete(buildingPayment.id)}
+                                        />
 
                                         {/*<PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
-                                        />
-                                        <DeletePaymentPopup
-                                            open={openDelete[applicationform.id]}
-                                            value={applicationform.id}
-                                            form="Building"
-                                            handleClose={() => handleCloseDelete(applicationform.id)}
-                                        />
-                                        <ViewPayment
-                                         open ={openViewPayment[applicationform.id]}
-                                         id ={applicationform.id}
-                                         update = {selectedAction[applicationform.id]}
-                                         form = "Building"
-                                         projectname={applicationform.projectname}
-                                         location={applicationform.location}
-                                         name = {applicationform.name}
-                                         fsc={applicationform.fsc}
-                                         or_no={applicationform.or_no}
-                                         ops_no={applicationform.ops_no}
-                                         ops_date={applicationform.ops_date}
-                                         payment_date={applicationform.payment_date}
-                                         amount_paid={applicationform.amount_paid}
-                                         total_amount={applicationform.total_amount}
-                                         assessor_name={applicationform.assessor_name}
-                                         payment={applicationform.payment}
-                                         handleClose={() =>handleCloseView(applicationform.id)}
-                                        />*/}
+                                     />
+                                        */}
 
                                     </td>
                                 </tr>

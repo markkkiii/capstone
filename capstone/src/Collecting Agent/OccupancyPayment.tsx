@@ -13,6 +13,9 @@ import UpdatePaymentPopup from './UpdatePaymentPopup';
 import ViewPaymentPopup from './ViewPaymentPopup';
 import AddPaymentPopup from './AddPaymentPopup';
 import ViewPayment from './ViewPayment';
+import { Payment } from '../types/Users';
+import { OccupancyPaymentCollection, occupancyPermCollection } from '../lib/controller';
+import { onSnapshot, QuerySnapshot, DocumentData } from '@firebase/firestore';
 
 
 //Header Part
@@ -39,12 +42,13 @@ const OccupancyPayment: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
-    const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
-    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
+    const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
+    const [openViewPayment, setopenViewPayment] = useState<Record<string, boolean>>({});
+    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<string, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+    const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
+    const [newOccupancyPayment, setOccupancyPayment] = useState<Payment[]>([]);
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -64,12 +68,22 @@ const OccupancyPayment: React.FC = () => {
 
 
 
-    useEffect(() => {
-        axios.get('http://localhost:8080/OccupancyPayment/getAllOccupancyPayment').then(res => {
-            SetApplicationForm(res.data)
-            console.log(applicationform)
-        }).catch(err => console.log(err))
-    }, [test]);
+    useEffect(
+        () =>
+            onSnapshot(OccupancyPaymentCollection, (snapshot:
+                QuerySnapshot<DocumentData>) => {
+                setOccupancyPayment(
+                    snapshot.docs.map((doc) => {
+                        return {
+                            id: doc.id,
+                            ...doc.data(),
+                        };
+                    })
+                );
+                console.log(newOccupancyPayment)
+            }),
+        []
+    )
 
 
 
@@ -87,7 +101,7 @@ const OccupancyPayment: React.FC = () => {
 
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
         const value = event.target.value;
         setSelectedAction((prevSelectedAction) => ({
             ...prevSelectedAction,
@@ -114,7 +128,7 @@ const OccupancyPayment: React.FC = () => {
     };
 
     //View Popup
-    const handleOpenView = (no: number) => {
+    const handleOpenView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -122,7 +136,7 @@ const OccupancyPayment: React.FC = () => {
     };
 
     //View Popup Close
-    const handleCloseView = (no: number) => {
+    const handleCloseView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -159,7 +173,7 @@ const OccupancyPayment: React.FC = () => {
     };
 
     //Delete Popup
-    const handleOpenDelete = (no: number) => {
+    const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -167,7 +181,7 @@ const OccupancyPayment: React.FC = () => {
     };
 
     //Delete Popup Close
-    const handleCloseDelete = (no: number) => {
+    const handleCloseDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -176,7 +190,7 @@ const OccupancyPayment: React.FC = () => {
     };
 
     //Handles the button Logic 
-    const handleNext = (value: number) => {
+    const handleNext = (value: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -241,7 +255,7 @@ const OccupancyPayment: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
+
                             <th>OR No #</th>
                             <th>Payor</th>
                             <th>Project Name</th>
@@ -251,31 +265,32 @@ const OccupancyPayment: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {applicationform
-                            .filter((applicationform) => {
+                        {newOccupancyPayment
+                            .filter((newOccupancyPayment) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
-                                    // Filter based on the businessPermitNo or ownerName containing the searchText
+                                    const opsno = newOccupancyPayment?.opsno || '';
+                                    const name = newOccupancyPayment.name || '';
+
                                     return (
-                                        applicationform.ops_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.name.toLowerCase().includes(searchText.toLowerCase())
+                                        opsno.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
-                            .map((applicationform, key = applicationform.id) => (
-                                <tr key={applicationform.id}>
-                                    <td>{applicationform.id}</td>
-                                    <td>{applicationform.or_no}</td>
-                                    <td>{applicationform.name}</td>
-                                    <td>{applicationform.projectname}</td>
-                                    <td>{applicationform.total_amount}</td>
-                                    <td>{applicationform.payment_date ? new Date(applicationform.payment_date).toISOString().split('T')[0] : ''}</td>
+                            .map((newOccupancyPayment) => (
+                                <tr key={newOccupancyPayment.id}>
+                                    <td>{newOccupancyPayment.orno}</td>
+                                    <td>{newOccupancyPayment.name}</td>
+                                    <td>{newOccupancyPayment.projectname}</td>
+                                    <td>{newOccupancyPayment.totalamount}</td>
+                                    <td>{newOccupancyPayment.paymentdate}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[applicationform.id] || ''}
-                                            onChange={(event) => handleActionChange(event, applicationform.id)}
+                                            value={selectedAction[newOccupancyPayment.id] || ''}
+                                            onChange={(event) => handleActionChange(event, newOccupancyPayment.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -284,41 +299,40 @@ const OccupancyPayment: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(newOccupancyPayment.id)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-
-                                        <PrintPaymentPopup
-                                            open={print}
-                                            handleClose={() => handlePrintClose()}
-                                        />
                                         <DeletePaymentPopup
-                                            open={openDelete[applicationform.id]}
-                                            value={applicationform.id}
+                                            open={openDelete[newOccupancyPayment.id]}
+                                            value={newOccupancyPayment.id}
                                             form="Occupancy"
-                                            handleClose={() => handleCloseDelete(applicationform.id)}
+                                            handleClose={() => handleCloseDelete(newOccupancyPayment.id)}
 
                                         />
                                         <ViewPayment
-                                            open={openViewPayment[applicationform.id]}
-                                            id={applicationform.id}
-                                            update={selectedAction[applicationform.id]}
+                                            open={openViewPayment[newOccupancyPayment.id]}
+                                            id={newOccupancyPayment.id}
+                                            update={selectedAction[newOccupancyPayment.id]}
                                             form="Occupancy"
-                                            projectname={applicationform.projectname}
-                                            location={applicationform.location}
-                                            name={applicationform.name}
-                                            fsc={applicationform.fsc}
-                                            or_no={applicationform.or_no}
-                                            ops_no={applicationform.ops_no}
-                                            ops_date={applicationform.ops_date}
-                                            payment_date={applicationform.payment_date}
-                                            amount_paid={applicationform.amount_paid}
-                                            total_amount={applicationform.total_amount}
-                                            assessor_name={applicationform.assessor_name}
-                                            payment={applicationform.payment}
-                                            handleClose={() => handleCloseView(applicationform.id)}
+                                            projectname={newOccupancyPayment.projectname || ''}
+                                            location={newOccupancyPayment.location || ''}
+                                            name={newOccupancyPayment.name || ''}
+                                            fsc={newOccupancyPayment.fsc || ''}
+                                            or_no={newOccupancyPayment.orno || ''}
+                                            ops_no={newOccupancyPayment.opsno || ''}
+                                            ops_date={newOccupancyPayment.opsdate || ''}
+                                            payment_date={newOccupancyPayment.paymentdate || ''}
+                                            amount_paid={newOccupancyPayment.amountpaid || 0}
+                                            total_amount={newOccupancyPayment.totalamount || 0}
+                                            assessor_name={newOccupancyPayment.assessorname || ''}
+                                            payment={newOccupancyPayment.payment || []}
+                                            handleClose={() => handleCloseView(newOccupancyPayment.id)}
                                         />
-
+                                        {/*<PrintPaymentPopup
+                                            open={print}
+                                            handleClose={() => handlePrintClose()}
+                                        />
+*/}
                                     </td>
                                 </tr>
                             ))}

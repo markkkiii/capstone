@@ -340,7 +340,7 @@ const OccupancyListApproved: React.FC = () => {
                                 if (sortBy === 'Pending Records') {
                                     return businessPermit.remarks === 'Pending';
                                 } else if (sortBy === 'Approved Records') {
-                                    return businessPermit.remarks === 'FSIC Printed' || businessPermit.remarks === 'FSIC Not Printed';
+                                    return businessPermit.remarks === 'I.O Printed' || businessPermit.remarks === 'I.O Not Printed';
                                 } else {
                                     return true; // Show all records if no sortBy value is selected
                                 }

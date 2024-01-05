@@ -236,7 +236,7 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Date Received</p>
-                      <TextField className='custom-outlined-input' inputRef={dateReceivedRef} sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled={props.activity !== 'Update'} />
+                      <TextField className='custom-outlined-input' inputRef={dateReceivedRef} sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.datereceived } variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -248,7 +248,7 @@ export default function ViewUpdateApprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >FSIC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} defaultValue={props.fsic_date ? new Date(props.fsic_date).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={fsicDateRef} defaultValue={props.fsic_date } disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>

@@ -124,10 +124,33 @@ export interface Payment{
     opsdate?:string,
     opsno?:string,
     orno?:string,
-    payment?:string[][],
+    payment?: {
+        natureOfCollection: string;
+        accountCode: string;
+        amount: string;
+      }[];
     paymentdate?:string,
     projectname?:string,
-    totalamount?:string,
+    totalamount?:number,
     id:string
+}
+export interface addPayment{
+    amountpaid:number,
+    assessorname:string,
+    businesspermitno?:string,
+    fsc:string,
+    location:string,
+    name:string,
+    opsdate:string,
+    opsno:string,
+    orno:string,
+    payment: {
+        natureOfCollection: string;
+        accountCode: string;
+        amount: string;
+      }[];
+    paymentdate:string,
+    projectname:string,
+    totalamount:number,
 }
         

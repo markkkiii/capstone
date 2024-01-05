@@ -288,13 +288,13 @@ export default function ViewEvaluate(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px', marginLeft: '-15px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={date_receivedRef} defaultValue={props.date_received ? new Date(props.date_received).toISOString().split('T')[0] : ''} variant='standard' disabled={props.form !== 'Update'} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={date_receivedRef} defaultValue={props.date_received } variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px', marginLeft: '-15px' }} >Date of Inspection</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.date_inspection ? new Date(props.date_inspection).toISOString().split('T')[0] : ''} inputRef={dateInspectionRef} variant='standard' disabled={props.form !== 'Update'} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.date_inspection} inputRef={dateInspectionRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -312,7 +312,7 @@ export default function ViewEvaluate(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>FSIC Date</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.fsic_date ? new Date(props.fsic_date).toISOString().split('T')[0] : ''} inputRef={fsicDateRef} variant='standard' disabled={props.form !== 'Update'} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.fsic_date} inputRef={fsicDateRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -335,7 +335,7 @@ export default function ViewEvaluate(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Date</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.payment_date ? new Date(props.payment_date).toISOString().split('T')[0] : ''} inputRef={dateRef} disabled={props.form !== 'Update'} variant='standard' />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.payment_date} inputRef={dateRef} disabled={props.form !== 'Update'} variant='standard' />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>

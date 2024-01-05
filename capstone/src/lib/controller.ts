@@ -1,6 +1,6 @@
 import {addDoc, collection, deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
 import { app } from './firebase'
-import { addBuildingPermit, addbusinessPermit } from '../types/Users';
+import { addBuildingPermit, addPayment, addbusinessPermit } from '../types/Users';
 
 export const firestore = getFirestore(app);
 
@@ -18,6 +18,17 @@ export const occupancyPermCollection = collection(firestore, "ApprovedOccupancyP
 
 //Building Payment Collection
 export const buildingPaymentCollection = collection(firestore, "BuildingPermitPayment");
+
+//Building Payment Collection
+export const newBusinessPaymentCollection = collection(firestore, "NewBusinessPermitPayment");
+
+//Building Payment Collection
+export const RenewalBusinessPaymentCollection = collection(firestore, "RenewalBusinessPermitPayment");
+
+//Building Payment Collection
+export const OccupancyPaymentCollection = collection(firestore, "OccupancyPermitPayment");
+
+
 
 //Add Building Permit
 export const addBuildingPermits = async (permitData: addBuildingPermit) =>{
@@ -100,3 +111,93 @@ export const deleteOccupancyPermit = async(id: string) =>{
     await deleteDoc(document);
     console.log("Permit successfully deleted")
 }
+
+//Add Building Payment
+export const addBuildingPayment = async (permitData: addPayment) =>{
+    const newPermit =await addDoc(buildingPaymentCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update Building Payment
+export const updateBuildingPayment = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`BuildingPermitPayment/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete Building Payment
+export const deleteBuildingPayment = async(id: string) =>{
+    const document = doc(firestore,`BuildingPermitPayment/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add NewBusiness Payment
+export const addNewBusinessPayment = async (permitData: addPayment) =>{
+    const newPermit =await addDoc(newBusinessPaymentCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update NewBusiness Payment
+export const updateNewBusinessPayment = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`NewBusinessPermitPayment/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete NewBusiness Payment
+export const deleteNewBusinessPayment = async(id: string) =>{
+    const document = doc(firestore,`NewBusinessPermitPayment/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add RenewalBusiness Payment
+export const addRenewalBusinessPayment = async (permitData: addPayment) =>{
+    const newPermit =await addDoc(RenewalBusinessPaymentCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update RenewalBusiness Payment
+export const updateRenewalBusinessPayment = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`RenewalBusinessPermitPayment/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete RenewalBusiness Payment
+export const deleteRenewalBusinessPayment = async(id: string) =>{
+    const document = doc(firestore,`RenewalBusinessPermitPayment/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add Occupancy Payment
+export const addOccupancyPayment = async (permitData: addPayment) =>{
+    const newPermit =await addDoc(OccupancyPaymentCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update RenewalBusiness Payment
+export const updateOccupancyPayment = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`OccupancyPermitPayment/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete RenewalBusiness Payment
+export const deleteOccupancyPayment = async(id: string) =>{
+    const document = doc(firestore,`OccupancyPermitPayment/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+
