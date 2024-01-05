@@ -21,7 +21,7 @@ import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/Eval
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
-import { dissaprovedNewBusinessPermit } from '../types/Users';
+import { disapprovedNewBusinessPermit } from '../types/Users';
 import { disapprovedNewBusinessCollection } from '../lib/controller';
 
 
@@ -50,7 +50,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
-    const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
+    const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
     const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
     const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
     const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
@@ -67,7 +67,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [test, setTest] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
-    const [dissaprovedNewBusinessPermit, setdissaprovedNewBusinessPermit] = useState<dissaprovedNewBusinessPermit[]>([]);
+    const [disapprovedNewBusinessPermit, setdisapprovedNewBusinessPermit] = useState<disapprovedNewBusinessPermit[]>([]);
 
 
 
@@ -75,7 +75,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         () =>
             onSnapshot(disapprovedNewBusinessCollection, (snapshot:
                 QuerySnapshot<DocumentData>) => {
-                setdissaprovedNewBusinessPermit(
+                setdisapprovedNewBusinessPermit(
                     snapshot.docs.map((doc) => {
                         return {
                             id: doc.id,
@@ -83,7 +83,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                         };
                     })
                 );
-                console.log(dissaprovedNewBusinessPermit)
+                console.log(disapprovedNewBusinessPermit)
             }),
         []
     )
@@ -102,7 +102,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
         const value = event.target.value;
         setSelectedAction((prevSelectedAction) => ({
             ...prevSelectedAction,
@@ -125,7 +125,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Opens Evaluate Choice
-    const handleOpenEvalChoice = (no: number) => {
+    const handleOpenEvalChoice = (no: string) => {
         setopenEvalChoice((prevEvalChoice) => ({
             ...prevEvalChoice,
             [no]: true,
@@ -142,7 +142,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //VIEW Popup
-    const handleOpenViewPending = (no: number) => {
+    const handleOpenViewPending = (no: string) => {
         setopenViewPending((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -160,7 +160,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
 
     //Opens Evaluate NTC
-    const handleOpenView = (no: number) => {
+    const handleOpenView = (no: string) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: true,
@@ -176,7 +176,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     //Opens Update View NTC
-    const handleOpenViewUpdateNTC = (no: number) => {
+    const handleOpenViewUpdateNTC = (no: string) => {
         setopenViewUpdateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: true,
@@ -193,7 +193,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Opens Update View NTCV
-    const handleOpenViewUpdateNTCV = (no: number) => {
+    const handleOpenViewUpdateNTCV = (no: string) => {
         setopenViewUpdateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: true,
@@ -210,7 +210,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Opens Update View Abatement
-    const handleOpenViewUpdateAbatement = (no: number) => {
+    const handleOpenViewUpdateAbatement = (no: string) => {
         setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -227,7 +227,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Opens Update View Closure
-    const handleOpenViewUpdateClosure = (no: number) => {
+    const handleOpenViewUpdateClosure = (no: string) => {
         setopenViewUpdateClosure((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -332,7 +332,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Update Popup 
-    const handleOpenUpdate = (no: number) => {
+    const handleOpenUpdate = (no: string) => {
         setopenUpdateOccupancy((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
@@ -359,7 +359,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
     
     //Delete Popup
-    const handleOpenDelete = (no: number) => {
+    const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -376,7 +376,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Handles the button Logic 
-    const handleNext = (value: number, status: string, buildingno: string) => {
+    const handleNext = (value: string, status: string, businessno: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -508,42 +508,42 @@ const DisapprovedNewBusiness: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dissaprovedNewBusinessPermit
-                            .filter((dissaprovedNewBusinessPermit) => {
+                        {disapprovedNewBusinessPermit
+                            .filter((disapprovedNewBusinessPermit) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
-                                    const business_no = dissaprovedNewBusinessPermit?.businessno || '';
-                                    const permittee = dissaprovedNewBusinessPermit?.permittee || '';
+                                    const business_no = disapprovedNewBusinessPermit?.businessno || '';
+                                    const permittee = disapprovedNewBusinessPermit?.permittee || '';
                                     return (
                                         business_no.toLowerCase().includes(searchText.toLowerCase()) ||
                                         permittee.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
-                            .map((dissaprovedNewBusinessPermit) => (
-                                <tr key={dissaprovedNewBusinessPermit.id}>
-                                    <td>{dissaprovedNewBusinessPermit.id}</td>
-                                    <td>{dissaprovedNewBusinessPermit.businessno}</td>
-                                    <td>{dissaprovedNewBusinessPermit.permittee}</td>
-                                    <td>{dissaprovedNewBusinessPermit.businessname}</td>
-                                    <td>{dissaprovedNewBusinessPermit.typeoccupancy}</td>
+                            .map((disapprovedNewBusinessPermit) => (
+                                <tr key={disapprovedNewBusinessPermit.id}>
+                                    <td>{disapprovedNewBusinessPermit.id}</td>
+                                    <td>{disapprovedNewBusinessPermit.businessno}</td>
+                                    <td>{disapprovedNewBusinessPermit.permittee}</td>
+                                    <td>{disapprovedNewBusinessPermit.businessname}</td>
+                                    <td>{disapprovedNewBusinessPermit.typeoccupancy}</td>
                                     <td>{sortBy === 'Pending Records' ? 'N/A' :
-                                        'NTC Records' ? dissaprovedNewBusinessPermit.ntc_no :
-                                            'NTCV Records' ? dissaprovedNewBusinessPermit.ntcv_no :
-                                                'Abatement Records' ? dissaprovedNewBusinessPermit.abatement_no :
-                                                    'Closure Records' ? dissaprovedNewBusinessPermit.closure_no :
+                                        'NTC Records' ? disapprovedNewBusinessPermit.ntcno :
+                                            'NTCV Records' ? disapprovedNewBusinessPermit.ntcvno :
+                                                'Abatement Records' ? disapprovedNewBusinessPermit.abatementno :
+                                                    'Closure Records' ? disapprovedNewBusinessPermit.closureno :
                                                         'N/A'}</td>
-                                    <td style={{ color: dissaprovedNewBusinessPermit.remarks === 'Complied' || dissaprovedNewBusinessPermit.remarks === 'FSIC Printed' ? 'green' : 
-                                    dissaprovedNewBusinessPermit.remarks === 'Pending' || dissaprovedNewBusinessPermit.remarks === 'For Issuance NTCV' || dissaprovedNewBusinessPermit.remarks === 'For Issuance Abatement' || dissaprovedNewBusinessPermit.remarks === 'For Issuance Closure' ? 'black' 
+                                    <td style={{ color: disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'FSIC Printed' ? 'green' : 
+                                    disapprovedNewBusinessPermit.remarks === 'Pending' || disapprovedNewBusinessPermit.remarks === 'For Issuance NTCV' || disapprovedNewBusinessPermit.remarks === 'For Issuance Abatement' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure' ? 'black' 
                                     : 'red'}}
-                                    >{dissaprovedNewBusinessPermit.remarks}</td>
+                                    >{disapprovedNewBusinessPermit.remarks}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[dissaprovedNewBusinessPermit.id] || ''}
-                                            onChange={(event) => handleActionChange(event, dissaprovedNewBusinessPermit.id)}
+                                            value={selectedAction[disapprovedNewBusinessPermit.id] || ''}
+                                            onChange={(event) => handleActionChange(event, disapprovedNewBusinessPermit.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -553,268 +553,268 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(dissaprovedNewBusinessPermit.id, dissaprovedNewBusinessPermit.remarks, dissaprovedNewBusinessPermit.businessno)}>
+                                        <IconButton className="next-button" onClick={() => handleNext((disapprovedNewBusinessPermit.id), (disapprovedNewBusinessPermit.remarks || ''), (disapprovedNewBusinessPermit.businessno || ''))}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
                                         {/*<ViewRenewalApplication 
-                                        open={openViewPending[dissaprovedNewBusinessPermit.id]} 
-                                        handleClose={() => handleCloseViewPending(dissaprovedNewBusinessPermit.id)} 
-                                        bspermit_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                        permitee={dissaprovedNewBusinessPermit.permittee}
-                                        businessname={dissaprovedNewBusinessPermit.business_name}
-                                        address={dissaprovedNewBusinessPermit.address}
-                                        natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                        typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                        contactno={dissaprovedNewBusinessPermit.contact_no}
-                                        email={dissaprovedNewBusinessPermit.email}
-                                        datereceived={dissaprovedNewBusinessPermit.date_received}
+                                        open={openViewPending[disapprovedNewBusinessPermit.id]} 
+                                        handleClose={() => handleCloseViewPending(disapprovedNewBusinessPermit.id)} 
+                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no}
+                                        permitee={disapprovedNewBusinessPermit.permittee}
+                                        businessname={disapprovedNewBusinessPermit.business_name}
+                                        address={disapprovedNewBusinessPermit.address}
+                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                        contactno={disapprovedNewBusinessPermit.contact_no}
+                                        email={disapprovedNewBusinessPermit.email}
+                                        datereceived={disapprovedNewBusinessPermit.date_received}
                                         />
                                         <UpdateRenewalApplication 
-                                        open={openUpdateOccupancy[dissaprovedNewBusinessPermit.id]} 
-                                        handleClose={() => handleCloseUpdate(dissaprovedNewBusinessPermit.id)} 
-                                        bspermit_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                        permitee={dissaprovedNewBusinessPermit.permittee}
-                                        businessname={dissaprovedNewBusinessPermit.business_name}
-                                        address={dissaprovedNewBusinessPermit.address}
-                                        natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                        typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                        contactno={dissaprovedNewBusinessPermit.contact_no}
-                                        email={dissaprovedNewBusinessPermit.email}
-                                        datereceived={dissaprovedNewBusinessPermit.date_received}
-                                        id={dissaprovedNewBusinessPermit.id}
+                                        open={openUpdateOccupancy[disapprovedNewBusinessPermit.id]} 
+                                        handleClose={() => handleCloseUpdate(disapprovedNewBusinessPermit.id)} 
+                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no}
+                                        permitee={disapprovedNewBusinessPermit.permittee}
+                                        businessname={disapprovedNewBusinessPermit.business_name}
+                                        address={disapprovedNewBusinessPermit.address}
+                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                        contactno={disapprovedNewBusinessPermit.contact_no}
+                                        email={disapprovedNewBusinessPermit.email}
+                                        datereceived={disapprovedNewBusinessPermit.date_received}
+                                        id={disapprovedNewBusinessPermit.id}
                                         form ="New"
                                         />
                                         <EvaluateNTCPopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            activity={selectedAction[dissaprovedNewBusinessPermit.id]}
-                                            open={openprevEvaluateNTC[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            handleClose={() => handleCloseView(dissaprovedNewBusinessPermit.id)}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openprevEvaluateNTC[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)}
                                         />
                                         <DeleteClerkPopup
-                                            open={openDelete[dissaprovedNewBusinessPermit.id]}
-                                            value={dissaprovedNewBusinessPermit.id}
+                                            open={openDelete[disapprovedNewBusinessPermit.id]}
+                                            value={disapprovedNewBusinessPermit.id}
                                             form="NewBP"
                                             sortby = {sortBy}
-                                            remarks={dissaprovedNewBusinessPermit.remarks}
-                                            handleClose={() => handleCloseDelete(dissaprovedNewBusinessPermit.id)}
+                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
                                         />
                                         <PrintClerkPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
                                         />
                                         <EvaluateChoicePopup
-                                            open={openEvalChoice[dissaprovedNewBusinessPermit.id]}
+                                            open={openEvalChoice[disapprovedNewBusinessPermit.id]}
                                             remarks={sortBy}
-                                            handleOpenApproved={() => handleOpenEvaluate(dissaprovedNewBusinessPermit.id)}
-                                            handleOpenNTCV={() => handleOpenNTCV(dissaprovedNewBusinessPermit.id)}
-                                            handleOpenAbatement={() => handleOpenAbatement(dissaprovedNewBusinessPermit.id)}
-                                            handleOpenClosure={() => handleOpenClosure(dissaprovedNewBusinessPermit.id)}
-                                            handleClose={() => handleCloseEvalCHoice(dissaprovedNewBusinessPermit.id)}
+                                            handleOpenApproved={() => handleOpenEvaluate(disapprovedNewBusinessPermit.id)}
+                                            handleOpenNTCV={() => handleOpenNTCV(disapprovedNewBusinessPermit.id)}
+                                            handleOpenAbatement={() => handleOpenAbatement(disapprovedNewBusinessPermit.id)}
+                                            handleOpenClosure={() => handleOpenClosure(disapprovedNewBusinessPermit.id)}
+                                            handleClose={() => handleCloseEvalCHoice(disapprovedNewBusinessPermit.id)}
 
                                         />
                                         <EvaluateNTCVPopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            open={openprevEvaluateNTCV[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            ntc={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            handleClose={() => handleCloseNTCV(dissaprovedNewBusinessPermit.id)}
+                                            open={openprevEvaluateNTCV[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            ntc={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            handleClose={() => handleCloseNTCV(disapprovedNewBusinessPermit.id)}
                                         />
                                         <EvaluateAbatementPopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            open={openprevEvaluateAbatement[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            ntc={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            ntcv={dissaprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={dissaprovedNewBusinessPermit.ntcv_date}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            handleClose={() => handleCloseAbatement(dissaprovedNewBusinessPermit.id)}
+                                            open={openprevEvaluateAbatement[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            ntc={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            ntcv={disapprovedNewBusinessPermit.ntcv_no}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            handleClose={() => handleCloseAbatement(disapprovedNewBusinessPermit.id)}
                                         />
                                         <EvaluateClosurePopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            open={openprevEvaluateClosure[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            ntc={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            ntcv={dissaprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={dissaprovedNewBusinessPermit.ntcv_date}
-                                            abatement={dissaprovedNewBusinessPermit.abatement_no}
-                                            abatement_date={dissaprovedNewBusinessPermit.abatement_date}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            handleClose={() => handleCloseClosure(dissaprovedNewBusinessPermit.id)}
+                                            open={openprevEvaluateClosure[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            ntc={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            ntcv={disapprovedNewBusinessPermit.ntcv_no}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
+                                            abatement={disapprovedNewBusinessPermit.abatement_no}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            handleClose={() => handleCloseClosure(disapprovedNewBusinessPermit.id)}
 
                                         />
                                         <ViewUpdateNTC
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            activity={selectedAction[dissaprovedNewBusinessPermit.id]}
-                                            open={openprevViewUpdateNTC[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            inspection_no={dissaprovedNewBusinessPermit.inspection_no}
-                                            inspectiondate={dissaprovedNewBusinessPermit.date_inspected}
-                                            ntc_no={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            teamleader={dissaprovedNewBusinessPermit.team_leader}
-                                            fireinspectors={dissaprovedNewBusinessPermit.fire_inspectors}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            remarks={dissaprovedNewBusinessPermit.remarks}
-                                            receivedby={dissaprovedNewBusinessPermit.name}
-                                            receiveddate={dissaprovedNewBusinessPermit.date}
-                                            handleClose={() => handleCloseViewUpdateNTC(dissaprovedNewBusinessPermit.id)}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openprevViewUpdateNTC[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            receivedby={disapprovedNewBusinessPermit.name}
+                                            receiveddate={disapprovedNewBusinessPermit.date}
+                                            handleClose={() => handleCloseViewUpdateNTC(disapprovedNewBusinessPermit.id)}
                                         />
                                         <ViewUpdateNTCVPopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            activity={selectedAction[dissaprovedNewBusinessPermit.id]}
-                                            open={openViewUpdateNTCV[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            inspection_no={dissaprovedNewBusinessPermit.inspection_no}
-                                            inspectiondate={dissaprovedNewBusinessPermit.date_inspected}
-                                            ntc_no={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            ntcv_no={dissaprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={dissaprovedNewBusinessPermit.ntcv_date}
-                                            teamleader={dissaprovedNewBusinessPermit.team_leader}
-                                            fireinspectors={dissaprovedNewBusinessPermit.fire_inspectors}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            remarks={dissaprovedNewBusinessPermit.remarks}
-                                            receivedby={dissaprovedNewBusinessPermit.name}
-                                            receiveddate={dissaprovedNewBusinessPermit.date}
-                                            handleClose={() => handleCloseViewUpdateNTCV(dissaprovedNewBusinessPermit.id)}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateNTCV[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            receivedby={disapprovedNewBusinessPermit.name}
+                                            receiveddate={disapprovedNewBusinessPermit.date}
+                                            handleClose={() => handleCloseViewUpdateNTCV(disapprovedNewBusinessPermit.id)}
                                         />
                                         <ViewUpdateAbatementPopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            activity={selectedAction[dissaprovedNewBusinessPermit.id]}
-                                            open={openViewUpdateAbatement[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            inspection_no={dissaprovedNewBusinessPermit.inspection_no}
-                                            inspectiondate={dissaprovedNewBusinessPermit.date_inspected}
-                                            ntc_no={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            ntcv_no={dissaprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={dissaprovedNewBusinessPermit.ntcv_date}
-                                            abatement_no={dissaprovedNewBusinessPermit.abatement_no}
-                                            abatement_date={dissaprovedNewBusinessPermit.abatement_date}
-                                            teamleader={dissaprovedNewBusinessPermit.team_leader}
-                                            fireinspectors={dissaprovedNewBusinessPermit.fire_inspectors}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            remarks={dissaprovedNewBusinessPermit.remarks}
-                                            receivedby={dissaprovedNewBusinessPermit.name}
-                                            receiveddate={dissaprovedNewBusinessPermit.date}
-                                            handleClose={() => handleCloseViewUpdateAbatement(dissaprovedNewBusinessPermit.id)}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateAbatement[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
+                                            abatement_no={disapprovedNewBusinessPermit.abatement_no}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            receivedby={disapprovedNewBusinessPermit.name}
+                                            receiveddate={disapprovedNewBusinessPermit.date}
+                                            handleClose={() => handleCloseViewUpdateAbatement(disapprovedNewBusinessPermit.id)}
                                         />
                                         <ViewUpdateClosurePopup
-                                            bpid={dissaprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
-                                            activity={selectedAction[dissaprovedNewBusinessPermit.id]}
-                                            open={openViewUpdateClosure[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            inspection_no={dissaprovedNewBusinessPermit.inspection_no}
-                                            inspectiondate={dissaprovedNewBusinessPermit.date_inspected}
-                                            ntc_no={dissaprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={dissaprovedNewBusinessPermit.ntc_date}
-                                            ntcv_no={dissaprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={dissaprovedNewBusinessPermit.ntcv_date}
-                                            abatement_no={dissaprovedNewBusinessPermit.abatement_no}
-                                            abatement_date={dissaprovedNewBusinessPermit.abatement_date}
-                                            closure_no={dissaprovedNewBusinessPermit.closure_no}
-                                            closure_date={dissaprovedNewBusinessPermit.closure_date}
-                                            teamleader={dissaprovedNewBusinessPermit.team_leader}
-                                            fireinspectors={dissaprovedNewBusinessPermit.fire_inspectors}
-                                            defects={dissaprovedNewBusinessPermit.defects}
-                                            remarks={dissaprovedNewBusinessPermit.remarks}
-                                            receivedby={dissaprovedNewBusinessPermit.name}
-                                            receiveddate={dissaprovedNewBusinessPermit.date}
-                                            handleClose={() => handleCloseViewUpdateClosure(dissaprovedNewBusinessPermit.id)}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateClosure[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
+                                            abatement_no={disapprovedNewBusinessPermit.abatement_no}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date}
+                                            closure_no={disapprovedNewBusinessPermit.closure_no}
+                                            closure_date={disapprovedNewBusinessPermit.closure_date}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors}
+                                            defects={disapprovedNewBusinessPermit.defects}
+                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            receivedby={disapprovedNewBusinessPermit.name}
+                                            receiveddate={disapprovedNewBusinessPermit.date}
+                                            handleClose={() => handleCloseViewUpdateClosure(disapprovedNewBusinessPermit.id)}
                                         />
 
                                         <EvaluatePopup
                                             form='New'
                                             activity={sortBy}
-                                            bpid={dissaprovedNewBusinessPermit.id}
-                                            open={openEvaluateBusiness[dissaprovedNewBusinessPermit.id]}
-                                            business_no={dissaprovedNewBusinessPermit.bspermit_no}
-                                            permitee={dissaprovedNewBusinessPermit.permittee}
-                                            business_name={dissaprovedNewBusinessPermit.business_name}
-                                            address={dissaprovedNewBusinessPermit.address}
-                                            natureofbusiness={dissaprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={dissaprovedNewBusinessPermit.type_occupancy}
-                                            contactno={dissaprovedNewBusinessPermit.contact_no}
-                                            email={dissaprovedNewBusinessPermit.email}
-                                            datereceived={dissaprovedNewBusinessPermit.date_received}
-                                            handleClose={() => handleCloseEvaluate(dissaprovedNewBusinessPermit.id)}
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            open={openEvaluateBusiness[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
+                                            permitee={disapprovedNewBusinessPermit.permittee}
+                                            business_name={disapprovedNewBusinessPermit.business_name}
+                                            address={disapprovedNewBusinessPermit.address}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
+                                            contactno={disapprovedNewBusinessPermit.contact_no}
+                                            email={disapprovedNewBusinessPermit.email}
+                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            handleClose={() => handleCloseEvaluate(disapprovedNewBusinessPermit.id)}
                                         />*/}
 
                                     </td>

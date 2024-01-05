@@ -114,7 +114,7 @@ export interface OccupancyPermit{
     id:string
 }
 
-export interface dissaprovedNewBusinessPermit {
+export interface disapprovedNewBusinessPermit {
     address?: string,
     amount?: number,
     businessname?: string,
@@ -127,14 +127,26 @@ export interface dissaprovedNewBusinessPermit {
     fireinspectors?: string[],
     fsicdate?: string,
     fsicno?: number,
+    ntcno?: number,
+    ntcdate?: string,
+    ntcvno?: number,
+    ntcvdate?: string,
+    abatementno?: number,
+    abatementdate?: string,
+    closureno?: number,
+    closuredate?: string,
     inspection_no?: number,
     naturebusiness?: string,
     orno?: number,
     permittee?: string,
     recommendation?: string[],
+    defects?:string[][],
     remarks?: string,
     teamleader?: string,
     typeoccupancy?: string,
+    paymentdate?:string,
+    status?: string,
+    name?: string,
     id: string,
 }
 
@@ -148,33 +160,30 @@ export interface Payment{
     opsdate?:string,
     opsno?:string,
     orno?:string,
-    payment?: {
-        natureOfCollection: string;
-        accountCode: string;
-        amount: string;
-      }[];
+    payment?:string[][],
     paymentdate?:string,
     projectname?:string,
-    totalamount?:number,
+    totalamount?:string,
     id:string
 }
+
 export interface addPayment{
     amountpaid:number,
     assessorname:string,
-    businesspermitno?:string,
+    businesspermitno:string,
     fsc:string,
     location:string,
     name:string,
     opsdate:string,
     opsno:string,
     orno:string,
-    payment: {
+    payment:{
         natureOfCollection: string;
         accountCode: string;
-        amount: string;
-      }[];
+        amount: string;   
+    }[][];
     paymentdate:string,
     projectname:string,
-    totalamount:number,
+    totalamount:string,
 }
         
