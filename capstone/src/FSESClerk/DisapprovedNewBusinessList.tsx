@@ -22,7 +22,7 @@ import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_P
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
 import { disapprovedNewBusinessPermit } from '../types/Users';
-import { disapprovedNewBusinessCollection } from '../lib/controller';
+import { businessPermCollection, disapprovedNewBusinessCollection } from '../lib/controller';
 
 
 
@@ -72,20 +72,78 @@ const DisapprovedNewBusiness: React.FC = () => {
 
 
     useEffect(
-        () =>
-            onSnapshot(disapprovedNewBusinessCollection, (snapshot:
-                QuerySnapshot<DocumentData>) => {
-                setdisapprovedNewBusinessPermit(
-                    snapshot.docs.map((doc) => {
-                        return {
-                            id: doc.id,
-                            ...doc.data(),
-                        };
-                    })
-                );
-                console.log(disapprovedNewBusinessPermit)
-            }),
-        []
+        () => {
+            if (sortBy === "Pending Records") {
+                onSnapshot(businessPermCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "NTC Records"){
+                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "NTCV Records"){
+                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "Abatement Records"){
+                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "Closure Records"){
+                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+        },[]
     )
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +191,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate Choice
-    const handleCloseEvalCHoice = (no: number) => {
+    const handleCloseEvalCHoice = (no: string) => {
         setopenEvalChoice((prevEvalChoice) => ({
             ...prevEvalChoice,
             [no]: false,
@@ -218,7 +276,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Update View Abatement
-    const handleCloseViewUpdateAbatement = (no: number) => {
+    const handleCloseViewUpdateAbatement = (no: string) => {
         setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -235,7 +293,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Update View Closure
-    const handleCloseViewUpdateClosure = (no: number) => {
+    const handleCloseViewUpdateClosure = (no: string) => {
         setopenViewUpdateClosure((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -246,7 +304,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
 
     //Opens Evaluate NTCV
-    const handleOpenNTCV = (no: number) => {
+    const handleOpenNTCV = (no: string) => {
         setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: true,
@@ -254,7 +312,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
     };
     // Closes Evaluate NTCV
-    const handleCloseNTCV = (no: number) => {
+    const handleCloseNTCV = (no: string) => {
         setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: false,
@@ -263,7 +321,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Opens Evaluate Abatement
-    const handleOpenAbatement = (no: number) => {
+    const handleOpenAbatement = (no: string) => {
         setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -271,7 +329,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate Abatement
-    const handleCloseAbatement = (no: number) => {
+    const handleCloseAbatement = (no: string) => {
         setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -280,7 +338,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
      //Open Approved Eval Popup
-     const handleOpenEvaluate = (no: number) => {
+     const handleOpenEvaluate = (no: string) => {
         setopenEvaluateBusiness((prevOpenEvaluate) => ({
             ...prevOpenEvaluate,
             [no]: true,
@@ -289,7 +347,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Close Approved Eval Popup
-    const handleCloseEvaluate = (no: number) => {
+    const handleCloseEvaluate = (no: string) => {
         setopenEvaluateBusiness((prevOpenEvaluate) => ({
             ...prevOpenEvaluate,
             [no]: false,
@@ -299,7 +357,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
 
     //Opens Evaluate Closure
-    const handleOpenClosure = (no: number) => {
+    const handleOpenClosure = (no: string) => {
         setopenprevEvaluateClosure((prevEvaluateClosure) => ({
             ...prevEvaluateClosure,
             [no]: true,
@@ -307,7 +365,7 @@ const DisapprovedNewBusiness: React.FC = () => {
 
     };
     // Closes Evaluate Closure
-    const handleCloseClosure = (no: number) => {
+    const handleCloseClosure = (no: string) => {
         setopenprevEvaluateClosure((prevEvaluateClosure) => ({
             ...prevEvaluateClosure,
             [no]: false,
@@ -316,7 +374,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //VIEW/Update Evaluate Popup Open
-    const handleOpenViewUpdate = (no: number) => {
+    const handleOpenViewUpdate = (no: string) => {
         setopenViewUpdOccupancy((prevOpenView) => ({
             ...prevOpenView,
             [no]: true,
@@ -324,7 +382,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //VIEW/Update Evaluate Popup Close
-    const handleCloseViewUpdate = (no: number) => {
+    const handleCloseViewUpdate = (no: string) => {
         setopenViewUpdOccupancy((prevOpenView) => ({
             ...prevOpenView,
             [no]: false,
@@ -341,7 +399,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Update Popup
-    const handleCloseUpdate = (no: number) => {
+    const handleCloseUpdate = (no: string) => {
         setopenUpdateOccupancy((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: false,
@@ -367,7 +425,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Delete Popup Close
-    const handleCloseDelete = (no: number) => {
+    const handleCloseDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -376,7 +434,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //Handles the button Logic 
-    const handleNext = (value: string, status: string, businessno: string) => {
+    const handleNext = (value: string, remarks: string, businessno: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -384,7 +442,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             handleOpenDelete(value);
 
         }
-        if (status === 'Pending') {
+        if (remarks === 'Pending') {
             //Pending function condition goes here
             if (selectedValue === 'View') {
                 handleOpenViewPending(value);
@@ -401,8 +459,8 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'NTC Records' && status === 'For Issuance NTCV') || (sortBy === 'NTC Records' && status === 'Issued NTCV') || (sortBy === 'NTC Records' && status === 'Complied')) {
-            if ((selectedValue === 'Evaluate') && (status === 'For Issuance NTCV')) {
+        else if ((sortBy === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortBy === 'NTC Records' && remarks === 'Issued NTCV') || (sortBy === 'NTC Records' && remarks === 'Complied')) {
+            if ((selectedValue === 'Evaluate') && (remarks === 'For Issuance NTCV')) {
                 //Completed function condition goes here
                 handleOpenEvalChoice(value);
             }
@@ -415,9 +473,9 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'NTCV Records' && status === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && status === 'Issued Abatement') || (sortBy === 'NTCV Records' && status === 'Complied')) {
+        else if ((sortBy === 'NTCV Records' && remarks === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && remarks === 'Issued Abatement') || (sortBy === 'NTCV Records' && remarks === 'Complied')) {
             //Completed function condition goes here
-            if ((selectedValue === 'Evaluate') && (status === 'For Issuance Abatement')) {
+            if ((selectedValue === 'Evaluate') && (remarks === 'For Issuance Abatement')) {
                 handleOpenEvalChoice(value);
             }
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
@@ -429,9 +487,9 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'Abatement Records' && status === 'For Issuance Closure') || (sortBy === 'Abatement Records' && status === 'Issued Closure') || (sortBy === 'Abatement Records' && status === 'Complied')) {
+        else if ((sortBy === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortBy === 'Abatement Records' && remarks === 'Issued Closure') || (sortBy === 'Abatement Records' && remarks === 'Complied')) {
             //Completed function condition goes here
-            if ((selectedValue === 'Evaluate') && (status === 'For Issuance Closure')) {
+            if ((selectedValue === 'Evaluate') && (remarks === 'For Issuance Closure')) {
                 handleOpenEvalChoice(value);
 
             }
@@ -445,8 +503,8 @@ const DisapprovedNewBusiness: React.FC = () => {
 
             }
         }
-        else if ((sortBy === 'Closure Records' && status === 'For Issuance Closure') || (sortBy === 'Closure Records' && status === 'Issued Closure') || (sortBy === 'Closure Records' && status === 'Complied')) {
-            if ((selectedValue === 'Evaluate') && (status === 'Issued Closure')) {
+        else if ((sortBy === 'Closure Records' && remarks === 'For Issuance Closure') || (sortBy === 'Closure Records' && remarks === 'Issued Closure') || (sortBy === 'Closure Records' && remarks === 'Complied')) {
+            if ((selectedValue === 'Evaluate') && (remarks === 'Issued Closure')) {
                 handleOpenEvalChoice(value);
 
             }
@@ -493,7 +551,6 @@ const DisapprovedNewBusiness: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
                             <th>Business Permit #</th>
                             <th>Owner's Name</th>
                             <th>Business Name</th>
@@ -510,6 +567,19 @@ const DisapprovedNewBusiness: React.FC = () => {
                     <tbody>
                         {disapprovedNewBusinessPermit
                             .filter((disapprovedNewBusinessPermit) => {
+                                if (sortBy === 'Pending Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Pending';
+                                } else if (sortBy === 'NTC Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued NTCV' || disapprovedNewBusinessPermit.remarks === 'For Issuance NTCV';
+                                } else if (sortBy === 'NTCV Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Abatement' || disapprovedNewBusinessPermit.remarks === 'For Issuance Abatement';
+                                } else if (sortBy === 'Abatement Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Closure' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure';
+                                } else if (sortBy === 'Closure Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Closure' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure';
+                                }
+                            })
+                            .filter((disapprovedNewBusinessPermit) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
@@ -525,7 +595,6 @@ const DisapprovedNewBusiness: React.FC = () => {
                             })
                             .map((disapprovedNewBusinessPermit) => (
                                 <tr key={disapprovedNewBusinessPermit.id}>
-                                    <td>{disapprovedNewBusinessPermit.id}</td>
                                     <td>{disapprovedNewBusinessPermit.businessno}</td>
                                     <td>{disapprovedNewBusinessPermit.permittee}</td>
                                     <td>{disapprovedNewBusinessPermit.businessname}</td>
