@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { updateBusinessPermit, updaterenewalBusinessPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -22,7 +23,7 @@ const cardStyle = {
 
 export interface formdetails {
   form: string;
-  bpid: number;
+  bpid: string;
   activity: string;
   business_no: string;
   permitee: string;
@@ -96,7 +97,7 @@ export default function EvaluatePopup(props: formdetails) {
 
   // uploads data to db
   const evaluateApproved = async () => {
-    let NEW_URL ='';
+    /*let NEW_URL ='';
     if(props.form ==='New'){
       NEW_URL ='http://localhost:8080/newbpapplication/insertBusinessPermit'
     }
@@ -129,82 +130,114 @@ export default function EvaluatePopup(props: formdetails) {
     ).then(res => {
       console.log(res.data);
       alert("Evaluation Successful!");
-      afterevalfunc();
       props.handleClose()
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err))*/
+    if (props.form === "New") {
+
+      updateBusinessPermit(props.bpid, {
+        dateinspection: (dateInspectionRef.current?.value || ''),
+        inspection_no: (inspectOrderRef.current?.value || ''),
+        fsicno: (fsicRef.current?.value || ''),
+        fsicdate: (fsicDateRef.current?.value || ''),
+        amount: (AmountRef.current?.value || 0),
+        orno: (OrNoRef.current?.value || ''),
+        date: (dateRef.current?.value || ''),
+        teamleader: (teamLeaderRef.current?.value || ''),
+        fireinspectors: [inputInspector],
+        recommendation: [inputrecommendation],
+        remarks: "FSIC Not Printed"
+      })
+      props.handleClose();
+    }
+    else if (props.form === "Renewal") {
+      updaterenewalBusinessPermit(props.bpid, {
+        dateinspection: (dateInspectionRef.current?.value || ''),
+        inspection_no: (inspectOrderRef.current?.value || ''),
+        fsicno: (fsicRef.current?.value || ''),
+        fsicdate: (fsicDateRef.current?.value || ''),
+        amount: (AmountRef.current?.value || 0),
+        orno: (OrNoRef.current?.value || ''),
+        date: (dateRef.current?.value || ''),
+        teamleader: (teamLeaderRef.current?.value || ''),
+        fireinspectors: [inputInspector],
+        recommendation: [inputrecommendation],
+        remarks: "FSIC Not Printed"
+      })
+      props.handleClose();
+    }
   }
 
-  const afterevalfunc = () =>{
+  /*const afterevalfunc = () =>{
     if(props.activity === 'Pending'){
       deletefunc(props.bpid);
     }
     else{
       updatefunc();
     }
-  }
+  }*/
 
   const deletefunc = (value: number) => {
     //function here
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/BPPending/deletePermit/'
+    let NEW_URL = '';
+    if (props.form === 'New') {
+      NEW_URL = 'http://localhost:8080/BPPending/deletePermit/'
     }
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/Renewal/deletePermit/'
+    else if (props.form === 'Renewal') {
+      NEW_URL = 'http://localhost:8080/Renewal/deletePermit/'
     }
 
     axios.delete(NEW_URL + value).then(res => {
-        console.log(res.data);
+      console.log(res.data);
     }).catch(err => console.log(err))
-}
+  }
 
-const updatefunc = () =>{
-  let new_url = '';
-  if(props.activity === 'NTC Records'){
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
+  const updatefunc = () => {
+    let new_url = '';
+    if (props.activity === 'NTC Records') {
+      if (props.form === 'New') {
+        new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
+      }
+      else if (props.form === 'Renewal') {
+        new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
+      }
     }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
+    else if (props.activity === 'NTCV Records') {
+      if (props.form === 'New') {
+        new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
+      }
+      else if (props.form === 'Renewal') {
+        new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
+      }
     }
+    else if (props.activity === 'Abatement Records') {
+      if (props.form === 'New') {
+        new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
+      }
+      else if (props.form === 'Renewal') {
+        new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
+      }
+    }
+    else if (props.activity === 'Closure Records') {
+      if (props.form === 'New') {
+        new_url = 'http://localhost:8080/newbpclosureorder/updateRemarks?id=';
+      }
+      else if (props.form === 'Renewal') {
+        new_url = 'http://localhost:8080/renewalbpclosureorder/updateRemarks?id=';
+      }
+    }
+    axios.put(new_url + props.bpid,
+      {
+        remarks: "Complied",
+      }
+    )
   }
-  else if (props.activity === 'NTCV Records'){
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
-    }
-  }
-  else if(props.activity==='Abatement Records'){
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
-    }
-  }
-  else if (props.activity === 'Closure Records'){
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpclosureorder/updateRemarks?id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpclosureorder/updateRemarks?id=';
-    }
-  }
-  axios.put(new_url+props.bpid,
-    {
-      remarks: "Complied",
-    }
-  )
-}
 
 
   // Sets the values of the array and uploads data to db
   const addEvaulation = () => {
     handleRender();
     evaluateApproved();
-    
+
   }
   return (
     <div>

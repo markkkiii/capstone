@@ -567,7 +567,7 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        <ViewRenewalApplication 
+                                        {/*<ViewRenewalApplication 
                                             open={openViewPending[applicationform.id]} 
                                             handleClose={() => handleCloseView(applicationform.id)}
                                             bspermit_no={applicationform.bspermit_no}
@@ -827,7 +827,7 @@ const DisapprovedRenewalList: React.FC = () => {
                                         <PrintClerkPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
-                                        />
+                                        />*/}
 
                                     </td>
                                 </tr>

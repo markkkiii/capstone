@@ -4,39 +4,36 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
+import { deleteBuildingPayment, deleteBusinessPermit, deleteNewBusinessPayment, deleteOccupancyPayment, deleteRenewalBusinessPayment } from '../lib/controller';
 
 interface DeleteProps {
-    value: number;
+    value: string;
     open: boolean;
     form: string;
     agency?: string;
     handleClose: () => void;
 }
 
-const DeletePaymentPopup: React.FC<DeleteProps> = ({form, value, open, handleClose }) => {
+const DeletePaymentPopup: React.FC<DeleteProps> = ({ form, value, open, handleClose }) => {
 
-    let records = ''
-    if (form === 'New') {
-        records = 'newBusinessPayment'
-    }
-    else if (form === 'Renewal') {
-        records = 'newRenewalBusinessPayment'
-    }
-    else if (form === 'Occupancy') {
-        records = 'OccupancyPayment'
-    }
-    else if (form === 'Building') {
-        records = 'BuildingPermitPayment'
-    }
-
-
-    const deletefunc = (value: number) => {
+    const deletefunc = (value: string) => {
         //function here
-        axios.delete('http://localhost:8080/' + records + '/deletePermit/' + value).then(res => {
-            console.log(res.data);
-            alert("Deleted Successfully!");
-            handleClose()
-        }).catch(err => console.log(err))
+        if (form === 'Building') {
+            deleteBuildingPayment(value);
+            alert("Deleted Successfully");
+        }
+        else if (form === 'New') {
+            deleteNewBusinessPayment(value);
+            alert("Deleted Successfully");
+        }
+        else if (form === 'Renewal') {
+            deleteRenewalBusinessPayment(value);
+            alert("Deleted Successfully");
+        }
+        else if (form === 'Occupancy') {
+            deleteOccupancyPayment(value);
+            alert("Deleted Successfully");
+        }
     }
 
     return (

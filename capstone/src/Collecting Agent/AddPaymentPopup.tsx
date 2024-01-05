@@ -5,6 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, OutlinedInput, Radio, RadioGroup, Select, SelectChangeEvent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axios from 'axios';
+import { addBuildingPayment, addNewBusinessPayment, addOccupancyPayment, addRenewalBusinessPayment } from '../lib/controller';
 
 const cardStyle = {
     display: 'flex',
@@ -138,15 +139,20 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
     };
 
     const resetValues = () => {
-      
+
 
         setTableData([{ natureOfCollection: '', accountCode: '', amount: '' }]);
     };
 
     const AddForm = async () => {
-        const convertedTableData = tableData.map(item => [item.natureOfCollection, item.accountCode, item.amount]);
+        const convertedTableData = tableData.map(item => ({
+            natureOfCollection: item.natureOfCollection,
+            accountCode: item.accountCode,
+            amount: item.amount
+        }));
         const totalAmount = calculateTotalAmount();
         const fscValue = setfscValues();
+        /*
         let NEW_URL = '';
         if (add === 'New') {
             NEW_URL = 'http://localhost:8080/newBusinessPayment/insertNewBpPayment';
@@ -185,7 +191,76 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
             })
             .catch(err => {
                 console.log(err)
+            })*/
+        if (add === 'Building') {
+            addBuildingPayment({
+                amountpaid: (parseFloat(amountPaidRef.current?.value || '')),
+                assessorname: (assesorRef.current?.value || ""),
+                fsc: fscValue,
+                location: (locationRef.current?.value || ""),
+                name: (nameRef.current?.value || ""),
+                opsdate: (opsdateRef.current?.value || ""),
+                opsno: (opsnumberRef.current?.value || ""),
+                orno: (ornumberRef.current?.value || ""),
+                payment: convertedTableData,
+                projectname: (establishmentRef.current?.value || ""),
+                paymentdate: (paymentdateRef.current?.value || ""),
+                totalamount: totalAmount,
+            }
+            );
+            handleClose();
+        }
+        else if (add === 'New') {
+            addNewBusinessPayment({
+                amountpaid: (parseFloat(amountPaidRef.current?.value || '')),
+                assessorname: (assesorRef.current?.value || ""),
+                fsc: fscValue,
+                location: (locationRef.current?.value || ""),
+                name: (nameRef.current?.value || ""),
+                opsdate: (opsdateRef.current?.value || ""),
+                opsno: (opsnumberRef.current?.value || ""),
+                orno: (ornumberRef.current?.value || ""),
+                payment: convertedTableData,
+                projectname: (establishmentRef.current?.value || ""),
+                paymentdate: (paymentdateRef.current?.value || ""),
+                totalamount: totalAmount,
+            });
+            handleClose();
+        }
+        else if (add === 'Renewal') {
+            addRenewalBusinessPayment({
+                amountpaid: (parseFloat(amountPaidRef.current?.value || '')),
+                assessorname: (assesorRef.current?.value || ""),
+                fsc: fscValue,
+                location: (locationRef.current?.value || ""),
+                name: (nameRef.current?.value || ""),
+                opsdate: (opsdateRef.current?.value || ""),
+                opsno: (opsnumberRef.current?.value || ""),
+                orno: (ornumberRef.current?.value || ""),
+                payment: convertedTableData,
+                projectname: (establishmentRef.current?.value || ""),
+                paymentdate: (paymentdateRef.current?.value || ""),
+                totalamount: totalAmount,
             })
+            handleClose();
+        }
+        else if (add === 'Occupancy') {
+            addOccupancyPayment({
+                amountpaid: (parseFloat(amountPaidRef.current?.value || '')),
+                assessorname: (assesorRef.current?.value || ""),
+                fsc: fscValue,
+                location: (locationRef.current?.value || ""),
+                name: (nameRef.current?.value || ""),
+                opsdate: (opsdateRef.current?.value || ""),
+                opsno: (opsnumberRef.current?.value || ""),
+                orno: (ornumberRef.current?.value || ""),
+                payment: convertedTableData,
+                projectname: (establishmentRef.current?.value || ""),
+                paymentdate: (paymentdateRef.current?.value || ""),
+                totalamount: totalAmount,
+            })
+            handleClose();
+        }
     }
 
 
@@ -346,7 +421,7 @@ const AddPaymentPopup: React.FC<formdetails> = ({ open, handleClose, add }) => {
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' style={{ marginLeft: '100px' }}>Official Receipt No</p>
-                                        <OutlinedInput inputRef={ornumberRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} placeholder='EX: YEAR-MONTH-DAY' />
+                                        <OutlinedInput inputRef={ornumberRef} fullWidth className='custom-outlined-input' style={{ marginLeft: '100px', borderRadius: '11px', width: '340px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={6}>

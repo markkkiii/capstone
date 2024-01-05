@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { updateBusinessPermit, updaterenewalBusinessPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 export interface formdetails {
   form: string;
   permit: string;
-  bpid: number;
+  bpid: string;
   business_no: string;
   permitee: string;
   business_name: string;
@@ -114,9 +115,9 @@ export default function ViewEvaluate(props: formdetails) {
   };
 
   // uploads data to db
-  const evaluateApproved = async () => {
+  const updatePermit = async () => {
 
-    let NEW_URL = '';
+    /*let NEW_URL = '';
     if (props.permit === 'New') {
       NEW_URL = 'http://localhost:8080/newbpapplication/putEvalauteApprovedApplication?id='
       console.log(props.bpid)
@@ -153,7 +154,57 @@ export default function ViewEvaluate(props: formdetails) {
       props.handleClose()
     }).catch(err => 
       console.log(err)
-      )
+      )*/
+    if (props.permit === "New") {
+      updateBusinessPermit(props.bpid, {
+        businessno: (business_noRef.current?.value || ''),
+        address: (addressRef.current?.value || ''),
+        permittee: (permiteeRef.current?.value || ''),
+        businessname: (business_nameRef.current?.value || ''),
+        naturebusiness: (natureofbusinessRef.current?.value || ''),
+        typeoccupancy: (typeofoccupancyRef.current?.value || ''),   
+        contactno: (contactnoRef.current?.value || ''),
+        email: (emailRef.current?.value || ''),
+        datereceived: (date_receivedRef.current?.value || ''),
+        dateinspection: (dateInspectionRef.current?.value || ''),
+        inspection_no: (inspectOrderRef.current?.value || ''),
+        fsicno: (fsicRef.current?.value || ''),
+        fsicdate: (fsicDateRef.current?.value || ''),
+        amount: (AmountRef.current?.value || 0),
+        orno: (OrNoRef.current?.value || ''),
+        date: (dateRef.current?.value || ''),
+        teamleader: (teamLeaderRef.current?.value || ''),
+        fireinspectors: [inputInspector],
+        recommendation: [inputrecommendation],
+        remarks: "FSIC Not Printed"
+      })
+      props.handleClose();
+    }
+    else if (props.permit === "Renewal") {
+      updaterenewalBusinessPermit(props.bpid, {
+        businessno: (business_noRef.current?.value || ''),
+        address: (addressRef.current?.value || ''),
+        permittee: (permiteeRef.current?.value || ''),
+        businessname: (business_nameRef.current?.value || ''),
+        naturebusiness: (natureofbusinessRef.current?.value || ''),
+        typeoccupancy: (typeofoccupancyRef.current?.value || ''),   
+        contactno: (contactnoRef.current?.value || ''),
+        email: (emailRef.current?.value || ''),
+        datereceived: (date_receivedRef.current?.value || ''),
+        dateinspection: (dateInspectionRef.current?.value || ''),
+        inspection_no: (inspectOrderRef.current?.value || ''),
+        fsicno: (fsicRef.current?.value || ''),
+        fsicdate: (fsicDateRef.current?.value || ''),
+        amount: (AmountRef.current?.value || 0),
+        orno: (OrNoRef.current?.value || ''),
+        date: (dateRef.current?.value || ''),
+        teamleader: (teamLeaderRef.current?.value || ''),
+        fireinspectors: [inputInspector],
+        recommendation: [inputrecommendation],
+        remarks: "FSIC Not Printed"
+      })
+      props.handleClose();
+    }
   }
 
 
@@ -164,7 +215,7 @@ export default function ViewEvaluate(props: formdetails) {
       props.handleClose()
     }
     else {
-      evaluateApproved();
+      updatePermit();
     }
 
 
@@ -237,13 +288,13 @@ export default function ViewEvaluate(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px', marginLeft: '-15px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={date_receivedRef} defaultValue={props.date_received ? new Date(props.date_received).toISOString().split('T')[0] : ''} variant='standard' disabled={props.form !== 'Update'} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={date_receivedRef} defaultValue={props.date_received } variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px', marginLeft: '-15px' }} >Date of Inspection</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.date_inspection? new Date(props.date_inspection).toISOString().split('T')[0] : ''} inputRef={dateInspectionRef} variant='standard' disabled={props.form !== 'Update'} />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.date_inspection} inputRef={dateInspectionRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -260,8 +311,8 @@ export default function ViewEvaluate(props: formdetails) {
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph'  style={{ marginLeft: '-15px' }}>FSIC Date</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.fsic_date ? new Date(props.fsic_date).toISOString().split('T')[0] : ''} inputRef={fsicDateRef} variant='standard' disabled={props.form !== 'Update'} />
+                      <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>FSIC Date</p>
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.fsic_date} inputRef={fsicDateRef} variant='standard' disabled={props.form !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
@@ -284,7 +335,7 @@ export default function ViewEvaluate(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Date</p>
-                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.payment_date ? new Date(props.payment_date).toISOString().split('T')[0] : ''} inputRef={dateRef} disabled={props.form !== 'Update'} variant='standard' />
+                      <TextField className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.payment_date} inputRef={dateRef} disabled={props.form !== 'Update'} variant='standard' />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>

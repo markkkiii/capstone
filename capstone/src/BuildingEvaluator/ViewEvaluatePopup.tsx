@@ -19,7 +19,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-    no: number;
+    no: string;
     buildingPermitNo: string;
     applicantName: string;
     projectName: string;
@@ -33,7 +33,7 @@ export interface formdetails {
     numberstorey?: number;
     newconsreno?: string;
     buildcons?: boolean;
-    defects?: string;
+    defects?: string[];
     open: boolean;
     update: string;
     handleClose: () => void;
@@ -108,7 +108,7 @@ export default function ViewEvaluatePopup(props: formdetails) {
                                     <Grid item xs={10} sm={11}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Date Received</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''}  readOnly={props.update !== 'Update'} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived}  readOnly={props.update !== 'Update'} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={11}>

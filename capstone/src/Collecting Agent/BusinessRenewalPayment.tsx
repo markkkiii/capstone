@@ -13,6 +13,9 @@ import DeletePaymentPopup from './DeletePaymentPopup';
 import PrintPaymentPopup from './PrintPaymentPopup';
 import AddPaymentPopup from './AddPaymentPopup';
 import ViewPayment from './ViewPayment';
+import { Payment } from '../types/Users';
+import { RenewalBusinessPaymentCollection, renewalbusinessPermCollection } from '../lib/controller';
+import { onSnapshot, QuerySnapshot, DocumentData } from '@firebase/firestore';
 
 
 //Header Part
@@ -39,12 +42,13 @@ const BusinessRenewalPayment: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
-    const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewPayment, setopenViewPayment] = useState<Record<number, boolean>>({});
-    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<number, boolean>>({});
+    const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
+    const [openViewPayment, setopenViewPayment] = useState<Record<string, boolean>>({});
+    const [openUpdatePayment, setopenUpdatePayment] = useState<Record<string, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+    const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
+    const [RenewalBusinessPayment, setRenewalBusinessPayment] = useState<Payment[]>([]);
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -63,11 +67,28 @@ const BusinessRenewalPayment: React.FC = () => {
     }])
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         axios.get('http://localhost:8080/newRenewalBusinessPayment/getAllRenewalbpPayment').then(res => {
             SetApplicationForm(res.data)
         }).catch(err => console.log(err))
-    }, [test]);
+    }, [test]);*/
+
+    useEffect(
+        () =>
+            onSnapshot(RenewalBusinessPaymentCollection, (snapshot:
+                QuerySnapshot<DocumentData>) => {
+                setRenewalBusinessPayment(
+                    snapshot.docs.map((doc) => {
+                        return {
+                            id: doc.id,
+                            ...doc.data(),
+                        };
+                    })
+                );
+                console.log(RenewalBusinessPayment)
+            }),
+        []
+    )
 
 
     const handleRender = () => {
@@ -84,7 +105,7 @@ const BusinessRenewalPayment: React.FC = () => {
 
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
         const value = event.target.value;
         setSelectedAction((prevSelectedAction) => ({
             ...prevSelectedAction,
@@ -110,7 +131,7 @@ const BusinessRenewalPayment: React.FC = () => {
     };
 
     //View Popup
-    const handleOpenView = (no: number) => {
+    const handleOpenView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -118,7 +139,7 @@ const BusinessRenewalPayment: React.FC = () => {
     };
 
     //View Popup Close
-    const handleCloseView = (no: number) => {
+    const handleCloseView = (no: string) => {
         setopenViewPayment((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -154,9 +175,9 @@ const BusinessRenewalPayment: React.FC = () => {
         setPrint(false);
     };
 
- 
-     //Delete Popup
-     const handleOpenDelete = (no: number) => {
+
+    //Delete Popup
+    const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -164,7 +185,7 @@ const BusinessRenewalPayment: React.FC = () => {
     };
 
     //Delete Popup Close
-    const handleCloseDelete = (no: number) => {
+    const handleCloseDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -174,7 +195,7 @@ const BusinessRenewalPayment: React.FC = () => {
 
 
     //Handles the button Logic 
-    const handleNext = (value: number) => {
+    const handleNext = (value: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -239,7 +260,6 @@ const BusinessRenewalPayment: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
                             <th>OR No #</th>
                             <th>Payor</th>
                             <th>Project Name</th>
@@ -249,31 +269,33 @@ const BusinessRenewalPayment: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {applicationform
-                            .filter((applicationform) => {
+                        {RenewalBusinessPayment
+                            .filter((RenewalBusinessPayment) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
+                                    const opsno = RenewalBusinessPayment?.opsno || '';
+                                    const name = RenewalBusinessPayment.name || '';
+
                                     return (
-                                        applicationform.ops_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.name.toLowerCase().includes(searchText.toLowerCase())
+                                        opsno.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        name.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
-                            .map((applicationform, key = applicationform.id) => (
-                                <tr key={applicationform.id}>
-                                    <td>{applicationform.id}</td>
-                                    <td>{applicationform.or_no}</td>
-                                    <td>{applicationform.name}</td>
-                                    <td>{applicationform.projectname}</td>
-                                    <td>{applicationform.total_amount}</td>
-                                    <td>{applicationform.payment_date ? new Date(applicationform.payment_date).toISOString().split('T')[0] : ''}</td>
+                            .map((RenewalBusinessPayment) => (
+                                <tr key={RenewalBusinessPayment.id}>
+                                    <td>{RenewalBusinessPayment.orno}</td>
+                                    <td>{RenewalBusinessPayment.name}</td>
+                                    <td>{RenewalBusinessPayment.projectname}</td>
+                                    <td>{RenewalBusinessPayment.totalamount}</td>
+                                    <td>{RenewalBusinessPayment.paymentdate}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[applicationform.id] || ''}
-                                            onChange={(event) => handleActionChange(event, applicationform.id)}
+                                            value={selectedAction[RenewalBusinessPayment.id] || ''}
+                                            onChange={(event) => handleActionChange(event, RenewalBusinessPayment.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -282,39 +304,39 @@ const BusinessRenewalPayment: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id)}>
+                                        <IconButton className="next-button" onClick={() => handleNext(RenewalBusinessPayment.id)}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-
-                                        <PrintPaymentPopup
+                                        <DeletePaymentPopup
+                                            open={openDelete[RenewalBusinessPayment.id]}
+                                            value={RenewalBusinessPayment.id}
+                                            form="Renewal"
+                                            handleClose={() => handleCloseDelete(RenewalBusinessPayment.id)}
+                                        />
+                                        <ViewPayment
+                                            open={openViewPayment[RenewalBusinessPayment.id]}
+                                            id={RenewalBusinessPayment.id}
+                                            update={selectedAction[RenewalBusinessPayment.id]}
+                                            form="Renewal"
+                                            projectname={RenewalBusinessPayment.projectname || ''}
+                                            location={RenewalBusinessPayment.location || ''}
+                                            name={RenewalBusinessPayment.name || ''}
+                                            fsc={RenewalBusinessPayment.fsc || ''}
+                                            or_no={RenewalBusinessPayment.orno || ''}
+                                            ops_no={RenewalBusinessPayment.opsno || ''}
+                                            ops_date={RenewalBusinessPayment.opsdate || ''}
+                                            payment_date={RenewalBusinessPayment.paymentdate || ''}
+                                            amount_paid={RenewalBusinessPayment.amountpaid || 0}
+                                            total_amount={RenewalBusinessPayment.totalamount || 0}
+                                            assessor_name={RenewalBusinessPayment.assessorname || ''}
+                                            payment={RenewalBusinessPayment.payment || []}
+                                            handleClose={() => handleCloseView(RenewalBusinessPayment.id)}
+                                        />
+                                        {/*<PrintPaymentPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}
                                         />
-                                        <DeletePaymentPopup
-                                            open={openDelete[applicationform.id]}
-                                            value={applicationform.id}
-                                            form="Renewal"
-                                            handleClose={() => handleCloseDelete(applicationform.id)}
-                                        />
-                                        <ViewPayment
-                                         open ={openViewPayment[applicationform.id]}
-                                         id ={applicationform.id}
-                                         update = {selectedAction[applicationform.id]}
-                                         form = "Renewal"
-                                         projectname={applicationform.projectname}
-                                         location={applicationform.location}
-                                         name = {applicationform.name}
-                                         fsc={applicationform.fsc}
-                                         or_no={applicationform.or_no}
-                                         ops_no={applicationform.ops_no}
-                                         ops_date={applicationform.ops_date}
-                                         payment_date={applicationform.payment_date}
-                                         amount_paid={applicationform.amount_paid}
-                                         total_amount={applicationform.total_amount}
-                                         assessor_name={applicationform.assessor_name}
-                                         payment={applicationform.payment}
-                                         handleClose={() =>handleCloseView(applicationform.id)}
-                                        />
+                                        */}
                                     </td>
                                 </tr>
                             ))}

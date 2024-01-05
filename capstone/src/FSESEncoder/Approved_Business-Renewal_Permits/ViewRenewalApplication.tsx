@@ -104,7 +104,7 @@ const ViewRenewalApplication: React.FC<formdetails> = (props: formdetails) => {
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' style={{ marginLeft: '-15px' }}>Date Received</p>
-                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''}/>
+                                        <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} variant='standard' disabled defaultValue={props.datereceived}/>
                                     </Stack>
                                 </Grid>
                             </Grid>

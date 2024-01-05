@@ -9,7 +9,7 @@ const cardStyle = {
 };
 
 export interface formdetails{
-  no?: number;
+  no?: string;
   buildingPermitNo: string;
   applicantName: string;
   projectName: string;

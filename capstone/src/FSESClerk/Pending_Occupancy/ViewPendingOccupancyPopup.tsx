@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { updateoccupancyPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -20,8 +21,7 @@ const cardStyle = {
 
 export interface formdetails {
   activity: string,
-  id: number,
-  controlno: number;
+  id: string,
   buildingno: string;
   applicantname: string;
   projectname: string;
@@ -95,7 +95,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
   };
 
   const updatePermit = async () => {
-    axios.put('http://localhost:8080/occupancyPendingclerk/updateOccupancyPendingClerk?id=' + props.id,
+    /*axios.put('http://localhost:8080/occupancyPendingclerk/updateOccupancyPendingClerk?id=' + props.id,
       {
         control_no: applicantionnoRef.current?.value,
         bldgpermit_no: buildingnoRef.current?.value,
@@ -116,7 +116,21 @@ export default function ViewPendingOccupancyList(props: formdetails) {
       console.log(res.data);
       alert("Update Successful!");
       props.handleClose()
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err))*/
+    updateoccupancyPermit(props.id,{
+      bldgpermitno: (buildingnoRef.current?.value || ''),
+      applicantname:( applicantnameRef.current?.value || ''),
+      projectname: (projectnameRef.current?.value || ''),
+      location: (locationRef.current?.value || ''),
+      contactno: (contactnoRef.current?.value || ''),
+      datereceived: (dateReceivedRef.current?.value|| ''),
+      teamleader: (teamleaderRef.current?.value || ''),
+      inspectionno: (inspectionNoRef.current?.value || ''),
+      dateinspection: (inspectionRef.current?.value || ''),
+      receivedby: (ReceivedbyRef.current?.value || ''),
+      receiveddocu: (dateReceivedRef.current?.value || ''),
+    });
+    props.handleClose();
   }
 
   const addEvaluation = () => {
@@ -124,7 +138,6 @@ export default function ViewPendingOccupancyList(props: formdetails) {
       props.handleClose();
     }
     else{
-      handleRender();
       updatePermit();
     }
   }
@@ -141,24 +154,13 @@ export default function ViewPendingOccupancyList(props: formdetails) {
             <CancelIcon sx={{ color: 'red' }} />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '1200px'
-        }}
+        <DialogContent
         >
           <>
             <Card style={cardStyle} elevation={0}>
               <CardContent style={{ marginLeft: 35, textAlign: 'center' }} >
-                <Grid container marginTop={'1rem'} style={{ height: '100%' }}>
-                  <Grid item xs={10} sm={6}>
-                    <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' >Application No.</p>
-                      <OutlinedInput inputRef={applicantionnoRef} defaultValue={props.controlno} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} disabled={props.activity !== 'Update'} />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={10} sm={6}>
+                <Grid container  style={{ height: '100%' }}>
+                  <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Building Permit No.</p>
                       <OutlinedInput inputRef={buildingnoRef} defaultValue={props.buildingno} className='custom-outlined-input' sx={{ borderRadius: '11px', width: "306px" }} disabled={props.activity !== 'Update'} />
@@ -231,7 +233,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Inspection Date</p>
-                      <OutlinedInput inputRef={inspectionRef} defaultValue={props.date_inspection ? new Date(props.date_inspection).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput inputRef={inspectionRef} defaultValue={props.date_inspection} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -243,7 +245,7 @@ export default function ViewPendingOccupancyList(props: formdetails) {
                   <Grid item xs={10} sm={5}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Received Date</p>
-                      <OutlinedInput inputRef={dateReceivedbyRef} defaultValue={props.receivedoccu_date ? new Date(props.receivedoccu_date).toISOString().split('T')[0] : ''} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput inputRef={dateReceivedbyRef} defaultValue={props.receivedoccu_date} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                 </Grid>

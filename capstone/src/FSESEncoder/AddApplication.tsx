@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack } from '@mui/material';
 import { useRef, useState } from 'react';
 import axios from 'axios';
+import { addBusinessPermits, addrenewalBusinessPermits } from '../lib/controller';
 
 const cardStyle = {
     display: 'flex',
@@ -19,18 +20,18 @@ export interface formdetails {
     open: boolean;
     add: string;
     handleClose: () => void;
-    buildingpermit?:string;
-    name?:string;
-    businessname?:string;
+    buildingpermit?: string;
+    name?: string;
+    businessname?: string;
     address?: string;
-    natureofbusiness?:string;
-    typeofoccupancy?:string;
-    contactno?:string;
-    email?:string;
+    natureofbusiness?: string;
+    typeofoccupancy?: string;
+    contactno?: string;
+    email?: string;
 }
 
 
-const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, buildingpermit,businessname ,address, natureofbusiness, typeofoccupancy, contactno, email }) => {
+const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, buildingpermit, businessname, address, natureofbusiness, typeofoccupancy, contactno, email }) => {
 
     const buildingpermRef = useRef<HTMLInputElement | null>(null);
     const permiteeRef = useRef<HTMLInputElement | null>(null);
@@ -43,7 +44,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
     const emailRef = useRef<HTMLInputElement | null>(null);
 
     const AddForm = async () => {
-        let NEW_URL = '';
+        /*let NEW_URL = '';
         if(add === 'New'){
             NEW_URL = 'http://localhost:8080/BPPending/insertBPPermit';
         }
@@ -75,8 +76,58 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
             })
             .catch(err => {
                 console.log(err)
+            })*/
+        if (add === "New") {
+            addBusinessPermits({
+                businessno: (buildingpermRef.current?.value || ''),
+                address: (addressRef.current?.value || ''),
+                permittee: (permiteeRef.current?.value || ''),
+                businessname: (businessnameRef.current?.value || ''),
+                naturebusiness: (naturebusinessRef.current?.value || ''),
+                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
+                contactno: (contactnoRef.current?.value || ''),
+                email: (emailRef.current?.value || ''),
+                datereceived: (dateReceivedRef.current?.value || ''),
+                amount: 0,
+                date: "2023-02-01",
+                dateinspection: "2023-02-01",
+                fireinspectors: [""],
+                fsicdate: "2023-02-01",
+                fsicno: 0,
+                inspection_no: 0,
+                orno: 0,
+                recommendation: [""],
+                remarks: "Pending",
+                teamleader: ""
             })
-            
+            handleClose();
+        }
+        else if (add === "Renewal") {
+            addrenewalBusinessPermits({
+                businessno: (buildingpermRef.current?.value || ''),
+                address: (addressRef.current?.value || ''),
+                permittee: (permiteeRef.current?.value || ''),
+                businessname: (businessnameRef.current?.value || ''),
+                naturebusiness: (naturebusinessRef.current?.value || ''),
+                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
+                contactno: (contactnoRef.current?.value || ''),
+                email: (emailRef.current?.value || ''),
+                datereceived: (dateReceivedRef.current?.value || ''),
+                amount: 0,
+                date: "2023-02-01",
+                dateinspection: "2023-02-01",
+                fireinspectors: [""],
+                fsicdate: "2023-02-01",
+                fsicno: 0,
+                inspection_no: 0,
+                orno: 0,
+                recommendation: [""],
+                remarks: "Pending",
+                teamleader: ""
+            })
+            handleClose();
+        }
+
     }
 
     return (
@@ -87,9 +138,9 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
                         <CancelIcon sx={{ color: 'red' }} />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                <DialogContent sx={{ justifyContent: 'center', alignItems: 'center' }} >
                     <Card style={cardStyle} elevation={0}>
-                        <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-110px'}} >
+                        <CardContent style={{ marginLeft: 35, textAlign: 'center', marginTop: '-110px' }} >
                             <Grid container marginTop={'5rem'} style={{ height: '100%' }}>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
@@ -100,13 +151,13 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Name of Owner/Permitee</p>
-                                        <OutlinedInput defaultValue={name ||""} inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={name || ""} inputRef={permiteeRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Business Name</p>
-                                        <OutlinedInput defaultValue={businessname || ""}inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
+                                        <OutlinedInput defaultValue={businessname || ""} inputRef={businessnameRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} />
                                     </Stack>
                                 </Grid>
                                 <Grid item xs={10} sm={11}>
@@ -142,7 +193,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
                                 <Grid item xs={10} sm={6}>
                                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                         <p className='custom-paragraph' >Date Received</p>
-                                        <OutlinedInput inputRef={dateReceivedRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} placeholder='EX: YEAR-MONTH-DAY'/>
+                                        <OutlinedInput inputRef={dateReceivedRef} fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} placeholder='EX: YEAR-MONTH-DAY' />
                                     </Stack>
                                 </Grid>
                             </Grid>
@@ -151,7 +202,7 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
 
-                    <Button variant='contained'  onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '10px', height: '30px' }}>Add Application</Button>
+                    <Button variant='contained' onClick={AddForm} sx={{ backgroundColor: 'grey', borderRadius: '10px', height: '30px' }}>Add Application</Button>
                 </DialogActions>
             </Dialog>
 
