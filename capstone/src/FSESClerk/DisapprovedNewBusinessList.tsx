@@ -21,8 +21,8 @@ import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/Eval
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
-import { disapprovedNewBusinessPermit } from '../types/Users';
-import { businessPermCollection, disapprovedNewBusinessCollection } from '../lib/controller';
+import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness } from '../types/Users';
+import { businessPermCollection, disapprovedNewBusinessCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection } from '../lib/controller';
 
 
 
@@ -68,8 +68,10 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
     const [print, setPrint] = useState(false);
     const [disapprovedNewBusinessPermit, setdisapprovedNewBusinessPermit] = useState<disapprovedNewBusinessPermit[]>([]);
-
-
+    const [NTCNewBusiness, setNTCNewBusiness] = useState<NTCNewBusiness[]>([]);
+    const [NTCVNewBusiness, setNTCVNewBusiness] = useState<NTCVNewBusiness[]>([]);
+    const [AbatementNewBusiness, setAbatementNewBusiness] = useState<AbatementNewBusiness[]>([]);
+    const [ClosureNewBusiness, setClosureNewBusiness] = useState<ClosureNewBusiness[]>([]);
 
     useEffect(
         () => {
@@ -88,10 +90,9 @@ const DisapprovedNewBusiness: React.FC = () => {
                 })
             }
             else if (sortBy === "NTC Records"){
-                console.log('test')
-                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                onSnapshot(NTCNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
+                    setNTCNewBusiness(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -99,13 +100,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(disapprovedNewBusinessPermit)
+                    console.log(NTCNewBusiness)
                 })
             }
             else if (sortBy === "NTCV Records"){
-                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                onSnapshot(NTCVNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
+                        setNTCVNewBusiness(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -113,13 +114,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(disapprovedNewBusinessPermit)
+                    console.log(NTCVNewBusiness)
                 })
             }
             else if (sortBy === "Abatement Records"){
-                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                onSnapshot(abatementNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
+                        setAbatementNewBusiness(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -127,13 +128,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(disapprovedNewBusinessPermit)
+                    console.log(AbatementNewBusiness)
                 })
             }
             else if (sortBy === "Closure Records"){
-                onSnapshot(disapprovedNewBusinessCollection, (snapshot:
+                onSnapshot(closureNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
+                    setClosureNewBusiness(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -141,7 +142,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(disapprovedNewBusinessPermit)
+                    console.log(ClosureNewBusiness)
                 })
             }
         },[sortBy]

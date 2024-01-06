@@ -22,6 +22,30 @@ export const buildingPaymentCollection = collection(firestore, "BuildingPermitPa
 //Disapproved New Business Collection
 export const disapprovedNewBusinessCollection = collection(firestore, "DisapprovedNewBusiness");
 
+//Notice To Comply New Business Collection
+export const NTCNewBusinessCollection = collection(firestore, "NTCNewBusiness");
+
+//Notice To Correct Violation New Business Collection
+export const NTCVNewBusinessCollection = collection(firestore, "NTCVNewBusiness");
+
+//Abatement New Business Collection
+export const abatementNewBusinessCollection = collection(firestore, "AbatementNewBusiness");
+
+//Closure New Business Collection
+export const closureNewBusinessCollection = collection(firestore, "ClosureNewBusiness");
+
+//Notice To Comply Business Renewal Collection
+export const NTCBusinessRenewalCollection = collection(firestore, "NTCBusinessRenewal");
+
+//Notice To Correct Violation Business Renewal Collection
+export const NTCVBusinessRenewalCollection = collection(firestore, "NTCVBusinessRenewal");
+
+//Abatement Business Renewal Collection
+export const abatementBusinessRenewalCollection = collection(firestore, "AbatementBusinessRenewal");
+
+//Closure Business Renewal Collection
+export const closureBusinessRenewalCollection = collection(firestore, "ClosureBusinessRenewal");
+
 //Building Payment Collection
 export const newBusinessPaymentCollection = collection(firestore, "NewBusinessPermitPayment");
 
