@@ -4,9 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
+import { deleteDisapprovedOccupancyPermit, deleteOccupancyPermit } from '../lib/controller';
 
 interface DeleteProps {
-    value: number;
+    value: string;
     open: boolean;
     remarks: string;
     form: string;
@@ -16,7 +17,7 @@ interface DeleteProps {
 
 const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value, open, handleClose }) => {
 
-    let records =''
+    /*let records =''
     if(form === 'New'){
         if(remarks === 'Pending'){
             records = 'occupancyPendingclerk' 
@@ -58,16 +59,19 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
         else if ((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')) {
                 records = 'renewalbpclosureorder';
             }
-        } 
+        } */
 
-    const deletefunc = (value: number) => {
+    const deletefunc = (value: string) => {
         //function here
-        axios.delete('http://localhost:8080/'+records+'/deletePermit/' + value).then(res => {
-            console.log(res.data);
-            alert("Deleted Successfully!");
-            handleClose()
-        }).catch(err => console.log(err))
-        console.log(value);
+        //Add additional if statements here for other permits
+      if(form === 'Occupancy'){
+            if(remarks === "Pending"){
+                deleteOccupancyPermit(value);
+            }
+            else if(remarks === "Disapproved"){
+                deleteDisapprovedOccupancyPermit(value);
+            }
+      }
     }
 
     return (

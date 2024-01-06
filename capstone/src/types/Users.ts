@@ -84,35 +84,89 @@ export interface addbusinessPermit {
     typeoccupancy: string,
 }
 
-export interface OccupancyPermit{
-    additionalamount?:number,
-    amountpaid?:number,
-    applicantname?:string,
-    assessorname?:string,
-    bldgpermitno?:string,
-    contactno?:string,
-    dateinspection?:string,
-    datereceived?:string,
-    fireinspector?:string[],
-    fsicno?:number,
-    fsicdate?:string,
-    inspectionno?:number,
-    location?:string,
-    opsdate?:string,
-    opsno?:number,
-    orno?:number,
-    ornoadditional?:string,
-    paymentdate?:string,
-    paymentdateadditional?:string,
-    projectname?:string,
-    receivedby?:string,
-    receiveddocu?:string,
-    recommendation?:string[],
-    remarks?:string,
-    teamleader?:string,
-    totalamount?:number,
-    id:string
+export interface OccupancyPermit {
+    additionalamount?: number,
+    controlno?: number,
+    amountpaid?: number,
+    applicantname?: string,
+    assessorname?: string,
+    bldgpermitno?: string,
+    contactno?: string,
+    dateinspection?: string,
+    datereceived?: string,
+    fireinspector?: string[],
+    fsicno?: number,
+    fsicdate?: string,
+    inspectionno?: number,
+    location?: string,
+    opsdate?: string,
+    opsno?: number,
+    orno?: number,
+    ornoadditional?: string,
+    paymentdate?: string,
+    paymentdateadditional?: string,
+    projectname?: string,
+    receivedby?: string,
+    receiveddocu?: string,
+    recommendation?: string[],
+    remarks?: string,
+    teamleader?: string,
+    totalamount?: number,
+    nodno?: number,
+    noddate?: string,
+    deficiencies?: string[],
+    receivednod?: string,
+    receivednoddate?: string,
+    id: string
 }
+
+export interface addOccupancyPermit {
+    assessorname: string,
+    additionalamount: number,
+    controlno: number,
+    amountpaid: number,
+    applicantname: string,
+    bldgpermitno: string,
+    contactno: string,
+    dateinspection: string,
+    datereceived: string,
+    fireinspector: string[],
+    fsicno: number,
+    fsicdate: string,
+    inspectionno: number,
+    location: string,
+    opsdate: string,
+    opsno: number,
+    orno: number,
+    ornoadditional: string,
+    paymentdate: string,
+    paymentdateadditional: string,
+    projectname: string,
+    receivedby: string,
+    receiveddocu: string,
+    recommendation: string[],
+    remarks: string,
+    teamleader: string,
+    totalamount: number,
+
+}
+
+export interface addDisapprovedOccupancyPermit {
+    controlno: number,
+    applicantname: string,
+    bldgpermitno: string,
+    contactno: string,
+    datereceived: string,
+    location: string,
+    projectname: string,
+    remarks: string,
+    nodno: number,
+    noddate: string,
+    deficiencies: string[],
+    receivednod: string,
+    receivednoddate: string,
+}
+
 
 export interface disapprovedNewBusinessPermit {
     address?: string,
@@ -140,58 +194,98 @@ export interface disapprovedNewBusinessPermit {
     orno?: number,
     permittee?: string,
     recommendation?: string[],
-    defects?:string[][],
+    defects?: string[][],
     remarks?: string,
     teamleader?: string,
     typeoccupancy?: string,
-    paymentdate?:string,
+    paymentdate?: string,
     status?: string,
     name?: string,
     id: string,
     
 }
 
-export interface Payment{
-    amountpaid?:number,
-    assessorname?:string,
-    businesspermitno?:string,
-    fsc?:string,
-    location?:string,
-    name?:string,
-    opsdate?:string,
-    opsno?:string,
-    orno?:string,
-    payment?:{
+export interface Payment {
+    amountpaid?: number,
+    assessorname?: string,
+    businesspermitno?: string,
+    fsc?: string,
+    location?: string,
+    name?: string,
+    opsdate?: string,
+    opsno?: string,
+    orno?: string,
+    payment?: {
         natureOfCollection: string;
         accountCode: string;
-        amount: string;   
+        amount: string;
     }[];
-    paymentdate?:string,
-    projectname?:string,
-    totalamount?:number,
-    id:string
+    paymentdate?: string,
+    projectname?: string,
+    totalamount?: number,
+    id: string
 }
 
-export interface addPayment{
-    amountpaid:number,
-    assessorname:string,
-    businesspermitno?:string,
-    fsc:string,
-    location:string,
-    name:string,
-    opsdate:string,
-    opsno:string,
-    orno:string,
-    payment:{
+export interface addPayment {
+    amountpaid: number,
+    assessorname: string,
+    businesspermitno?: string,
+    fsc: string,
+    location: string,
+    name: string,
+    opsdate: string,
+    opsno: string,
+    orno: string,
+    payment: {
         natureOfCollection: string;
         accountCode: string;
-        amount: string;   
+        amount: string;
     }[];
-    paymentdate:string,
-    projectname:string,
-    totalamount:number,
+    paymentdate: string,
+    projectname: string,
+    totalamount: number,
 }
 
+export interface disapprovedOccupancyPermit {
+    bldgpermitno?: string,
+    applicantname?: string,
+    projectname?: string,
+    location?: string,
+    contactno?: string,
+    datereceived?: string,
+    teamleader?: string,
+    fireinspector?: string[],
+    inspectionno?: number,
+    dateinspection?: string,
+    receivedby?: string,
+    receiveddocu?: string,
+    nodno?: number,
+    noddate?: string,
+    deficiencies?: string[],
+    receivednod?: string,
+    receivednoddate?: string,
+    id: string,
+}
+
+export interface adddisapprovedOccupancyPermit {
+    bldgpermitno: string,
+    applicantname: string,
+    projectname: string,
+    location: string,
+    contactno: string,
+    datereceived: string,
+    teamleader: string,
+    fireinspector: string[],
+    inspectionno: number,
+    dateinspection: string,
+    receivedby: string,
+    receiveddocu: string,
+    nodno: number,
+    noddate: string,
+    deficiencies: string[],
+    receivednod: string,
+    receivednoddate: string
+}
 export interface NTCNewBusiness {
     address?: string,
     amount?: number,
@@ -455,3 +549,4 @@ export interface ClosureBusinessRenewal {
     teamleader?: string,
     typeoccupancy?: string,
 }
+

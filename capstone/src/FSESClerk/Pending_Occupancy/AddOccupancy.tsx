@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogActions, DialogContent, DialogTitle, Grid, OutlinedInput, Stack } from '@mui/material';
 import { useRef, useState } from 'react';
 import axios from 'axios';
+import { addOccupancyPermits } from '../../lib/controller';
 
 const cardStyle = {
     display: 'flex',
@@ -36,7 +37,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
 
 
     const AddForm = async () => {
-       let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertPendingOccupancy';
+       /*let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/insertPendingOccupancy';
         axios
             .post(NEW_URL, {
                 control_no: applicantionnoRef.current?.value,
@@ -64,7 +65,38 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
             })
             .catch(err => {
                 console.log(err)
-            })
+            })*/
+        addOccupancyPermits({
+            controlno: parseInt(applicantionnoRef.current?.value || '0', 10),
+            bldgpermitno: buildingnoRef.current?.value || '',
+            applicantname: applicantnameRef.current?.value || '',
+            projectname: projectnameRef.current?.value || '',
+            location: locationRef.current?.value || '',
+            contactno: contactnoRef.current?.value || '',
+            datereceived: dateReceivedRef.current?.value || '',
+            additionalamount: 0,
+            amountpaid: 0,
+            assessorname: '',
+            dateinspection: '',
+            fireinspector: [''],
+            fsicno: 0,
+            fsicdate: '',
+            inspectionno: 0,
+            opsdate: '',
+            opsno: 0,
+            orno: 0,
+            ornoadditional: '',
+            paymentdate: '',
+            paymentdateadditional: '',
+            receivedby: '',
+            receiveddocu: '',
+            recommendation: [''],
+            remarks: "",
+            teamleader: '',
+            totalamount: 0,
+        })
+        handleClose();
+
             
     }
 

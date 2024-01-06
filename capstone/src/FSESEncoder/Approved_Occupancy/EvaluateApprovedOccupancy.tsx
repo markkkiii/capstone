@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import RecommendationPopup from '../../FSESClerk/RecommendationPopup';
-import { updateoccupancyPermit } from '../../lib/controller';
+import { addOccupancyPermits, updateDisapprovedoccupancyPermit, updateoccupancyPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -34,6 +34,7 @@ export interface formdetails {
   datereceived: string;
   open: boolean;
   disapproved: boolean;
+  controlno: number;
   handleClose: () => void;
 }
 
@@ -163,19 +164,56 @@ export default function EvaluateApprovedOccupancy(props: formdetails) {
       props.handleClose();
       
     }).catch(err => console.log(err))*/
-    updateoccupancyPermit(props.id,{
-      
-      fsicno: fsicRef.current?.value,
-      fsicdate: fsicDateRef.current?.value,
-      amount: AmountRef.current?.value,
-      paymentdate:dateRef.current?.value,
-      orno: OrNoRef.current?.value,
-      additionalamount: additionalpaymentRef.current?.value,
-      ornoadditional: additionalOrnoRef.current?.value,
-      paymentdateadditional: additionaldateRef.current?.value,
-      recommendation: inputInspector,
-      remarks: "FSIC Not Printed"
-    })
+   
+    if(props.disapproved){
+      addOccupancyPermits({
+        controlno: props.controlno,
+        contactno: props.contactnumber,
+        bldgpermitno: props.buildingpermino,
+        applicantname: props.applicantname,
+        projectname: props.projecname,
+        location: props.address,
+        datereceived: props.datereceived,
+        fsicno:  parseInt(fsicRef.current?.value || '0', 10),
+        fsicdate: fsicDateRef.current?.value || '',
+        amountpaid:  parseInt(AmountRef.current?.value || '0', 10),
+        orno:  parseInt(OrNoRef.current?.value || '0', 10),
+        additionalamount:  parseInt(additionalpaymentRef.current?.value || '0', 10),
+        ornoadditional: additionalOrnoRef.current?.value || '',
+        paymentdateadditional: additionaldateRef.current?.value || '',
+        recommendation: inputInspectorArray,
+        remarks: "I.O Printed",
+        assessorname: '',
+        dateinspection: '',
+        fireinspector: [''],
+        inspectionno: 0,
+        opsdate: '',
+        opsno: 0,
+        paymentdate: '',
+        receivedby: '',
+        receiveddocu: '',
+        teamleader: '',
+        totalamount: 0,
+      })
+      updateDisapprovedoccupancyPermit(props.id,{
+        remarks: "Complied"
+      })
+      props.handleClose();
+    }
+    else{
+      updateoccupancyPermit(props.id,{
+        fsicno: fsicRef.current?.value,
+        fsicdate: fsicDateRef.current?.value,
+        amount: AmountRef.current?.value,
+        paymentdate:dateRef.current?.value,
+        orno: OrNoRef.current?.value,
+        additionalamount: additionalpaymentRef.current?.value,
+        ornoadditional: additionalOrnoRef.current?.value,
+        paymentdateadditional: additionaldateRef.current?.value,
+        recommendation: inputInspector,
+        remarks: "FSIC Not Printed"
+      })
+    }
     props.handleClose();
   }
 

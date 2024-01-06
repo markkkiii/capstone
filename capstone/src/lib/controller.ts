@@ -1,6 +1,6 @@
 import {addDoc, collection, deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
 import { app } from './firebase'
-import { addBuildingPermit, addPayment, addbusinessPermit } from '../types/Users';
+import { addBuildingPermit, addDisapprovedOccupancyPermit, addOccupancyPermit, addPayment, addbusinessPermit, adddisapprovedOccupancyPermit } from '../types/Users';
 
 export const firestore = getFirestore(app);
 
@@ -55,6 +55,8 @@ export const RenewalBusinessPaymentCollection = collection(firestore, "RenewalBu
 //Building Payment Collection
 export const OccupancyPaymentCollection = collection(firestore, "OccupancyPermitPayment");
 
+//Disapproved Occupancy Permit
+export const DisapprovedOccupancyCollection = collection(firestore, "DisapprovedOccupancyPermit");
 
 
 //Add Building Permit
@@ -124,6 +126,20 @@ export const deleterenewalBusinessPermit = async(id: string) =>{
 }
 
 //Add Occupancy Permit
+export const addOccupancyPermits = async (permitData: addOccupancyPermit) =>{
+    const newPermit =await addDoc(occupancyPermCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Add DisapprovedOccupancy Permit
+export const addDisapprovedOccupancyPermits = async (permitData: addDisapprovedOccupancyPermit) =>{
+    const newPermit =await addDoc(DisapprovedOccupancyCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
 
 //Update Occupancy Permit
 export const updateoccupancyPermit = async (id: string, permitData: any) => {
@@ -132,9 +148,24 @@ export const updateoccupancyPermit = async (id: string, permitData: any) => {
     console.log("Permit Updated Successfully");
 }
 
+//Update Disapproved Occupancy Permit
+export const updateDisapprovedoccupancyPermit = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`DisapprovedOccupancyPermit/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+
 //Delete Occupancy Permit
 export const deleteOccupancyPermit = async(id: string) =>{
     const document = doc(firestore,`ApprovedOccupancyPermit/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Delete Dissapproved Occupancy Permit
+export const deleteDisapprovedOccupancyPermit = async(id: string) =>{
+    const document = doc(firestore,`DisapprovedOccupancyPermit/${id}`);
     await deleteDoc(document);
     console.log("Permit successfully deleted")
 }

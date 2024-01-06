@@ -279,7 +279,7 @@ const OccupancyListApproved: React.FC = () => {
                 handlePrintOpen();
 
             }
-        } else if (status === 'FSIC Not Printed' || status === 'FSIC Printed') {
+        } else if (status === 'I.O Not Printed' || status === 'I.O Printed') {
             //Completed function condition goes here
             if ((selectedValue === 'Update') || (selectedValue === 'View')) {
                 handleOpenUpdateViewEval(value);
@@ -368,7 +368,7 @@ const OccupancyListApproved: React.FC = () => {
                                     <td>{sortBy === 'Approved Records' ? occupancyPermit.fsicno :
                                         'N/A'}</td>
                                     <td style={{
-                                        color: occupancyPermit.remarks === 'Complied' || occupancyPermit.remarks === 'FSIC Printed' ? 'green' :
+                                        color: occupancyPermit.remarks === 'Complied' || occupancyPermit.remarks === 'I.O Printed' ? 'green' :
                                             occupancyPermit.remarks === 'Pending' ? 'black'
                                                 : 'red'
                                     }}>{occupancyPermit.remarks}</td>
@@ -407,6 +407,7 @@ const OccupancyListApproved: React.FC = () => {
                                             receivedoccu_date={occupancyPermit.receiveddocu || ''}
                                         />
                                         <EvaluateApprovedOccupancy
+                                            controlno={occupancyPermit.controlno || 0}
                                             open={openEvalOccupancy[occupancyPermit.id]}
                                             handleClose={() => handleCloseEval(occupancyPermit.id)}
                                             id={occupancyPermit.id}
@@ -419,7 +420,7 @@ const OccupancyListApproved: React.FC = () => {
                                             datereceived={occupancyPermit.datereceived || ''}
                                             disapproved={false}
                                         />
-                                         <ViewUpdateApprovedOccupancy
+                                        <ViewUpdateApprovedOccupancy
                                             open={openViewUpdateEvalOccupancy[occupancyPermit.id]}
                                             handleClose={() => handleCloseUpdateViewEval(occupancyPermit.id)}
                                             id={occupancyPermit.id}
@@ -437,12 +438,12 @@ const OccupancyListApproved: React.FC = () => {
                                             remarks={occupancyPermit.remarks || ''}
                                             payment_date={occupancyPermit.paymentdate || ''}
                                             addtional_paymentdate={occupancyPermit.paymentdateadditional || ''}
-                                            additional_amount= {occupancyPermit.additionalamount || 0 }
+                                            additional_amount={occupancyPermit.additionalamount || 0}
                                             additional_or_no={occupancyPermit.ornoadditional || ""}
                                             recommendations={occupancyPermit.recommendation ? ([] as string[]).concat(occupancyPermit.recommendation) : []}
                                             activity={selectedAction[occupancyPermit.id]}
                                         />
-                                         <DeleteEncoderPopup
+                                        <DeleteEncoderPopup
                                             open={openDelete[occupancyPermit.id]}
                                             value={occupancyPermit.id}
                                             remarks={occupancyPermit.remarks || ''}

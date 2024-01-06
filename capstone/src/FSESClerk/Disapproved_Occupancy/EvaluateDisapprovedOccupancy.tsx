@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { addDisapprovedOccupancyPermits, deleteOccupancyPayment, deleteOccupancyPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -21,14 +22,14 @@ const cardStyle = {
 
 
 export interface formdetails {
-  id:number;
-  inspectionno:number;
-  controlno:number;
-  buildingpermino:string;
-  applicantname:string;
-  projecname:string;
-  address:string;
-  contactnumber:string;
+  id: string;
+  inspectionno: number;
+  controlno: number;
+  buildingpermino: string;
+  applicantname: string;
+  projecname: string;
+  address: string;
+  contactnumber: string;
   datereceived: string;
   open: boolean;
   handleClose: () => void;
@@ -68,7 +69,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputInspector(event.target.value);
   };
-  
+
   const updateInputArray = useCallback(() => {
     const newArray = inputInspector.split('\n').filter((line) => line.trim() !== '');
     setinputInspectorArray(newArray);
@@ -84,17 +85,17 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
 
   const deletefunc = () => {
     //function here
- 
-    let  NEW_URL ='http://localhost:8080/occupancyPendingclerk/deletePermit/'
+
+    let NEW_URL = 'http://localhost:8080/occupancyPendingclerk/deletePermit/'
     axios.delete(NEW_URL + props.id).then(res => {
-        console.log(res.data);
+      console.log(res.data);
     }).catch(err => console.log(err))
-}
+  }
 
 
 
-  const updatePermit = async () => {
-    axios.post('http://localhost:8080/occupancyDisapprovedClerk/insertNODPermit',
+  const addEvaluation = async () => {
+    /*axios.post('http://localhost:8080/occupancyDisapprovedClerk/insertNODPermit',
       {
         control_no: props.controlno,
         applicants_name: props.applicantname,
@@ -115,7 +116,27 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
       alert("Evaluation Successful!");
       props.handleClose()
       deletefunc()
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err))*/
+
+    addDisapprovedOccupancyPermits({
+      controlno: props.controlno,
+      bldgpermitno: props.buildingpermino,
+      applicantname: props.applicantname,
+      projectname: props.projecname,
+      location: props.address,
+      contactno: props.contactnumber,
+      datereceived: props.datereceived,
+      nodno: parseInt(NodRef.current?.value || '0', 10),
+      noddate: NodDateRef.current?.value || '',
+      deficiencies: inputInspectorArray,
+      receivednod: ReceivedNameRef.current?.value || '',
+      receivednoddate: ReceivedDateRef.current?.value || '',
+      remarks: "Disapproved",
+    })
+    deleteOccupancyPermit(props.id);
+    props.handleClose();
+
+
   }
 
   return (
@@ -180,7 +201,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Date Received</p>
-                      <TextField className='custom-outlined-input' defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
+                      <TextField className='custom-outlined-input' defaultValue={props.datereceived} fullWidth sx={{ borderRadius: '11px', paddingBottom: '20px', paddingLeft: '10px' }} disabled variant="standard" />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -192,12 +213,12 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NOD Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={NodRef}  />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={NodRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
-                      <p className='custom-paragraph' style={{paddingTop:'20px'}} >Deficiencies</p>
+                      <p className='custom-paragraph' style={{ paddingTop: '20px' }} >Deficiencies</p>
                       <OutlinedInput fullWidth className='custom-outlined-input-multiline'
                         sx={{
                           borderRadius: '11px',
@@ -207,7 +228,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                             paddingTop: '20px', // Adjust the value as needed
                           },
                         }//
-                        } 
+                        }
                         value={inputInspector}
                         onChange={handleInputChange}
                         multiline
@@ -223,7 +244,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>Name</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedNameRef}  />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={ReceivedNameRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -238,7 +259,7 @@ export default function EvaluateDisapprovedOccupancy(props: formdetails) {
           </>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={updatePermit}>
+          <Button variant='contained' sx={{ backgroundColor: 'grey', borderRadius: '13px', height: '30px' }} onClick={addEvaluation}>
             Add Evaluation
           </Button>
         </DialogActions>
