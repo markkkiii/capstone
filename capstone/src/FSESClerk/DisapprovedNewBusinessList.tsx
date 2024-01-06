@@ -88,6 +88,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                 })
             }
             else if (sortBy === "NTC Records"){
+                console.log('test')
                 onSnapshot(disapprovedNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
                     setdisapprovedNewBusinessPermit(
@@ -143,7 +144,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                     console.log(disapprovedNewBusinessPermit)
                 })
             }
-        },[]
+        },[sortBy]
     )
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -569,15 +570,9 @@ const DisapprovedNewBusiness: React.FC = () => {
                             .filter((disapprovedNewBusinessPermit) => {
                                 if (sortBy === 'Pending Records') {
                                     return disapprovedNewBusinessPermit.remarks === 'Pending';
-                                } else if (sortBy === 'NTC Records') {
-                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued NTCV' || disapprovedNewBusinessPermit.remarks === 'For Issuance NTCV';
-                                } else if (sortBy === 'NTCV Records') {
-                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Abatement' || disapprovedNewBusinessPermit.remarks === 'For Issuance Abatement';
-                                } else if (sortBy === 'Abatement Records') {
-                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Closure' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure';
-                                } else if (sortBy === 'Closure Records') {
-                                    return disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'Issued Closure' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure';
                                 }
+                                else
+                                    return disapprovedNewBusinessPermit
                             })
                             .filter((disapprovedNewBusinessPermit) => {
                                 // Filter based on the searchText value

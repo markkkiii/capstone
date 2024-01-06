@@ -8,6 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
+import { updateDisapprovedoccupancyPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -21,7 +22,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  id: number;
+  id: string;
   activity: string;
   buildingpermitno:string;
   inspectionno: number;
@@ -110,7 +111,7 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
 
 
   const updatePermit = async () => {
-    axios.put('http://localhost:8080/occupancyDisapprovedClerk/updateOccupancyDisapprovedClerk?id=' + props.id,
+    /*axios.put('http://localhost:8080/occupancyDisapprovedClerk/updateOccupancyDisapprovedClerk?id=' + props.id,
       {
         control_no: contronoRef.current?.value,
         applicants_name: applicantRef.current?.value,
@@ -133,7 +134,25 @@ export default function ViewUpdateDisapprovedOccupancy(props: formdetails) {
       console.log(res.data);
       alert("Evaluation Successful!");
       props.handleClose()
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(err))*/
+    updateDisapprovedoccupancyPermit(props.id,{
+      inspectionno: parseInt(inspectnoRef.current?.value || '0', 10),
+      controlno: parseInt(contronoRef.current?.value || '0', 10),
+      bldgpermitno: businsspermitRef.current?.value,
+      applicantname: applicantRef.current?.value,
+      projectname: projectRef.current?.value,
+      location: addressRef.current?.value,
+      contactno: contactnoRef.current?.value,
+      datereceived: dateReceivedRef.current?.value,
+      nodno:parseInt(NodRef.current?.value || '0', 10) ,
+      noddate: NodDateRef.current?.value || '',
+      deficiencies: inputInspectorArray,
+      receivednod: ReceivedNameRef.current?.value || '',
+      receivednoddate: ReceivedDateRef.current?.value || '',
+    })
+    alert("Updated Successfully");
+    props.handleClose();
+
   }
 
   return (
