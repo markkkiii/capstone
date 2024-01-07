@@ -51,21 +51,21 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
     const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
-    const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
-    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<number, boolean>>({});
-    const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
-    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
-    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTC Form
-    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens VIEW UPDATE NTCV Form
-    const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<number, boolean>>({}); //Opens NTCV Form
-    const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<number, boolean>>({}); //Opens NTCV Form
-    const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
-    const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
-    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
-    const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});
-    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<number, boolean>>({});
+    const [openViewPending, setopenViewPending] = useState<Record<string, boolean>>({});
+    const [openUpdateOccupancy, setopenUpdateOccupancy] = useState<Record<string, boolean>>({});
+    const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<string, boolean>>({}); //Opens NTC Form
+    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<string, boolean>>({}); //Opens NTCV Form
+    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<string, boolean>>({}); //Opens VIEW UPDATE NTC Form
+    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<string, boolean>>({}); //Opens VIEW UPDATE NTCV Form
+    const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<string, boolean>>({}); //Opens NTCV Form
+    const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<string, boolean>>({}); //Opens NTCV Form
+    const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<string, boolean>>({}); //Opens Abatement Form
+    const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<string, boolean>>({}); //Opens Closure Form
+    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<string, boolean>>({});
+    const [openEvalChoice, setopenEvalChoice] = useState<Record<string, boolean>>({});
+    const [openViewUpdOccupancy, setopenViewUpdOccupancy] = useState<Record<string, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+    const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
     const [disapprovedNewBusinessPermit, setdisapprovedNewBusinessPermit] = useState<disapprovedNewBusinessPermit[]>([]);
     const [NTCNewBusiness, setNTCNewBusiness] = useState<NTCNewBusiness[]>([]);
@@ -92,7 +92,7 @@ const DisapprovedNewBusiness: React.FC = () => {
             else if (sortBy === "NTC Records"){
                 onSnapshot(NTCNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setNTCNewBusiness(
+                    setdisapprovedNewBusinessPermit(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -100,13 +100,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(NTCNewBusiness)
+                    console.log(disapprovedNewBusinessPermit)
                 })
             }
             else if (sortBy === "NTCV Records"){
                 onSnapshot(NTCVNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                        setNTCVNewBusiness(
+                        setdisapprovedNewBusinessPermit(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -114,13 +114,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(NTCVNewBusiness)
+                    console.log(disapprovedNewBusinessPermit)
                 })
             }
             else if (sortBy === "Abatement Records"){
                 onSnapshot(abatementNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                        setAbatementNewBusiness(
+                        setdisapprovedNewBusinessPermit(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -128,13 +128,13 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(AbatementNewBusiness)
+                    console.log(disapprovedNewBusinessPermit)
                 })
             }
             else if (sortBy === "Closure Records"){
                 onSnapshot(closureNewBusinessCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
-                    setClosureNewBusiness(
+                        setdisapprovedNewBusinessPermit(
                         snapshot.docs.map((doc) => {
                             return {
                                 id: doc.id,
@@ -142,7 +142,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                             };
                         })
                     );
-                    console.log(ClosureNewBusiness)
+                    console.log(disapprovedNewBusinessPermit)
                 })
             }
         },[sortBy]
@@ -210,7 +210,7 @@ const DisapprovedNewBusiness: React.FC = () => {
     };
 
     //View Popup Close
-    const handleCloseViewPending = (no: number) => {
+    const handleCloseViewPending = (no: string) => {
         setopenViewPending((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -228,7 +228,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate NTC
-    const handleCloseView = (no: number) => {
+    const handleCloseView = (no: string) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: false,
@@ -244,7 +244,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Update View NTC
-    const handleCloseViewUpdateNTC = (no: number) => {
+    const handleCloseViewUpdateNTC = (no: string) => {
         setopenViewUpdateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: false,
@@ -261,7 +261,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         handleRender();
     };
     // Closes Update View NTCV
-    const handleCloseViewUpdateNTCV = (no: number) => {
+    const handleCloseViewUpdateNTCV = (no: string) => {
         setopenViewUpdateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: false,
@@ -451,7 +451,6 @@ const DisapprovedNewBusiness: React.FC = () => {
             }
             else if (selectedValue === 'Update') {
                 handleOpenUpdate(value);
-
             }
             else if (selectedValue === 'Evaluate') {
                 handleOpenView(value);
@@ -621,48 +620,48 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <IconButton className="next-button" onClick={() => handleNext((disapprovedNewBusinessPermit.id), (disapprovedNewBusinessPermit.remarks || ''), (disapprovedNewBusinessPermit.businessno || ''))}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
-                                        {/*<ViewRenewalApplication 
+                                        <ViewRenewalApplication 
                                         open={openViewPending[disapprovedNewBusinessPermit.id]} 
                                         handleClose={() => handleCloseViewPending(disapprovedNewBusinessPermit.id)} 
-                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no}
-                                        permitee={disapprovedNewBusinessPermit.permittee}
-                                        businessname={disapprovedNewBusinessPermit.business_name}
-                                        address={disapprovedNewBusinessPermit.address}
-                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business}
-                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
-                                        contactno={disapprovedNewBusinessPermit.contact_no}
-                                        email={disapprovedNewBusinessPermit.email}
-                                        datereceived={disapprovedNewBusinessPermit.date_received}
+                                        bspermit_no={disapprovedNewBusinessPermit.businessno || ''}
+                                        permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                        businessname={disapprovedNewBusinessPermit.businessname || ''}
+                                        address={disapprovedNewBusinessPermit.address || ''}
+                                        natureofbusiness={disapprovedNewBusinessPermit.naturebusiness || ''}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.typeoccupancy || ''}
+                                        contactno={disapprovedNewBusinessPermit.contactno || ''}
+                                        email={disapprovedNewBusinessPermit.email || ''}
+                                        datereceived={disapprovedNewBusinessPermit.datereceived || ''}
                                         />
                                         <UpdateRenewalApplication 
                                         open={openUpdateOccupancy[disapprovedNewBusinessPermit.id]} 
                                         handleClose={() => handleCloseUpdate(disapprovedNewBusinessPermit.id)} 
-                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no}
-                                        permitee={disapprovedNewBusinessPermit.permittee}
-                                        businessname={disapprovedNewBusinessPermit.business_name}
-                                        address={disapprovedNewBusinessPermit.address}
-                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business}
-                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
-                                        contactno={disapprovedNewBusinessPermit.contact_no}
-                                        email={disapprovedNewBusinessPermit.email}
-                                        datereceived={disapprovedNewBusinessPermit.date_received}
-                                        id={disapprovedNewBusinessPermit.id}
+                                        bspermit_no={disapprovedNewBusinessPermit.businessno || ''}
+                                        permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                        businessname={disapprovedNewBusinessPermit.businessname || ''}
+                                        address={disapprovedNewBusinessPermit.address || ''}
+                                        natureofbusiness={disapprovedNewBusinessPermit.naturebusiness || ''}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.typeoccupancy || ''}
+                                        contactno={disapprovedNewBusinessPermit.contactno || ''}
+                                        email={disapprovedNewBusinessPermit.email || ''}
+                                        datereceived={disapprovedNewBusinessPermit.datereceived || ''}
+                                        id={disapprovedNewBusinessPermit.id || ''}
                                         form ="New"
                                         />
                                         <EvaluateNTCPopup
-                                            bpid={disapprovedNewBusinessPermit.id}
+                                            bpid={disapprovedNewBusinessPermit.id || ''}
                                             form='New'
-                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id || '']}
                                             open={openprevEvaluateNTC[disapprovedNewBusinessPermit.id]}
-                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
-                                            permitee={disapprovedNewBusinessPermit.permittee}
-                                            business_name={disapprovedNewBusinessPermit.business_name}
-                                            address={disapprovedNewBusinessPermit.address}
-                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
-                                            contactno={disapprovedNewBusinessPermit.contact_no}
-                                            email={disapprovedNewBusinessPermit.email}
-                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            business_no={disapprovedNewBusinessPermit.businessno || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.businessname || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.naturebusiness || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.typeoccupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contactno || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.datereceived || ''}
                                             handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)}
                                         />
                                         <DeleteClerkPopup
@@ -670,9 +669,9 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             value={disapprovedNewBusinessPermit.id}
                                             form="NewBP"
                                             sortby = {sortBy}
-                                            remarks={disapprovedNewBusinessPermit.remarks}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
                                             handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
-                                        />
+                                        />{/*
                                         <PrintClerkPopup
                                             open={print}
                                             handleClose={() => handlePrintClose()}

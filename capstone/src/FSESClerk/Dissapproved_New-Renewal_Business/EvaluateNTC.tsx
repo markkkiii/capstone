@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
+import { addNTCNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  bpid: number;
+  bpid: string;
   form: string;
   activity: string;
   business_no: string;
@@ -41,7 +42,7 @@ export interface formdetails {
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function EvaluateNTCPopup(props: formdetails) {
@@ -56,15 +57,25 @@ export default function EvaluateNTCPopup(props: formdetails) {
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const OrNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const emailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const bspermitNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const businessNameRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const addressRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const contactNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const natureBusinessRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const remarksRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const permitteeRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const idRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
+  const [tableData, setTableData] = useState<Array<{ defects: string; date: string; }>>([
+    { defects: '', date: '' },
+]);
 
   //opens add defect pop up
   const openDialog = () => {
@@ -77,7 +88,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -85,8 +96,8 @@ export default function EvaluateNTCPopup(props: formdetails) {
     setOpenAddDefect(false);
   };
 
-  const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+  const addDefect = (defect: string, date: string) => {
+    const newData: DefectData = { defects: defect, date: date };
     setData([...data, newData]);
     console.log(data)
   };
@@ -137,42 +148,71 @@ export default function EvaluateNTCPopup(props: formdetails) {
 
   // uploads data to db
   const evaluateNTC = async () => {
-    let new_url = '';
-    if(props.form ==='New'){
-      new_url = 'http://localhost:8080/newbpnoticetocomply/insertNTCPermit';
-    }
-    else if (props.form === 'Renewal'){
-      new_url = 'http://localhost:8080/renewalbpnoticetocomply/insertRenewalNTCPermit'
-    }
-    axios.post(new_url,
-      {
-        bspermit_no: props.bpid,
-        permittee: props.permitee,
-        business_name: props.business_name,
-        address: props.address,
-        nature_business: props.natureofbusiness,
-        type_occupancy: props.typeofoccupancy,
-        contact_no: props.contactno,
-        email: props.email,
-        date_received: props.datereceived,
-        date_inspected: dateInspectionRef.current?.value,
-        inspection_no: inspectOrderRef.current?.value,
-        ntc_no: NTCRef.current?.value,
-        ntc_date: NTCDateRef.current?.value,
-        remarks: "For Issuance NTCV",
-        team_leader: teamLeaderRef.current?.value,
-        fire_inspectors: inputInspectorArray,
-        defects: arrayList,
-        name: ReceivedByRef.current?.value,
-        date: ReceivedDateRef.current?.value
+    // let new_url = '';
+    // if(props.form ==='New'){
+    //   new_url = 'http://localhost:8080/newbpnoticetocomply/insertNTCPermit';
+    // }
+    // else if (props.form === 'Renewal'){
+    //   new_url = 'http://localhost:8080/renewalbpnoticetocomply/insertRenewalNTCPermit'
+    // }
+    // axios.post(new_url,
+    //   {
+    //     bspermit_no: props.bpid,
+    //     permittee: props.permitee,
+    //     business_name: props.business_name,
+    //     address: props.address,
+    //     nature_business: props.natureofbusiness,
+    //     type_occupancy: props.typeofoccupancy,
+    //     contact_no: props.contactno,
+    //     email: props.email,
+    //     date_received: props.datereceived,
+    //     date_inspected: dateInspectionRef.current?.value,
+    //     inspection_no: inspectOrderRef.current?.value,
+    //     ntc_no: NTCRef.current?.value,
+    //     ntc_date: NTCDateRef.current?.value,
+    //     remarks: "For Issuance NTCV",
+    //     team_leader: teamLeaderRef.current?.value,
+    //     fire_inspectors: inputInspectorArray,
+    //     defects: arrayList,
+    //     name: ReceivedByRef.current?.value,
+    //     date: ReceivedDateRef.current?.value
 
-      }
-    ).then(res => {
-      console.log(res.data);
-      alert("Evaluation Successful!");
-      deletefunc(props.bpid);
-      props.handleClose();
-    }).catch(err => console.log(err))
+    //   }
+    // ).then(res => {
+    //   console.log(res.data);
+    //   alert("Evaluation Successful!");
+    //   deletefunc(props.bpid);
+    //   props.handleClose();
+    // }).catch(err => console.log(err))
+    const convertedTableData = tableData.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
+
+    addNTCNewBusiness({
+      bspermit_no: bspermitNoRef.current?.value || '',
+      permittee: permitteeRef.current?.value || '',
+      business_name: businessNameRef.current?.value || '',
+      address: addressRef.current?.value || '',
+      contact_no: contactNoRef.current?.value || '',
+      date_received: ReceivedDateRef.current?.value || '',
+      administrative_fine: '',
+      date_inspected: dateInspectionRef.current?.value || '',
+      fire_inspectors: [''],
+      inspection_no: 0,
+      date: dateRef.current?.value || '',
+      email: emailRef.current?.value || '',
+      id: idRef.current?.value || '',
+      name: ReceivedByRef.current?.value || '',
+      nature_business: natureBusinessRef.current?.value || '',
+      ntc_no: 0,
+      ntc_date: NTCDateRef.current?.value || '',
+      type_occupancy: contactNoRef.current?.value || '',
+      defects: convertedTableData,
+      remarks: remarksRef.current?.value || '',
+      team_leader: teamLeaderRef.current?.value || '',
+  })
+  handleClose();
   }
 
   // Sets the values of the array and uploads data to db
@@ -323,7 +363,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                           </tr>
                         ))}
                       </tbody>
