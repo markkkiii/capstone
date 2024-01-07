@@ -571,9 +571,9 @@ const DisapprovedNewBusiness: React.FC = () => {
                             .filter((disapprovedNewBusinessPermit) => {
                                 if (sortBy === 'Pending Records') {
                                     return disapprovedNewBusinessPermit.remarks === 'Pending';
+                                } else{
+                                    return true;
                                 }
-                                else
-                                    return disapprovedNewBusinessPermit
                             })
                             .filter((disapprovedNewBusinessPermit) => {
                                 // Filter based on the searchText value
