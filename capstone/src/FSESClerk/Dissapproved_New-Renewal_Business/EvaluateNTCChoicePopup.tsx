@@ -27,9 +27,6 @@ interface ChoiceProps {
 }
 
 const EvaluateNTCChoicePopup: React.FC<ChoiceProps> = (props: ChoiceProps) => {
- 
- 
-
 
     return (
         <div>

@@ -1,6 +1,6 @@
 import {addDoc, collection, deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
 import { app } from './firebase'
-import { addBuildingPermit, addDisapprovedOccupancyPermit, addOccupancyPermit, addPayment, addbusinessPermit, adddisapprovedOccupancyPermit } from '../types/Users';
+import { NTCNewBusiness, addBuildingPermit, addDisapprovedOccupancyPermit, addOccupancyPermit, addPayment, addbusinessPermit, adddisapprovedOccupancyPermit } from '../types/Users';
 
 export const firestore = getFirestore(app);
 
@@ -254,6 +254,28 @@ export const updateOccupancyPayment = async (id: string, permitData: any) => {
 //Delete RenewalBusiness Payment
 export const deleteOccupancyPayment = async(id: string) =>{
     const document = doc(firestore,`OccupancyPermitPayment/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add NTCNewBusiness Permit
+export const addNTCNewBusiness = async (permitData: NTCNewBusiness) =>{
+    const newPermit =await addDoc(NTCNewBusinessCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update RenewalBusinesss Permit
+export const updateNTCNewBusiness = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`NTCNewBusiness/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete RenewalBusiness Permit
+export const deleteNTCNewBusiness = async(id: string) =>{
+    const document = doc(firestore,`NTCNewBusiness/${id}`);
     await deleteDoc(document);
     console.log("Permit successfully deleted")
 }
