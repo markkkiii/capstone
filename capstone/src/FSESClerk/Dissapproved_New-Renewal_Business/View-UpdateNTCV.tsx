@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
+import { updateNTCVNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  bpid: number;
+  bpid: string;
   form: string;
   activity: string;
   business_no: string;
@@ -72,7 +73,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
   const ContactnoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const typeofoccupancyRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const EmailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const DateRecievedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const DateReceivedRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [selectedRemarks, setselectedRemarks] = useState(props?.remarks ||'');//handles dropboxfield
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -153,15 +154,8 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
 
   // uploads data to db
   const evaluateNTCV = async () => {
-    let new_url = '';
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpnoticecorrectviolation/updateNewbpCorrectViolation?id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRenewalbpNTCV?id='
-    }
-    axios.put(new_url+props.bpid,
-      {
+    
+    updateNTCVNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -170,7 +164,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
         type_occupancy: typeofoccupancyRef.current?.value,
         contact_no: ContactnoRef.current?.value,
         email: EmailRef.current?.value,
-        date_received: DateRecievedRef.current?.value,
+        date_received: DateReceivedRef.current?.value,
         date_inspected: dateInspectionRef.current?.value,
         inspection_no: inspectOrderRef.current?.value,
         ntc_no: NTCRef.current?.value,
@@ -183,12 +177,8 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
         defects: arrayList,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
-      }
-    ).then(res => {
-      console.log(res.data);
-      alert("Update Successful!");;
-      props.handleClose();
-    }).catch(err => console.log(err))
+    })
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db
@@ -273,7 +263,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={DateRecievedRef} variant='standard' disabled={props.activity !== 'Update'} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={DateReceivedRef} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
