@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
+import { updateClosureNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  bpid: number;
+  bpid: string;
   form: string;
   activity: string;
   business_no: string;
@@ -48,7 +49,10 @@ export interface formdetails {
   teamleader: string;
   fireinspectors: string[];
   open: boolean;
-  defects: string[][];
+  defects: {
+    date: string;
+    defects: string;  
+  }[];
   remarks: string;
   receivedby: string;
   receiveddate: string;
@@ -57,14 +61,14 @@ export interface formdetails {
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function ViewUpdateClosurePopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(([defects, period]) => ({ defects, period })) : []);
+  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(({defects, date}) => ({ defects, date })) : []);
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
   const BusinessNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -101,7 +105,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -109,8 +113,8 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
     setOpenAddDefect(false);
   };
 
-  const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+  const addDefect = (defect: string, date: string) => {
+    const newData: DefectData = { defects: defect, date: date };
     setData([...data, newData]);
     console.log(data)
   };
@@ -172,15 +176,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
 
   // uploads data to db
   const evaluateClosure = async () => {
-    let new_url = '';
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpclosureorder/updateNewbpClosure?id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpclosureorder/updateRenewalbpClosure?id='
-    }
-    axios.put(new_url + props.bpid,
-      {
+    updateClosureNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -206,12 +202,8 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
         defects: arrayList,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
-      }
-    ).then(res => {
-      console.log(res.data);
-      alert("Update Successful!");
+      })
       props.handleClose();
-    }).catch(err => console.log(err))
   }
 
   // Sets the values of the array and uploads data to db
@@ -405,7 +397,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td style={{ textAlign: "center" }}>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                             <th><Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={() => removeItem(index)} disabled={props.activity !== 'Update'}>
                               Remove
                             </Button></th>

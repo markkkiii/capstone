@@ -37,7 +37,10 @@ export interface formdetails {
   email: string;
   datereceived: string;
   open: boolean;
-  defects: string[][];
+  defects: {
+    date: string;
+    defects: string;  
+  }[];
   handleClose: () => void;
 }
 
