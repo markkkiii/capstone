@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
+import { updateNTCNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  bpid: number;
+  bpid: string;
   form: string;
   activity: string;
   business_no: string;
@@ -151,15 +152,8 @@ export default function ViewUpdateNTC(props: formdetails) {
 
   // uploads data to db
   const evaluateNTC = async () => {
-    let new_url = '';
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpnoticetocomply/updateNewbpNotucetoComply?id=';
-    }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRenewalbpNTC?id='
-    }
-    axios.put(new_url+props.bpid,
-      {
+    
+    updateNTCNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -179,13 +173,8 @@ export default function ViewUpdateNTC(props: formdetails) {
         defects: arrayList,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
-
-      }
-    ).then(res => {
-      console.log(res.data);
-      alert("Update Successful!");
-      props.handleClose();
-    }).catch(err => console.log(err))
+    })
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db

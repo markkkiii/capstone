@@ -37,6 +37,7 @@ export interface formdetails {
   email: string;
   datereceived: string;
   open: boolean;
+  defects: string[][];
   handleClose: () => void;
 }
 
@@ -210,9 +211,9 @@ export default function EvaluateNTCPopup(props: formdetails) {
       type_occupancy: contactNoRef.current?.value || '',
       defects: convertedTableData,
       remarks: remarksRef.current?.value || '',
-      team_leader: teamLeaderRef.current?.value || '',
-  })
-  handleClose();
+      team_leader: teamLeaderRef.current?.value || ''
+    })
+  props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db

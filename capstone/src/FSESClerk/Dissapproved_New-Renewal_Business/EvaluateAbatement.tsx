@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
+import { addAbatementNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -23,7 +24,7 @@ const cardStyle = {
 
 
 export interface formdetails {
-  bpid: number;
+  bpid: string;
   form: string;
   business_no: string;
   permitee: string;
@@ -34,9 +35,9 @@ export interface formdetails {
   contactno: string;
   email: string;
   datereceived: string;
-  ntc: number;
+  ntc_no: number;
   ntc_date: string;
-  ntcv: number;
+  ntcv_no: number;
   ntcv_date: string;
   defects: string[][];
   open: boolean;
@@ -55,17 +56,33 @@ export default function EvaluateAbatementPopup(props: formdetails) {
   const [data, setData] = useState<DefectData[]>([]);
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
-  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const dateInspectionRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const inspectOrderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const emailRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const bspermitNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const businessNameRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const addressRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const dateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const contactNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const natureBusinessRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const remarksRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const permitteeRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const idRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const ReceivedByRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCVDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
+  const NTCVRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AbatementRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const AbatementDateRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const AmountRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
-  const teamLeaderRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
   const [inputInspector, setInputInspector] = useState<string>(''); // State to store the input value as a single string
   const [inputInspectorArray, setinputInspectorArray] = useState<string[]>(["test", "test2"]); // State to store the input values as an array
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
+  const [tableData, setTableData] = useState<Array<{ defects: string; date: string; }>>([
+    { defects: '', date: '' },
+  ]);
 
   //opens add defect pop up
   const openDialog = () => {
@@ -132,46 +149,80 @@ export default function EvaluateAbatementPopup(props: formdetails) {
 
   // uploads data to db
   const evaluateAbatement = async () => {
-    let new_url = '';
-    if (props.form === 'New') {
-      new_url = 'http://localhost:8080/newbpabatementorder/insertAbatementPermit';
+  //   let new_url = '';
+  //   if (props.form === 'New') {
+  //     new_url = 'http://localhost:8080/newbpabatementorder/insertAbatementPermit';
+  //   }
+  //   else if (props.form === 'Renewal') {
+  //     new_url = 'http://localhost:8080/renewalbpabatementorder/insertRenewalAbatementPermit'
+  //   }
+  //   axios.post(new_url,
+  //     {
+  //       bspermit_no: props.bpid,
+  //       permittee: props.permitee,
+  //       business_name: props.business_name,
+  //       address: props.address,
+  //       nature_business: props.natureofbusiness,
+  //       type_occupancy: props.typeofoccupancy,
+  //       contact_no: props.contactno,
+  //       email: props.email,
+  //       date_received: props.datereceived,
+  //       date_inspected: dateInspectionRef.current?.value,
+  //       inspection_no: inspectOrderRef.current?.value,
+  //       ntc_no: props.ntc,
+  //       ntc_date: props.ntc_date,
+  //       ntcv_no: props.ntcv,
+  //       ntcv_date: props.ntcv_date,
+  //       abatement_no: AbatementRef.current?.value,
+  //       abatement_date: AbatementDateRef.current?.value,
+  //       remarks: "For Issuance Closure",
+  //       team_leader: teamLeaderRef.current?.value,
+  //       fire_inspectors: inputInspectorArray,
+  //       defects: arrayList,
+  //       name: ReceivedByRef.current?.value,
+  //       date: ReceivedDateRef.current?.value
+  //     }
+  //   ).then(res => {
+  //     console.log(res.data);
+  //     alert("Evaluation Successful!");
+  //     updateRemarks();
+  //     props.handleClose();
+  //     }).catch(err => console.log(err))
+  // }
+    const convertedTableData = tableData.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
+
+    addAbatementNewBusiness({
+      bspermit_no: bspermitNoRef.current?.value || '',
+      permittee: permitteeRef.current?.value || '',
+      business_name: businessNameRef.current?.value || '',
+      address: addressRef.current?.value || '',
+      contact_no: contactNoRef.current?.value || '',
+      date_received: ReceivedDateRef.current?.value || '',
+      administrative_fine: '',
+      date_inspected: dateInspectionRef.current?.value || '',
+      fire_inspectors: [''],
+      inspection_no: 0,
+      date: dateRef.current?.value || '',
+      email: emailRef.current?.value || '',
+      id: idRef.current?.value || '',
+      name: ReceivedByRef.current?.value || '',
+      nature_business: natureBusinessRef.current?.value || '',
+      ntc_no: 0,
+      ntc_date: NTCDateRef.current?.value || '',
+      ntcv_no: 0,
+      ntcv_date: NTCVDateRef.current?.value || '',
+      abatement_no: 0,
+      abatement_date: AbatementDateRef.current?.value || '',
+      type_occupancy: contactNoRef.current?.value || '',
+      defects: convertedTableData,
+      remarks: remarksRef.current?.value || '',
+      team_leader: teamLeaderRef.current?.value || ''
+      })
+    props.handleClose();
     }
-    else if (props.form === 'Renewal') {
-      new_url = 'http://localhost:8080/renewalbpabatementorder/insertRenewalAbatementPermit'
-    }
-    axios.post(new_url,
-      {
-        bspermit_no: props.bpid,
-        permittee: props.permitee,
-        business_name: props.business_name,
-        address: props.address,
-        nature_business: props.natureofbusiness,
-        type_occupancy: props.typeofoccupancy,
-        contact_no: props.contactno,
-        email: props.email,
-        date_received: props.datereceived,
-        date_inspected: dateInspectionRef.current?.value,
-        inspection_no: inspectOrderRef.current?.value,
-        ntc_no: props.ntc,
-        ntc_date: props.ntc_date,
-        ntcv_no: props.ntcv,
-        ntcv_date: props.ntcv_date,
-        abatement_no: AbatementRef.current?.value,
-        abatement_date: AbatementDateRef.current?.value,
-        remarks: "For Issuance Closure",
-        team_leader: teamLeaderRef.current?.value,
-        fire_inspectors: inputInspectorArray,
-        defects: arrayList,
-        name: ReceivedByRef.current?.value,
-        date: ReceivedDateRef.current?.value
-      }
-    ).then(res => {
-      console.log(res.data);
-      alert("Evaluation Successful!");
-      updateRemarks();
-      props.handleClose();
-      }).catch(err => console.log(err))
-  }
 
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
@@ -268,7 +319,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc_no} disabled/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -280,7 +331,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv_no} disabled/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -383,3 +434,4 @@ export default function EvaluateAbatementPopup(props: formdetails) {
     </div>
   );
 };
+
