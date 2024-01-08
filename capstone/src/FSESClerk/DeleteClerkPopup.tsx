@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
-import { deleteDisapprovedOccupancyPermit, deleteOccupancyPermit } from '../lib/controller';
+import { deleteAbatementNewBusiness, deleteClosureNewBusiness, deleteDisapprovedOccupancyPermit, deleteNTCNewBusiness, deleteNTCVNewBusiness, deleteOccupancyPermit } from '../lib/controller';
 
 interface DeleteProps {
     value: string;
@@ -67,11 +67,32 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
       if(form === 'Occupancy'){
             if(remarks === "Pending"){
                 deleteOccupancyPermit(value);
+                alert("Deleted Successfully");
             }
             else if(remarks === "Disapproved"){
                 deleteDisapprovedOccupancyPermit(value);
+                alert("Deleted Successfully");
             }
       }
+      else if(form === 'New Business'){
+            if((sortby === 'NTC Records' && remarks === 'Issued NTCV') || (sortby === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortby === 'NTC Records' && remarks === 'Complied')){
+                deleteNTCNewBusiness(value);
+                alert("Deleted Successfullysss");
+            }
+            else if((sortby === 'NTCV  Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV  Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV  Records' && remarks === 'Complied')){
+                deleteNTCVNewBusiness(value);
+                alert("Deleted Successfully!");
+            }
+            else if((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')){
+                deleteAbatementNewBusiness(value);
+                alert("Deleted Successfully!!!");
+            }
+            else if((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')){
+                deleteClosureNewBusiness(value);
+                alert("Deleted Successfully!!!!!!!!!!");
+            }
+        }
+        
     }
 
     return (

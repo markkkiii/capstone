@@ -663,7 +663,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             email={disapprovedNewBusinessPermit.email || ''}
                                             datereceived={disapprovedNewBusinessPermit.date_received || ''}
                                             handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)}
-                                            defects={[]} 
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                         />
                                         <DeleteClerkPopup
                                             open={openDelete[disapprovedNewBusinessPermit.id]}
@@ -701,7 +701,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
                                             ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
                                             handleClose={() => handleCloseNTCV(disapprovedNewBusinessPermit.id)}
-                                            defects={[]} 
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                         />
                                         <EvaluateAbatementPopup
                                             bpid={disapprovedNewBusinessPermit.id}
@@ -721,7 +721,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
                                             ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
                                             handleClose={() => handleCloseAbatement(disapprovedNewBusinessPermit.id)} 
-                                            defects={[]}    
+                                            defects={disapprovedNewBusinessPermit.defects || []}   
                                         />
                                         <EvaluateClosurePopup
                                             bpid={disapprovedNewBusinessPermit.id}
@@ -742,7 +742,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
                                             abatement={disapprovedNewBusinessPermit.abatement_no || 0}
                                             abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
-                                            defects={[]}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                             handleClose={() => handleCloseClosure(disapprovedNewBusinessPermit.id)}
                                         />
                                         <ViewUpdateNTC
@@ -765,7 +765,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
                                             teamleader={disapprovedNewBusinessPermit.team_leader || ''}
                                             fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
-                                            defects={[]}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                             remarks={disapprovedNewBusinessPermit.remarks || ''}
                                             receivedby={disapprovedNewBusinessPermit.name || ''}
                                             receiveddate={disapprovedNewBusinessPermit.date || ''}
@@ -793,7 +793,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
                                             teamleader={disapprovedNewBusinessPermit.team_leader || ''}
                                             fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
-                                            defects={[]}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                             remarks={disapprovedNewBusinessPermit.remarks || ''}
                                             receivedby={disapprovedNewBusinessPermit.name || ''}
                                             receiveddate={disapprovedNewBusinessPermit.date || ''}
@@ -823,46 +823,46 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
                                             teamleader={disapprovedNewBusinessPermit.team_leader || ''}
                                             fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
-                                            defects={[]}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
                                             remarks={disapprovedNewBusinessPermit.remarks || ''}
                                             receivedby={disapprovedNewBusinessPermit.name || ''}
                                             receiveddate={disapprovedNewBusinessPermit.date || ''}
                                             handleClose={() => handleCloseViewUpdateAbatement(disapprovedNewBusinessPermit.id)}
-                                        />{/*
+                                        />
                                         <ViewUpdateClosurePopup
                                             bpid={disapprovedNewBusinessPermit.id}
                                             form='New'
                                             activity={selectedAction[disapprovedNewBusinessPermit.id]}
                                             open={openViewUpdateClosure[disapprovedNewBusinessPermit.id]}
-                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
-                                            permitee={disapprovedNewBusinessPermit.permittee}
-                                            business_name={disapprovedNewBusinessPermit.business_name}
-                                            address={disapprovedNewBusinessPermit.address}
-                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
-                                            contactno={disapprovedNewBusinessPermit.contact_no}
-                                            email={disapprovedNewBusinessPermit.email}
-                                            datereceived={disapprovedNewBusinessPermit.date_received}
-                                            inspection_no={disapprovedNewBusinessPermit.inspection_no}
-                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected}
-                                            ntc_no={disapprovedNewBusinessPermit.ntc_no}
-                                            ntc_date={disapprovedNewBusinessPermit.ntc_date}
-                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no}
-                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date}
-                                            abatement_no={disapprovedNewBusinessPermit.abatement_no}
-                                            abatement_date={disapprovedNewBusinessPermit.abatement_date}
-                                            closure_no={disapprovedNewBusinessPermit.closure_no}
-                                            closure_date={disapprovedNewBusinessPermit.closure_date}
-                                            teamleader={disapprovedNewBusinessPermit.team_leader}
-                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors}
-                                            defects={disapprovedNewBusinessPermit.defects}
-                                            remarks={disapprovedNewBusinessPermit.remarks}
-                                            receivedby={disapprovedNewBusinessPermit.name}
-                                            receiveddate={disapprovedNewBusinessPermit.date}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no || 0}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            abatement_no={disapprovedNewBusinessPermit.abatement_no || 0}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
+                                            closure_no={disapprovedNewBusinessPermit.closure_no || 0}
+                                            closure_date={disapprovedNewBusinessPermit.closure_date || ''}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader || ''}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            receivedby={disapprovedNewBusinessPermit.name || ''}
+                                            receiveddate={disapprovedNewBusinessPermit.date || ''}
                                             handleClose={() => handleCloseViewUpdateClosure(disapprovedNewBusinessPermit.id)}
                                         />
 
-                                        <EvaluatePopup
+                                        {/*<EvaluatePopup
                                             form='New'
                                             activity={sortBy}
                                             bpid={disapprovedNewBusinessPermit.id}
@@ -878,7 +878,14 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             datereceived={disapprovedNewBusinessPermit.date_received}
                                             handleClose={() => handleCloseEvaluate(disapprovedNewBusinessPermit.id)}
                                         />*/}
-
+                                        <DeleteClerkPopup
+                                            open={openDelete[disapprovedNewBusinessPermit.id]}
+                                            value={disapprovedNewBusinessPermit.id}
+                                            form="New Business"
+                                            sortby={sortBy}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
+                                        />
                                     </td>
                                 </tr>
                             ))}

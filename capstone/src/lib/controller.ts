@@ -244,14 +244,14 @@ export const addOccupancyPayment = async (permitData: addPayment) =>{
     console.log("Permit Added Successfully")
 }
 
-//Update RenewalBusiness Payment
+//Update Occupancy Payment
 export const updateOccupancyPayment = async (id: string, permitData: any) => {
     const getPermit = doc(firestore,`OccupancyPermitPayment/${id}`);
     await setDoc(getPermit,permitData,{merge:true});
     console.log("Permit Updated Successfully");
 }
 
-//Delete RenewalBusiness Payment
+//Delete Occupancy Payment
 export const deleteOccupancyPayment = async(id: string) =>{
     const document = doc(firestore,`OccupancyPermitPayment/${id}`);
     await deleteDoc(document);

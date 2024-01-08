@@ -39,7 +39,10 @@ export interface formdetails {
   ntc_date: string;
   ntcv_no: number;
   ntcv_date: string;
-  defects: string[][];
+  defects: {
+    date: string;
+    defects: string;  
+  }[];
   open: boolean;
   handleClose: () => void;
 }

@@ -45,7 +45,10 @@ export interface formdetails {
   teamleader: string;
   fireinspectors: string[];
   open: boolean;
-  defects: string[][];
+  defects: {
+    date: string;
+    defects: string;  
+  }[];
   remarks: string;
   receivedby: string;
   receiveddate: string;
@@ -54,14 +57,14 @@ export interface formdetails {
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function ViewUpdateNTCVPopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(([defects, period]) => ({ defects, period })) : []);
+  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(({defects, date}) => ({ defects, date })) : []);
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
 
@@ -102,7 +105,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -110,8 +113,8 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
     setOpenAddDefect(false);
   };
 
-  const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+  const addDefect = (defect: string, date: string) => {
+    const newData: DefectData = { defects: defect, date: date };
     setData([...data, newData]);
     console.log(data)
   };
@@ -348,7 +351,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td style={{ textAlign: "center" }}>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                             <th><Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={() => removeItem(index)} disabled={props.activity !== 'Update'}>
                               Remove
                             </Button></th>
