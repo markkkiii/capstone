@@ -79,15 +79,15 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
             })*/
         if (add === "New") {
             addBusinessPermits({
-                businessno: (buildingpermRef.current?.value || ''),
+                bspermit_no: (buildingpermRef.current?.value || ''),
                 address: (addressRef.current?.value || ''),
                 permittee: (permiteeRef.current?.value || ''),
-                businessname: (businessnameRef.current?.value || ''),
-                naturebusiness: (naturebusinessRef.current?.value || ''),
-                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
-                contactno: (contactnoRef.current?.value || ''),
+                business_name: (businessnameRef.current?.value || ''),
+                nature_business: (naturebusinessRef.current?.value || ''),
+                type_occupancy: (typeofoccupancyRef.current?.value || ''),
+                contact_no: (contactnoRef.current?.value || ''),
                 email: (emailRef.current?.value || ''),
-                datereceived: (dateReceivedRef.current?.value || ''),
+                date_received: (dateReceivedRef.current?.value || ''),
                 amount: 0,
                 date: "2023-02-01",
                 dateinspection: "2023-02-01",
@@ -104,15 +104,15 @@ const AddApplication: React.FC<formdetails> = ({ open, handleClose, add, name, b
         }
         else if (add === "Renewal") {
             addrenewalBusinessPermits({
-                businessno: (buildingpermRef.current?.value || ''),
+                bspermit_no: (buildingpermRef.current?.value || ''),
                 address: (addressRef.current?.value || ''),
                 permittee: (permiteeRef.current?.value || ''),
-                businessname: (businessnameRef.current?.value || ''),
-                naturebusiness: (naturebusinessRef.current?.value || ''),
-                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
-                contactno: (contactnoRef.current?.value || ''),
+                business_name: (businessnameRef.current?.value || ''),
+                nature_business: (naturebusinessRef.current?.value || ''),
+                type_occupancy: (typeofoccupancyRef.current?.value || ''),
+                contact_no: (contactnoRef.current?.value || ''),
                 email: (emailRef.current?.value || ''),
-                datereceived: (dateReceivedRef.current?.value || ''),
+                date_received: (dateReceivedRef.current?.value || ''),
                 amount: 0,
                 date: "2023-02-01",
                 dateinspection: "2023-02-01",

@@ -212,7 +212,7 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                                 return true; // Show all records if no search text is entered
                                                             } else {
                                                                 // Filter based on the businessPermitNo or ownerName containing the searchText
-                                                                const business_no = businessPermit?.businessno || '';
+                                                                const business_no = businessPermit?.bspermit_no || '';
                                                                 const permittee = businessPermit?.permittee || '';
                                                                 return (
                                                                     business_no.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -222,9 +222,9 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                         })
                                                         .map((businessPermit) => (
                                                             <tr key={businessPermit.id}>
-                                                                <td>{businessPermit.businessno}</td>
+                                                                <td>{businessPermit.bspermit_no}</td>
                                                                 <td>{businessPermit.permittee}</td>
-                                                                <td>{businessPermit.businessname}</td>
+                                                                <td>{businessPermit.business_name}</td>
                                                                 <td>{businessPermit.fsicdate}</td>
                                                                 <td>
                                                                     <select
@@ -246,15 +246,15 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                                     open={openViewEvaluate[businessPermit.id]}
                                                                     handleClose={() => handleCloseViewEval(businessPermit.id)}
                                                                     bpid={businessPermit.id}
-                                                                    business_no={businessPermit.businessno || ''}
+                                                                    business_no={businessPermit.bspermit_no || ''}
                                                                     permitee={businessPermit.permittee || ''}
-                                                                    business_name={businessPermit.businessname || ''}
+                                                                    business_name={businessPermit.business_name || ''}
                                                                     address={businessPermit.address || ''}
-                                                                    natureofbusiness={businessPermit.naturebusiness || ''}
-                                                                    typeofoccupancy={businessPermit.typeoccupancy || ''}
-                                                                    contactno={businessPermit.contactno || ''}
+                                                                    natureofbusiness={businessPermit.nature_business || ''}
+                                                                    typeofoccupancy={businessPermit.type_occupancy || ''}
+                                                                    contactno={businessPermit.contact_no || ''}
                                                                     email={businessPermit.email || ''}
-                                                                    date_received={businessPermit.datereceived || ''}
+                                                                    date_received={businessPermit.date_received || ''}
                                                                     date_inspection={businessPermit.dateinspection || ''}
                                                                     inspection_no={businessPermit.inspection_no || 0}
                                                                     fsic_no={businessPermit.fsicno || 0}
@@ -271,13 +271,13 @@ const RenewPermit: React.FC<formdetails> = ({ open, handleClose }) => {
                                                                     open={openAdd[businessPermit.id]}
                                                                     handleClose={() => handleClickClose(businessPermit.id)}
                                                                     add="Renewal"
-                                                                    buildingpermit={businessPermit.businessno}
+                                                                    buildingpermit={businessPermit.bspermit_no}
                                                                     name={businessPermit.permittee}
                                                                     address={businessPermit.address}
-                                                                    businessname={businessPermit.businessname}
-                                                                    natureofbusiness={businessPermit.naturebusiness}
-                                                                    typeofoccupancy={businessPermit.typeoccupancy}
-                                                                    contactno={businessPermit.contactno}
+                                                                    businessname={businessPermit.business_name}
+                                                                    natureofbusiness={businessPermit.nature_business}
+                                                                    typeofoccupancy={businessPermit.type_occupancy}
+                                                                    contactno={businessPermit.contact_no}
                                                                     email={businessPermit.email}
 
                                                                 />

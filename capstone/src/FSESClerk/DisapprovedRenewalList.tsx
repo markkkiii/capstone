@@ -20,6 +20,9 @@ import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-Upd
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
+import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness } from '../types/Users';
+import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { businessPermCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection, NTCBusinessRenewalCollection, NTCVBusinessRenewalCollection, abatementBusinessRenewalCollection, closureBusinessRenewalCollection } from '../lib/controller';
 
 
 //Header Part
@@ -46,21 +49,22 @@ const DisapprovedRenewalList: React.FC = () => {
     const [searchText, setSearchText] = useState('');
     const [sortBy, setSortBy] = useState('Pending Records');
     const [open, setOpen] = useState(false);
-    const [selectedAction, setSelectedAction] = useState<Record<number, string>>({});
-    const [openViewPending, setopenViewPending] = useState<Record<number, boolean>>({});
-    const [openUpdatePending, setopenUpdatePending] = useState<Record<number, boolean>>({});
-    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<number, boolean>>({}); //Opens Update/View NTCV Form
-    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<number, boolean>>({}); //Opens Update/View NTC Form
-    const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<number, boolean>>({}); //Opens Update/Vew NTCV Form
-    const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<number, boolean>>({}); //Opens NTCV Form
-    const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<number, boolean>>({}); //Opens NTC Form
-    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<number, boolean>>({}); //Opens NTCV Form
-    const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<number, boolean>>({}); //Opens Abatement Form
-    const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<number, boolean>>({}); //Opens Closure Form
-    const [openEvalChoice, setopenEvalChoice] = useState<Record<number, boolean>>({});//Open NTC Choice Pop up
-    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<number, boolean>>({});
+    const [selectedAction, setSelectedAction] = useState<Record<string, string>>({});
+    const [openViewPending, setopenViewPending] = useState<Record<string, boolean>>({});
+    const [openUpdatePending, setopenUpdatePending] = useState<Record<string, boolean>>({});
+    const [openViewUpdateNTCV, setopenViewUpdateNTCV] = useState<Record<string, boolean>>({}); //Opens Update/View NTCV Form
+    const [openprevViewUpdateNTC, setopenViewUpdateNTC] = useState<Record<string, boolean>>({}); //Opens Update/View NTC Form
+    const [openViewUpdateAbatement, setopenViewUpdateAbatement] = useState<Record<string, boolean>>({}); //Opens Update/Vew NTCV Form
+    const [openViewUpdateClosure, setopenViewUpdateClosure] = useState<Record<string, boolean>>({}); //Opens NTCV Form
+    const [openprevEvaluateNTC, setopenprevEvaluateNTC] = useState<Record<string, boolean>>({}); //Opens NTC Form
+    const [openprevEvaluateNTCV, setopenprevEvaluateNTCV] = useState<Record<string, boolean>>({}); //Opens NTCV Form
+    const [openprevEvaluateAbatement, setopenprevEvaluateAbatement] = useState<Record<string, boolean>>({}); //Opens Abatement Form
+    const [openprevEvaluateClosure, setopenprevEvaluateClosure] = useState<Record<string, boolean>>({}); //Opens Closure Form
+    const [openEvalChoice, setopenEvalChoice] = useState<Record<string, boolean>>({});//Open NTC Choice Pop up
+    const [openEvaluateBusiness, setopenEvaluateBusiness] = useState<Record<string, boolean>>({});
     const [test, setTest] = useState<boolean>(false);
-    const [openDelete, setOpenDelete] = useState<Record<number, boolean>>({});
+    const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
+    const [disapprovedNewBusinessPermit, setdisapprovedNewBusinessPermit] = useState<disapprovedNewBusinessPermit[]>([]);
     const [print, setPrint] = useState(false);
 
 
@@ -100,6 +104,83 @@ const DisapprovedRenewalList: React.FC = () => {
         status: 'default'
     }])
 
+    useEffect(
+        () => {
+            if (sortBy === "Pending Records") {
+                onSnapshot(businessPermCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "NTC Records") {
+                onSnapshot(NTCBusinessRenewalCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "NTCV Records") {
+                onSnapshot(NTCVBusinessRenewalCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "Abatement Records") {
+                onSnapshot(abatementBusinessRenewalCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+            else if (sortBy === "Closure Records") {
+                onSnapshot(closureBusinessRenewalCollection, (snapshot:
+                    QuerySnapshot<DocumentData>) => {
+                    setdisapprovedNewBusinessPermit(
+                        snapshot.docs.map((doc) => {
+                            return {
+                                id: doc.id,
+                                ...doc.data(),
+                            };
+                        })
+                    );
+                    console.log(disapprovedNewBusinessPermit)
+                })
+            }
+        }, [sortBy]
+    )
+
+
+
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
     };
@@ -112,7 +193,7 @@ const DisapprovedRenewalList: React.FC = () => {
         setTest(prevTest => !prevTest);
     };
     //Open EVAL NTC
-    const handleOpenEvalNTC = (no: number) => {
+    const handleOpenEvalNTC = (no: string) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: true,
@@ -120,7 +201,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     //Close EVAL NTC
-    const handleCloseEvalNTC = (no: number) => {
+    const handleCloseEvalNTC = (no: string) => {
         setopenprevEvaluateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: false,
@@ -129,7 +210,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Evaluate NTC
-    const handleOpenViewUpdateNTC = (no: number) => {
+    const handleOpenViewUpdateNTC = (no: string) => {
         setopenViewUpdateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: true,
@@ -137,7 +218,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate NTC
-    const handleCloseViewUpdateNTC = (no: number) => {
+    const handleCloseViewUpdateNTC = (no: string) => {
         setopenViewUpdateNTC((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: false,
@@ -146,7 +227,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Update View NTCV
-    const handleOpenViewUpdateNTCV = (no: number) => {
+    const handleOpenViewUpdateNTCV = (no: string) => {
         setopenViewUpdateNTCV((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: true,
@@ -154,7 +235,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Update View NTCV
-    const handleCloseViewUpdateNTCV = (no: number) => {
+    const handleCloseViewUpdateNTCV = (no: string) => {
         setopenViewUpdateNTCV((prevEvaluateNTC) => ({
             ...prevEvaluateNTC,
             [no]: false,
@@ -163,7 +244,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Update View Abatement
-    const handleOpenViewUpdateAbatement = (no: number) => {
+    const handleOpenViewUpdateAbatement = (no: string) => {
         setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -171,7 +252,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Update View Abatement
-    const handleCloseViewUpdateAbatement = (no: number) => {
+    const handleCloseViewUpdateAbatement = (no: string) => {
         setopenViewUpdateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -180,7 +261,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Update View Closure
-    const handleOpenViewUpdateClosure = (no: number) => {
+    const handleOpenViewUpdateClosure = (no: string) => {
         setopenViewUpdateClosure((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -188,7 +269,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Update View Closure
-    const handleCloseViewUpdateClosure = (no: number) => {
+    const handleCloseViewUpdateClosure = (no: string) => {
         setopenViewUpdateClosure((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -198,7 +279,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
 
     //Opens Evaluate Choice
-    const handleOpenEvalChoice = (no: number) => {
+    const handleOpenEvalChoice = (no: string) => {
         setopenEvalChoice((prevEvalChoice) => ({
             ...prevEvalChoice,
             [no]: true,
@@ -206,7 +287,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate Choice
-    const handleCloseEvalCHoice = (no: number) => {
+    const handleCloseEvalCHoice = (no: string) => {
         setopenEvalChoice((prevEvalChoice) => ({
             ...prevEvalChoice,
             [no]: false,
@@ -215,16 +296,16 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Open Approved Eval Popup
-    const handleOpenEvaluate = (no: number) => {
+    const handleOpenEvaluate = (no: string) => {
         setopenEvaluateBusiness((prevOpenEvaluate) => ({
             ...prevOpenEvaluate,
             [no]: true,
-        }));    
+        }));
         handleRender();
     };
 
     //Close Approved Eval Popup
-    const handleCloseEvaluate = (no: number) => {
+    const handleCloseEvaluate = (no: string) => {
         setopenEvaluateBusiness((prevOpenEvaluate) => ({
             ...prevOpenEvaluate,
             [no]: false,
@@ -234,7 +315,7 @@ const DisapprovedRenewalList: React.FC = () => {
 
 
     //Opens Evaluate NTCV
-    const handleOpenNTCV = (no: number) => {
+    const handleOpenNTCV = (no: string) => {
         setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: true,
@@ -242,7 +323,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate NTCV
-    const handleCloseNTCV = (no: number) => {
+    const handleCloseNTCV = (no: string) => {
         setopenprevEvaluateNTCV((prevEvaluateNTCV) => ({
             ...prevEvaluateNTCV,
             [no]: false,
@@ -251,7 +332,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Evaluate Abatement
-    const handleOpenAbatement = (no: number) => {
+    const handleOpenAbatement = (no: string) => {
         setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: true,
@@ -259,7 +340,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate Abatement
-    const handleCloseAbatement = (no: number) => {
+    const handleCloseAbatement = (no: string) => {
         setopenprevEvaluateAbatement((prevEvaluateAbatement) => ({
             ...prevEvaluateAbatement,
             [no]: false,
@@ -268,7 +349,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Opens Evaluate Closure
-    const handleOpenClosure = (no: number) => {
+    const handleOpenClosure = (no: string) => {
         setopenprevEvaluateClosure((prevEvaluateClosure) => ({
             ...prevEvaluateClosure,
             [no]: true,
@@ -276,7 +357,7 @@ const DisapprovedRenewalList: React.FC = () => {
         handleRender();
     };
     // Closes Evaluate Closure
-    const handleCloseClosure = (no: number) => {
+    const handleCloseClosure = (no: string) => {
         setopenprevEvaluateClosure((prevEvaluateClosure) => ({
             ...prevEvaluateClosure,
             [no]: false,
@@ -285,37 +366,10 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     // Gets Data from the DATABASE
-    useEffect(() => {
-        if (sortBy === 'Pending Records') {
-            axios.get('http://localhost:8080/Renewal/getAllRenewalPermit').then(res => {
-                SetApplicationForm(res.data)
-                console.log(applicationform)
-            }).catch(err => console.log(err))
-        }
-        else if (sortBy === 'NTC Records') {
-            axios.get('http://localhost:8080/renewalbpnoticetocomply/getAllRenewalbpNoticeToComply').then(res => {
-                SetApplicationForm(res.data)
-            }).catch(err => console.log(err))
-        }
-        else if (sortBy === 'NTCV Records') {
-            axios.get('http://localhost:8080/renewalbpnoticetocorrectviolation/getAllRenewalbpNoticeToCorrectViolation').then(res => {
-                SetApplicationForm(res.data)
-            }).catch(err => console.log(err))
-        }
-        else if (sortBy === 'Abatement Records') {
-            axios.get('http://localhost:8080/renewalbpabatementorder/getAllRenewalbpAbatementOrder').then(res => {
-                SetApplicationForm(res.data)
-            }).catch(err => console.log(err))
-        }
-        else if (sortBy === 'Closure Records') {
-            axios.get('http://localhost:8080/renewalbpclosureorder/getAllRenewalbpClosureOrder').then(res => {
-                SetApplicationForm(res.data)
-            }).catch(err => console.log(err))
-        }
-    }, [sortBy, test]);
+
 
     //Handles the selection of each Record, so that it doesnt change all the drop down option each change
-    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: number) => {
+    const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, no: string) => {
         const value = event.target.value;
         setSelectedAction((prevSelectedAction) => ({
             ...prevSelectedAction,
@@ -338,7 +392,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //VIEW Popup
-    const handleOpenView = (no: number) => {
+    const handleOpenView = (no: string) => {
         setopenViewPending((prevOpenView) => ({
             ...prevOpenView,
             [no]: true,
@@ -347,7 +401,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //View Popup Close
-    const handleCloseView = (no: number) => {
+    const handleCloseView = (no: string) => {
         setopenViewPending((prevOpenView) => ({
             ...prevOpenView,
             [no]: false,
@@ -356,7 +410,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Update Popup 
-    const handleOpenUpdate = (no: number) => {
+    const handleOpenUpdate = (no: string) => {
         setopenUpdatePending((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: true,
@@ -365,7 +419,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Update Popup
-    const handleCloseUpdate = (no: number) => {
+    const handleCloseUpdate = (no: string) => {
         setopenUpdatePending((prevOpenUpdate) => ({
             ...prevOpenUpdate,
             [no]: false,
@@ -381,9 +435,9 @@ const DisapprovedRenewalList: React.FC = () => {
     const handlePrintClose = () => {
         setPrint(false);
     };
-    
+
     //Delete Popup
-    const handleOpenDelete = (no: number) => {
+    const handleOpenDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: true,
@@ -391,7 +445,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Delete Popup Close
-    const handleCloseDelete = (no: number) => {
+    const handleCloseDelete = (no: string) => {
         setOpenDelete((prevRenewal) => ({
             ...prevRenewal,
             [no]: false,
@@ -400,7 +454,7 @@ const DisapprovedRenewalList: React.FC = () => {
     };
 
     //Handles the button Logic 
-    const handleNext = (value: number, status: string, buildingno: string) => {
+    const handleNext = (value: string, status: string, buildingno: string) => {
         const selectedValue = selectedAction[value];
 
         if (selectedValue === 'Delete') {
@@ -507,7 +561,6 @@ const DisapprovedRenewalList: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
                             <th>Business Permit #</th>
                             <th>Owner's Name</th>
                             <th>Business Name</th>
@@ -522,39 +575,50 @@ const DisapprovedRenewalList: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {applicationform
-                            .filter((applicationform) => {
+                        {disapprovedNewBusinessPermit
+                            .filter((disapprovedNewBusinessPermit) => {
+                                if (sortBy === 'Pending Records') {
+                                    return disapprovedNewBusinessPermit.remarks === 'Pending';
+                                } else {
+                                    return true;
+                                }
+                            })
+                            .filter((disapprovedNewBusinessPermit) => {
                                 // Filter based on the searchText value
                                 if (searchText === '') {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
+                                    const bspermit_no = disapprovedNewBusinessPermit?.bspermit_no || '';
+                                    const permittee = disapprovedNewBusinessPermit?.permittee || '';
                                     return (
-                                        applicationform.bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
-                                        applicationform.permittee.toLowerCase().includes(searchText.toLowerCase())
+                                        bspermit_no.toLowerCase().includes(searchText.toLowerCase()) ||
+                                        permittee.toLowerCase().includes(searchText.toLowerCase())
                                     );
                                 }
                             })
-                            .map((applicationform) => (
-                                <tr key={applicationform.id}>
-                                    <td>{applicationform.id}</td>
-                                    <td>{applicationform.bspermit_no}</td>
-                                    <td>{applicationform.permittee}</td>
-                                    <td>{applicationform.business_name}</td>
-                                    <td>{applicationform.type_occupancy}</td>
+                            .map((disapprovedNewBusinessPermit) => (
+                                <tr key={disapprovedNewBusinessPermit.id}>
+                                    <td>{disapprovedNewBusinessPermit.bspermit_no}</td>
+                                    <td>{disapprovedNewBusinessPermit.permittee}</td>
+                                    <td>{disapprovedNewBusinessPermit.business_name}</td>
+                                    <td>{disapprovedNewBusinessPermit.type_occupancy}</td>
                                     <td>{sortBy === 'Pending Records' ? 'N/A' :
-                                        'NTC Records' ? applicationform.ntc_no :
-                                            'NTCV Records' ? applicationform.ntcv_no :
-                                                'Abatement Records' ? applicationform.abatement_no :
-                                                    'Closure Records' ? applicationform.closure_no :
+                                        'NTC Records' ? disapprovedNewBusinessPermit.ntc_no :
+                                            'NTCV Records' ? disapprovedNewBusinessPermit.ntcv_no :
+                                                'Abatement Records' ? disapprovedNewBusinessPermit.abatement_no :
+                                                    'Closure Records' ? disapprovedNewBusinessPermit.closure_no :
                                                         'N/A'}</td>
-                                    <td style={{ color: applicationform.remarks === 'Complied' || applicationform.remarks === 'FSIC Printed' ? 'green' : 
-                                    applicationform.remarks === 'Pending' || applicationform.remarks === 'For Issuance NTCV' || applicationform.remarks === 'For Issuance Abatement' || applicationform.remarks === 'For Issuance Closure' ? 'black' 
-                                    : 'red'}}>{applicationform.remarks}</td>
+                                    <td style={{
+                                        color: disapprovedNewBusinessPermit.remarks === 'Complied' || disapprovedNewBusinessPermit.remarks === 'FSIC Printed' ? 'green' :
+                                            disapprovedNewBusinessPermit.remarks === 'Pending' || disapprovedNewBusinessPermit.remarks === 'For Issuance NTCV' || disapprovedNewBusinessPermit.remarks === 'For Issuance Abatement' || disapprovedNewBusinessPermit.remarks === 'For Issuance Closure' ? 'black'
+                                                : 'red'
+                                    }}
+                                    >{disapprovedNewBusinessPermit.remarks}</td>
                                     <td>
                                         <select
-                                            value={selectedAction[applicationform.id] || ''}
-                                            onChange={(event) => handleActionChange(event, applicationform.id)}
+                                            value={selectedAction[disapprovedNewBusinessPermit.id] || ''}
+                                            onChange={(event) => handleActionChange(event, disapprovedNewBusinessPermit.id)}
                                             style={{ height: '35px', width: '120px', borderRadius: '8px', textAlign: 'center', backgroundColor: '#D9D9D9' }}
                                         >
                                             <option value="">-select-</option>
@@ -564,9 +628,218 @@ const DisapprovedRenewalList: React.FC = () => {
                                             {/* <option value="Print">Print</option>*/}
                                             <option value="Delete">Delete</option>
                                         </select>
-                                        <IconButton className="next-button" onClick={() => handleNext(applicationform.id, applicationform.remarks, applicationform.bspermit_no)}>
+                                        <IconButton className="next-button" onClick={() => handleNext((disapprovedNewBusinessPermit.id || ''), (disapprovedNewBusinessPermit.remarks || ''), (disapprovedNewBusinessPermit.bspermit_no || ''))}>
                                             <ArrowCircleRightIcon sx={{ color: '#3C486B' }} />
                                         </IconButton>
+                                        <ViewRenewalApplication 
+                                        open={openViewPending[disapprovedNewBusinessPermit.id]} 
+                                        handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)} 
+                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                        permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                        businessname={disapprovedNewBusinessPermit.business_name || ''}
+                                        address={disapprovedNewBusinessPermit.address || ''}
+                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                        contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                        email={disapprovedNewBusinessPermit.email || ''}
+                                        datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                        />
+                                        <UpdateRenewalApplication 
+                                        open={openUpdatePending[disapprovedNewBusinessPermit.id]} 
+                                        handleClose={() => handleCloseUpdate(disapprovedNewBusinessPermit.id)} 
+                                        bspermit_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                        permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                        businessname={disapprovedNewBusinessPermit.business_name || ''}
+                                        address={disapprovedNewBusinessPermit.address || ''}
+                                        natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                        typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                        contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                        email={disapprovedNewBusinessPermit.email || ''}
+                                        datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                        id={disapprovedNewBusinessPermit.id || ''}
+                                        form ="Renewal"
+                                        />
+                                        <EvaluateNTCPopup
+                                            bpid={disapprovedNewBusinessPermit.id || ''}
+                                            form='Renewal'
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id || '']}
+                                            open={openprevEvaluateNTC[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)}
+                                            defects={[]} 
+                                        />
+                                        <DeleteClerkPopup
+                                            open={openDelete[disapprovedNewBusinessPermit.id]}
+                                            value={disapprovedNewBusinessPermit.id}
+                                            form="NewBR"
+                                            sortby = {sortBy}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <EvaluateChoicePopup
+                                            open={openEvalChoice[disapprovedNewBusinessPermit.id]}
+                                            remarks={sortBy}
+                                            handleOpenApproved={() => handleOpenEvaluate(disapprovedNewBusinessPermit.id)}
+                                            handleOpenNTCV={() => handleOpenNTCV(disapprovedNewBusinessPermit.id)}
+                                            handleOpenAbatement={() => handleOpenAbatement(disapprovedNewBusinessPermit.id)}
+                                            handleOpenClosure={() => handleOpenClosure(disapprovedNewBusinessPermit.id)}
+                                            handleClose={() => handleCloseEvalCHoice(disapprovedNewBusinessPermit.id)}
+
+                                        />
+                                        <EvaluateNTCVPopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateNTCV[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            handleClose={() => handleCloseNTCV(disapprovedNewBusinessPermit.id)}
+                                            defects={[]} 
+                                        />
+                                        <EvaluateAbatementPopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateAbatement[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            handleClose={() => handleCloseAbatement(disapprovedNewBusinessPermit.id)} 
+                                            defects={[]}    
+                                        />
+                                        <EvaluateClosurePopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            open={openprevEvaluateClosure[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            ntc={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            abatement={disapprovedNewBusinessPermit.abatement_no || 0}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
+                                            defects={[]}
+                                            handleClose={() => handleCloseClosure(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <ViewUpdateNTC
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openprevViewUpdateNTC[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no || 0}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader || ''}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
+                                            defects={[]}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            receivedby={disapprovedNewBusinessPermit.name || ''}
+                                            receiveddate={disapprovedNewBusinessPermit.date || ''}
+                                            handleClose={() => handleCloseViewUpdateNTC(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <ViewUpdateNTCVPopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateNTCV[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no || 0}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader || ''}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
+                                            defects={[]}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            receivedby={disapprovedNewBusinessPermit.name || ''}
+                                            receiveddate={disapprovedNewBusinessPermit.date || ''}
+                                            handleClose={() => handleCloseViewUpdateNTCV(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <ViewUpdateAbatementPopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateAbatement[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no || 0}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            abatement_no={disapprovedNewBusinessPermit.abatement_no || 0}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader || ''}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
+                                            defects={[]}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            receivedby={disapprovedNewBusinessPermit.name || ''}
+                                            receiveddate={disapprovedNewBusinessPermit.date || ''}
+                                            handleClose={() => handleCloseViewUpdateAbatement(disapprovedNewBusinessPermit.id)}
+                                        />
                                         {/*<ViewRenewalApplication 
                                             open={openViewPending[applicationform.id]} 
                                             handleClose={() => handleCloseView(applicationform.id)}

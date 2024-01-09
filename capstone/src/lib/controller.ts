@@ -34,6 +34,9 @@ export const abatementNewBusinessCollection = collection(firestore, "AbatementNe
 //Closure New Business Collection
 export const closureNewBusinessCollection = collection(firestore, "ClosureNewBusiness");
 
+//Disapproved New Business Collection
+export const disapprovedRenewalBusinessCollection = collection(firestore, "DisapprovedBusinessRenewal");
+
 //Notice To Comply Business Renewal Collection
 export const NTCBusinessRenewalCollection = collection(firestore, "NTCBusinessRenewal");
 
