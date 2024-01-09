@@ -477,6 +477,7 @@ const DisapprovedNewBusiness: React.FC = () => {
         else if ((sortBy === 'NTCV Records' && remarks === 'For Issuance Abatement') || (sortBy === 'NTCV Records' && remarks === 'Issued Abatement') || (sortBy === 'NTCV Records' && remarks === 'Complied')) {
             //Completed function condition goes here
             if ((selectedValue === 'Evaluate') && (remarks === 'For Issuance Abatement')) {
+                
                 handleOpenEvalChoice(value);
             }
             else if ((selectedValue === 'View') || (selectedValue === 'Update')) {
@@ -486,6 +487,9 @@ const DisapprovedNewBusiness: React.FC = () => {
             else if (selectedValue === 'Print') {
                 handlePrintOpen();
 
+            }
+            else if((selectedValue === 'Evaluate' && remarks === 'Issued Abatement') || (selectedValue === 'Evaluate'&& remarks ==='Complied')){
+                alert("Already Evaluated")
             }
         }
         else if ((sortBy === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortBy === 'Abatement Records' && remarks === 'Issued Closure') || (sortBy === 'Abatement Records' && remarks === 'Complied')) {
@@ -668,7 +672,7 @@ const DisapprovedNewBusiness: React.FC = () => {
                                         <DeleteClerkPopup
                                             open={openDelete[disapprovedNewBusinessPermit.id]}
                                             value={disapprovedNewBusinessPermit.id}
-                                            form="NewBP"
+                                            form="New Business"
                                             sortby = {sortBy}
                                             remarks={disapprovedNewBusinessPermit.remarks || ''}
                                             handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
@@ -861,23 +865,25 @@ const DisapprovedNewBusiness: React.FC = () => {
                                             receiveddate={disapprovedNewBusinessPermit.date || ''}
                                             handleClose={() => handleCloseViewUpdateClosure(disapprovedNewBusinessPermit.id)}
                                         />
-
-                                        {/*<EvaluatePopup
+                                        <EvaluatePopup
                                             form='New'
                                             activity={sortBy}
+                                           
                                             bpid={disapprovedNewBusinessPermit.id}
                                             open={openEvaluateBusiness[disapprovedNewBusinessPermit.id]}
-                                            business_no={disapprovedNewBusinessPermit.bspermit_no}
-                                            permitee={disapprovedNewBusinessPermit.permittee}
-                                            business_name={disapprovedNewBusinessPermit.business_name}
-                                            address={disapprovedNewBusinessPermit.address}
-                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business}
-                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy}
-                                            contactno={disapprovedNewBusinessPermit.contact_no}
-                                            email={disapprovedNewBusinessPermit.email}
-                                            datereceived={disapprovedNewBusinessPermit.date_received}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business|| ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
                                             handleClose={() => handleCloseEvaluate(disapprovedNewBusinessPermit.id)}
-                                        />*/}
+                                        />
+
+                                        {/**/}
                                         <DeleteClerkPopup
                                             open={openDelete[disapprovedNewBusinessPermit.id]}
                                             value={disapprovedNewBusinessPermit.id}

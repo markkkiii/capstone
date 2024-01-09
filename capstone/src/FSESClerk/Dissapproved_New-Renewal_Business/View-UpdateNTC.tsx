@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { updateNTCNewBusiness } from '../../lib/controller';
+import { updateNTCNewBusiness, updateNTCRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -155,8 +155,13 @@ export default function ViewUpdateNTC(props: formdetails) {
 
   // uploads data to db
   const evaluateNTC = async () => {
-    
-    updateNTCNewBusiness(props.bpid,{
+    const convertedTableData = data.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
+
+    if(props.form === "New"){
+      updateNTCNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -173,10 +178,33 @@ export default function ViewUpdateNTC(props: formdetails) {
         remarks: props.remarks,
         team_leader: teamLeaderRef.current?.value,
         fire_inspectors: inputInspectorArray,
-        defects: arrayList,
+        defects: convertedTableData,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
     })
+  }else if (props.form=== "Renewal"){
+    updateNTCRenewalBusiness(props.bpid,{
+      bspermit_no: BusinessNoRef.current?.value,
+      permittee: PermiteeRef.current?.value,
+      business_name: BusinessnameRef.current?.value,
+      address: AddressRef.current?.value,
+      nature_business: NatureBusinessRef.current?.value,
+      type_occupancy: typeofoccupancyRef.current?.value,
+      contact_no: ContactnoRef.current?.value,
+      email: EmailRef.current?.value,
+      date_received: dateReceivedRef.current?.value,
+      date_inspected: dateInspectionRef.current?.value,
+      inspection_no: inspectOrderRef.current?.value,
+      ntc_no: NTCRef.current?.value,
+      ntc_date: NTCDateRef.current?.value,
+      remarks: props.remarks,
+      team_leader: teamLeaderRef.current?.value,
+      fire_inspectors: inputInspectorArray,
+      defects: convertedTableData,
+      name: ReceivedByRef.current?.value,
+      date: ReceivedDateRef.current?.value
+  })
+  }
     props.handleClose();
   }
 

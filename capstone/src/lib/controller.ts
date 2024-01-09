@@ -335,16 +335,105 @@ export const addClosureNewBusiness = async (permitData: ClosureNewBusiness) =>{
     console.log("Permit Added Successfully")
 }
 
-//Update AbatementNewBusiness Permit
+//Update ClosureNewBusiness Permit
 export const updateClosureNewBusiness = async (id: string, permitData: any) => {
     const getPermit = doc(firestore,`ClosureNewBusiness/${id}`);
     await setDoc(getPermit,permitData,{merge:true});
     console.log("Permit Updated Successfully");
 }
 
-//Delete AbatementNewBusiness Permit
+//Delete ClosureNewBusiness Permit
 export const deleteClosureNewBusiness = async(id: string) =>{
     const document = doc(firestore,`ClosureNewBusiness/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+
+//Add NTCNewBusiness Permit
+export const addNTCRenewalBusiness = async (permitData: NTCNewBusiness) =>{
+    const newPermit =await addDoc(NTCBusinessRenewalCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update NTCRenewalBusiness Permit
+export const updateNTCRenewalBusiness = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`NTCBusinessRenewal/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete NTCRenewalBusiness Permit
+export const deleteNTCRenewalBusiness = async(id: string) =>{
+    const document = doc(firestore,`NTCBusinessRenewal/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add NTCVNewBusiness Permit
+export const addNTCVRenewalBusiness = async (permitData: NTCVNewBusiness) =>{
+    const newPermit =await addDoc(NTCVBusinessRenewalCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update NTCVNewBusiness Permit
+export const updateNTCVRenewalBusiness = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`NTCVBusinessRenewal/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete NTCVNewBusiness Permit
+export const deleteNTCVRenewalBusiness = async(id: string) =>{
+    const document = doc(firestore,`NTCVBusinessRenewal/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add AbatementNewBusiness Permit
+export const addAbatementRenewalBusiness = async (permitData: AbatementNewBusiness) =>{
+    const newPermit =await addDoc(abatementBusinessRenewalCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update AbatementNewBusiness Permit
+export const updateAbatementRenewalBusiness = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`AbatementBusinessRenewal/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete AbatementNewBusiness Permit
+export const deleteAbatementRenewalBusiness = async(id: string) =>{
+    const document = doc(firestore,`AbatementBusinessRenewal/${id}`);
+    await deleteDoc(document);
+    console.log("Permit successfully deleted")
+}
+
+//Add ClosureRenewalBusiness Permit
+export const addClosureRenewalBusiness = async (permitData: ClosureNewBusiness) =>{
+    const newPermit =await addDoc(closureNewBusinessCollection, {
+        ...permitData
+    });
+    console.log("Permit Added Successfully")
+}
+
+//Update AbatementRenewalBusiness Permit
+export const updateClosureRenewalBusiness = async (id: string, permitData: any) => {
+    const getPermit = doc(firestore,`ClosureBusinessRenewal/${id}`);
+    await setDoc(getPermit,permitData,{merge:true});
+    console.log("Permit Updated Successfully");
+}
+
+//Delete AbatementRenewalBusiness Permit
+export const deleteClosureRenewalBusiness = async(id: string) =>{
+    const document = doc(firestore,`ClosureBusinessRenewal/${id}`);
     await deleteDoc(document);
     console.log("Permit successfully deleted")
 }

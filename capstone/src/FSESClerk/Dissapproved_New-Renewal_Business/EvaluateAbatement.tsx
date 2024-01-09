@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { addAbatementNewBusiness } from '../../lib/controller';
+import { addAbatementNewBusiness, addAbatementRenewalBusiness, updateNTCVNewBusiness, updateNTCVRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -41,7 +41,7 @@ export interface formdetails {
   ntcv_date: string;
   defects: {
     date: string;
-    defects: string;  
+    defects: string;
   }[];
   open: boolean;
   handleClose: () => void;
@@ -49,7 +49,7 @@ export interface formdetails {
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function EvaluateAbatementPopup(props: formdetails) {
@@ -94,7 +94,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -103,7 +103,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
   };
 
   const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+    const newData: DefectData = { defects: defect, date: period };
     setData([...data, newData]);
     console.log(data)
   };
@@ -133,99 +133,132 @@ export default function EvaluateAbatementPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  const updateRemarks = () =>{
+  const updateRemarks = () => {
     let new_url = '';
-   if (props.form === 'New') {
-     new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
-   }
-   else if (props.form === 'Renewal') {
-     new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
-   }
-   axios.put(new_url+props.bpid,
-     {
-       remarks: "Issued Abatement",
-     }
-   )
- }
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
+    }
+    axios.put(new_url + props.bpid,
+      {
+        remarks: "Issued Abatement",
+      }
+    )
+  }
 
 
 
   // uploads data to db
   const evaluateAbatement = async () => {
-  //   let new_url = '';
-  //   if (props.form === 'New') {
-  //     new_url = 'http://localhost:8080/newbpabatementorder/insertAbatementPermit';
-  //   }
-  //   else if (props.form === 'Renewal') {
-  //     new_url = 'http://localhost:8080/renewalbpabatementorder/insertRenewalAbatementPermit'
-  //   }
-  //   axios.post(new_url,
-  //     {
-  //       bspermit_no: props.bpid,
-  //       permittee: props.permitee,
-  //       business_name: props.business_name,
-  //       address: props.address,
-  //       nature_business: props.natureofbusiness,
-  //       type_occupancy: props.typeofoccupancy,
-  //       contact_no: props.contactno,
-  //       email: props.email,
-  //       date_received: props.datereceived,
-  //       date_inspected: dateInspectionRef.current?.value,
-  //       inspection_no: inspectOrderRef.current?.value,
-  //       ntc_no: props.ntc,
-  //       ntc_date: props.ntc_date,
-  //       ntcv_no: props.ntcv,
-  //       ntcv_date: props.ntcv_date,
-  //       abatement_no: AbatementRef.current?.value,
-  //       abatement_date: AbatementDateRef.current?.value,
-  //       remarks: "For Issuance Closure",
-  //       team_leader: teamLeaderRef.current?.value,
-  //       fire_inspectors: inputInspectorArray,
-  //       defects: arrayList,
-  //       name: ReceivedByRef.current?.value,
-  //       date: ReceivedDateRef.current?.value
-  //     }
-  //   ).then(res => {
-  //     console.log(res.data);
-  //     alert("Evaluation Successful!");
-  //     updateRemarks();
-  //     props.handleClose();
-  //     }).catch(err => console.log(err))
-  // }
-    const convertedTableData = tableData.map(item => ({
+    //   let new_url = '';
+    //   if (props.form === 'New') {
+    //     new_url = 'http://localhost:8080/newbpabatementorder/insertAbatementPermit';
+    //   }
+    //   else if (props.form === 'Renewal') {
+    //     new_url = 'http://localhost:8080/renewalbpabatementorder/insertRenewalAbatementPermit'
+    //   }
+    //   axios.post(new_url,
+    //     {
+    //       bspermit_no: props.bpid,
+    //       permittee: props.permitee,
+    //       business_name: props.business_name,
+    //       address: props.address,
+    //       nature_business: props.natureofbusiness,
+    //       type_occupancy: props.typeofoccupancy,
+    //       contact_no: props.contactno,
+    //       email: props.email,
+    //       date_received: props.datereceived,
+    //       date_inspected: dateInspectionRef.current?.value,
+    //       inspection_no: inspectOrderRef.current?.value,
+    //       ntc_no: props.ntc,
+    //       ntc_date: props.ntc_date,
+    //       ntcv_no: props.ntcv,
+    //       ntcv_date: props.ntcv_date,
+    //       abatement_no: AbatementRef.current?.value,
+    //       abatement_date: AbatementDateRef.current?.value,
+    //       remarks: "For Issuance Closure",
+    //       team_leader: teamLeaderRef.current?.value,
+    //       fire_inspectors: inputInspectorArray,
+    //       defects: arrayList,
+    //       name: ReceivedByRef.current?.value,
+    //       date: ReceivedDateRef.current?.value
+    //     }
+    //   ).then(res => {
+    //     console.log(res.data);
+    //     alert("Evaluation Successful!");
+    //     updateRemarks();
+    //     props.handleClose();
+    //     }).catch(err => console.log(err))
+    // }
+    const convertedTableData = data.map(item => ({
       defects: item.defects,
       date: item.date
     }));
 
-    addAbatementNewBusiness({
-      bspermit_no: bspermitNoRef.current?.value || '',
-      permittee: permitteeRef.current?.value || '',
-      business_name: businessNameRef.current?.value || '',
-      address: addressRef.current?.value || '',
-      contact_no: contactNoRef.current?.value || '',
-      date_received: ReceivedDateRef.current?.value || '',
-      administrative_fine: '',
-      date_inspected: dateInspectionRef.current?.value || '',
-      fire_inspectors: [''],
-      inspection_no: 0,
-      date: dateRef.current?.value || '',
-      email: emailRef.current?.value || '',
-      id: idRef.current?.value || '',
-      name: ReceivedByRef.current?.value || '',
-      nature_business: natureBusinessRef.current?.value || '',
-      ntc_no: 0,
-      ntc_date: NTCDateRef.current?.value || '',
-      ntcv_no: 0,
-      ntcv_date: NTCVDateRef.current?.value || '',
-      abatement_no: 0,
-      abatement_date: AbatementDateRef.current?.value || '',
-      type_occupancy: contactNoRef.current?.value || '',
-      defects: convertedTableData,
-      remarks: remarksRef.current?.value || '',
-      team_leader: teamLeaderRef.current?.value || ''
+    if(props.form === "New"){
+      addAbatementNewBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc_no,
+        ntc_date: props.ntc_date,
+        ntcv_no: props.ntcv_no,
+        ntcv_date: props.ntcv_date,
+        abatement_no: parseInt(AbatementRef.current?.value || '0', 10),
+        abatement_date: AbatementDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "For Issuance Closure",
+        team_leader: teamLeaderRef.current?.value || ''
       })
-    props.handleClose();
+      updateNTCVNewBusiness(props.bpid, {
+        remarks: "Issued Abatement"
+      })
     }
+    else if(props.form === "Renewal"){
+      addAbatementRenewalBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc_no,
+        ntc_date: props.ntc_date,
+        ntcv_no: props.ntcv_no,
+        ntcv_date: props.ntcv_date,
+        abatement_no: parseInt(AbatementRef.current?.value || '0', 10),
+        abatement_date: AbatementDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "For Issuance Closure",
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      updateNTCVRenewalBusiness(props.bpid, {
+        remarks: "Issued Abatement"
+      })
+    }
+    props.handleClose();
+  }
 
   // Sets the values of the array and uploads data to db
   const addEvaluation = () => {
@@ -304,7 +337,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ?  new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -322,19 +355,19 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc_no} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv_no} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntcv_no} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -355,7 +388,7 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                       <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={AbatementDateRef} />
                     </Stack>
                   </Grid>
-                  
+
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'center', paddingTop: '20px' }}>
                       <h2 className='custom-paragraph' style={{ paddingTop: '20px' }}>Fire Safety Inspectors</h2>
@@ -400,13 +433,13 @@ export default function EvaluateAbatementPopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                     <DefectPopup open={openAddDefect} onClose={closeDialog} onAdd={addDefect} />
-                    <Button variant='contained' sx={{ marginTop:'10px',backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
+                    <Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
                       Add Defect
                     </Button>
                   </Grid>

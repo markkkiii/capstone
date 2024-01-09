@@ -176,6 +176,11 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
 
   // uploads data to db
   const evaluateClosure = async () => {
+    const convertedTableData = data.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
+
     updateClosureNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
@@ -199,7 +204,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
         remarks: props.remarks,
         team_leader: teamLeaderRef.current?.value,
         fire_inspectors: inputInspectorArray,
-        defects: arrayList,
+        defects: convertedTableData,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
       })
@@ -288,7 +293,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={DateRecievedRef} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled={props.activity !== 'Update'} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} inputRef={DateRecievedRef} defaultValue={props.datereceived } variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -300,7 +305,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date of Inspection</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateInspectionRef} defaultValue={props.inspectiondate ? new Date(props.inspectiondate).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={dateInspectionRef} defaultValue={props.inspectiondate } disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -312,7 +317,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} inputRef={NTCDateRef} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date} inputRef={NTCDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -324,7 +329,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date ? new Date(props.ntcv_date).toISOString().split('T')[0] : ''} inputRef={NTCVDateRef} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date} inputRef={NTCVDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -336,7 +341,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Abatement Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={AbatementDateRef} defaultValue={props.abatement_date ? new Date(props.abatement_date).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={AbatementDateRef} defaultValue={props.abatement_date } disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -348,7 +353,7 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Closure Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={closureDateRef} defaultValue={props.closure_date ? new Date(props.closure_date).toISOString().split('T')[0] : ''} disabled={props.activity !== 'Update'}/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} inputRef={closureDateRef} defaultValue={props.closure_date } disabled={props.activity !== 'Update'}/>
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>

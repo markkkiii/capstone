@@ -91,7 +91,7 @@ const AddOccupancy: React.FC<formdetails> = ({ open, handleClose, add }) => {
             receivedby: '',
             receiveddocu: '',
             recommendation: [''],
-            remarks: "",
+            remarks: "Pending",
             teamleader: '',
             totalamount: 0,
         })

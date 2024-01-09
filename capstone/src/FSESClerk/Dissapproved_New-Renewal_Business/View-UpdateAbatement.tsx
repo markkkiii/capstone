@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { updateAbatementNewBusiness } from '../../lib/controller';
+import { updateAbatementNewBusiness, updateAbatementRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -49,7 +49,7 @@ export interface formdetails {
   open: boolean;
   defects: {
     date: string;
-    defects: string;  
+    defects: string;
   }[];
   remarks: string;
   receivedby: string;
@@ -66,7 +66,7 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedCons, setSelectedCons] = useState<boolean>(false)
-  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(({defects, date}) => ({ defects, date })) : []);
+  const [data, setData] = useState<DefectData[]>(props.defects ? props.defects.map(({ defects, date }) => ({ defects, date })) : []);
   const [arrayList, setArrayList] = useState<string[][]>([]);
   const [openAddDefect, setOpenAddDefect] = useState(false);
   const BusinessNoRef = useRef<HTMLInputElement | null>(null);//Handles input for textfield
@@ -159,7 +159,13 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
 
   // uploads data to db
   const evaluateAbatement = async () => {
-    updateAbatementNewBusiness(props.bpid,{
+    const convertedTableData = data.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
+
+    if (props.form === 'New') {
+      updateAbatementNewBusiness(props.bpid, {
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -180,11 +186,41 @@ export default function ViewUpdateAbatementPopup(props: formdetails) {
         remarks: props.remarks,
         team_leader: teamLeaderRef.current?.value,
         fire_inspectors: inputInspectorArray,
-        defects: arrayList,
+        defects: convertedTableData,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
       })
-      props.handleClose();
+    }
+    else if (props.form === "Renewal") {
+      updateAbatementRenewalBusiness(props.bpid, {
+        bspermit_no: BusinessNoRef.current?.value,
+        permittee: PermiteeRef.current?.value,
+        business_name: BusinessnameRef.current?.value,
+        address: AddressRef.current?.value,
+        nature_business: NatureBusinessRef.current?.value,
+        type_occupancy: typeofoccupancyRef.current?.value,
+        contact_no: ContactnoRef.current?.value,
+        email: EmailRef.current?.value,
+        date_received: DateRecievedRef.current?.value,
+        date_inspected: dateInspectionRef.current?.value,
+        inspection_no: inspectOrderRef.current?.value,
+        ntc_no: NTCRef.current?.value,
+        ntc_date: NTCDateRef.current?.value,
+        ntcv_no: NTCVRef.current?.value,
+        ntcv_date: NTCVDateRef.current?.value,
+        abatement_no: AbatementRef.current?.value,
+        abatement_date: AbatementDateRef.current?.value,
+        remarks: props.remarks,
+        team_leader: teamLeaderRef.current?.value,
+        fire_inspectors: inputInspectorArray,
+        defects: convertedTableData,
+        name: ReceivedByRef.current?.value,
+        date: ReceivedDateRef.current?.value
+      })
+    }
+
+
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db

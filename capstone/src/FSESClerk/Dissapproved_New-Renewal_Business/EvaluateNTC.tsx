@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { addNTCNewBusiness } from '../../lib/controller';
+import { addNTCNewBusiness, addNTCRenewalBusiness, deleteBusinessPermit, deleterenewalBusinessPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -39,7 +39,7 @@ export interface formdetails {
   open: boolean;
   defects: {
     date: string;
-    defects: string;  
+    defects: string;
   }[];
   handleClose: () => void;
 }
@@ -79,7 +79,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
   const [render, setRender] = useState<boolean>(true); // Triggers the UseEffect
   const [tableData, setTableData] = useState<Array<{ defects: string; date: string; }>>([
     { defects: '', date: '' },
-]);
+  ]);
 
   //opens add defect pop up
   const openDialog = () => {
@@ -120,19 +120,19 @@ export default function EvaluateNTCPopup(props: formdetails) {
   // Deletes the Pending Application
   const deletefunc = (value: number) => {
     //function here
-    let NEW_URL ='';
-    if(props.form ==='New'){
-      NEW_URL ='http://localhost:8080/BPPending/deletePermit/'
+    let NEW_URL = '';
+    if (props.form === 'New') {
+      NEW_URL = 'http://localhost:8080/BPPending/deletePermit/'
     }
 
-    else if (props.form ==='Renewal'){
-      NEW_URL ='http://localhost:8080/Renewal/deletePermit/'
+    else if (props.form === 'Renewal') {
+      NEW_URL = 'http://localhost:8080/Renewal/deletePermit/'
     }
 
     axios.delete(NEW_URL + value).then(res => {
-        console.log(res.data);
+      console.log(res.data);
     }).catch(err => console.log(err))
-}
+  }
 
   // Function to split the input value into an array of strings based on newline characters
   const updateInputArray = useCallback(() => {
@@ -148,7 +148,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  
+
 
   // uploads data to db
   const evaluateNTC = async () => {
@@ -188,35 +188,61 @@ export default function EvaluateNTCPopup(props: formdetails) {
     //   deletefunc(props.bpid);
     //   props.handleClose();
     // }).catch(err => console.log(err))
-    const convertedTableData = tableData.map(item => ({
+    const convertedTableData = data.map(item => ({
       defects: item.defects,
       date: item.date
     }));
 
-    addNTCNewBusiness({
-      bspermit_no: bspermitNoRef.current?.value || '',
-      permittee: permitteeRef.current?.value || '',
-      business_name: businessNameRef.current?.value || '',
-      address: addressRef.current?.value || '',
-      contact_no: contactNoRef.current?.value || '',
-      date_received: ReceivedDateRef.current?.value || '',
-      administrative_fine: '',
-      date_inspected: dateInspectionRef.current?.value || '',
-      fire_inspectors: [''],
-      inspection_no: 0,
-      date: dateRef.current?.value || '',
-      email: emailRef.current?.value || '',
-      id: idRef.current?.value || '',
-      name: ReceivedByRef.current?.value || '',
-      nature_business: natureBusinessRef.current?.value || '',
-      ntc_no: 0,
-      ntc_date: NTCDateRef.current?.value || '',
-      type_occupancy: contactNoRef.current?.value || '',
-      defects: convertedTableData,
-      remarks: remarksRef.current?.value || '',
-      team_leader: teamLeaderRef.current?.value || ''
-    })
-  props.handleClose();
+    if (props.form === "New") {
+      addNTCNewBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        date: dateRef.current?.value || '',
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: parseInt(NTCRef.current?.value || '0', 10),
+        ntc_date: NTCDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: 'For Issuance NTCV',
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      deleteBusinessPermit(props.bpid);
+      props.handleClose();
+    }
+    else if(props.form === "Renewal"){
+      addNTCRenewalBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        date: dateRef.current?.value || '',
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: parseInt(NTCRef.current?.value || '0', 10),
+        ntc_date: NTCDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: 'For Issuance NTCV',
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      deleterenewalBusinessPermit(props.bpid);
+      props.handleClose();
+    }
   }
 
   // Sets the values of the array and uploads data to db
@@ -296,7 +322,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : '' } variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -389,7 +415,7 @@ export default function EvaluateNTCPopup(props: formdetails) {
                       <Select
                         sx={{ height: '30px', width: '300px', borderRadius: '14px', borderWidth: '20px' }}
                         value={selectedRemarks}
-                        onChange={handleRemarks}  
+                        onChange={handleRemarks}
                         disabled={props.activity !== 'Update'}
                       >
                         <MenuItem value="Complied">Complied</MenuItem>
