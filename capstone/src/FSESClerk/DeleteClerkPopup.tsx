@@ -62,6 +62,9 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
         } */
 
     const deletefunc = (value: string) => {
+        console.log(remarks);
+        console.log(sortby);
+        console.log(form);
         //function here
         //Add additional if statements here for other permits
       if(form === 'Occupancy'){
@@ -75,11 +78,13 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
             }
       }
       else if(form === 'New Business'){
+        console.log(value);
             if((sortby === 'NTC Records' && remarks === 'Issued NTCV') || (sortby === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortby === 'NTC Records' && remarks === 'Complied')){
                 deleteNTCNewBusiness(value);
-                alert("Deleted Successfullysss");
+                alert("Deleted NTC Permit Successfully");
             }
-            else if((sortby === 'NTCV  Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV  Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV  Records' && remarks === 'Complied')){
+            else if((sortby === 'NTCV Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV Records' && remarks === 'Complied')){
+              
                 deleteNTCVNewBusiness(value);
                 alert("Deleted Successfully!");
             }
@@ -92,7 +97,7 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
                 alert("Deleted Successfully!!!!!!!!!!");
             }
         }
-        
+        handleClose();
     }
 
     return (

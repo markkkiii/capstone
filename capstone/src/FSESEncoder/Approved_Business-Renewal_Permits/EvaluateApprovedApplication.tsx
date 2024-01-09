@@ -8,7 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
-import { updateBusinessPermit, updaterenewalBusinessPermit } from '../../lib/controller';
+import { addBusinessPermits, addrenewalBusinessPermits, updateAbatementNewBusiness, updateAbatementRenewalBusiness, updateBusinessPermit, updateClosureNewBusiness, updateClosureRenewalBusiness, updateNTCNewBusiness, updateNTCRenewalBusiness, updateNTCVNewBusiness, updateNTCVRenewalBusiness, updaterenewalBusinessPermit } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -132,106 +132,262 @@ export default function EvaluatePopup(props: formdetails) {
       alert("Evaluation Successful!");
       props.handleClose()
     }).catch(err => console.log(err))*/
-    if (props.form === "New") {
-
-      updateBusinessPermit(props.bpid, {
-        dateinspection: (dateInspectionRef.current?.value || ''),
-        inspection_no: (inspectOrderRef.current?.value || ''),
-        fsicno: (fsicRef.current?.value || ''),
-        fsicdate: (fsicDateRef.current?.value || ''),
-        amount: (AmountRef.current?.value || 0),
-        orno: (OrNoRef.current?.value || ''),
-        date: (dateRef.current?.value || ''),
-        teamleader: (teamLeaderRef.current?.value || ''),
-        fireinspectors: [inputInspector],
-        recommendation: [inputrecommendation],
-        remarks: "FSIC Not Printed"
-      })
-      props.handleClose();
+    if(props.activity === "Pending Records"){
+      if (props.form === "New") {
+        updateBusinessPermit(props.bpid, {
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no: (inspectOrderRef.current?.value || ''),
+          fsicno: (fsicRef.current?.value || ''),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: (AmountRef.current?.value || 0),
+          orno: (OrNoRef.current?.value || ''),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        props.handleClose();
+      }
+      else if (props.form === "Renewal") {
+        updaterenewalBusinessPermit(props.bpid, {
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no: (inspectOrderRef.current?.value || ''),
+          fsicno: (fsicRef.current?.value || ''),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: (AmountRef.current?.value || 0),
+          orno: (OrNoRef.current?.value || ''),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        props.handleClose();
+      }
+    }else if (props.activity === "NTC Records"){
+        if(props.form === "New"){
+          addBusinessPermits({
+            bspermit_no: props.business_no,
+            address: props.address,
+            permittee: props.permitee,
+            business_name: props.business_name,
+            nature_business: props.natureofbusiness,
+            type_occupancy: props.typeofoccupancy,
+            contact_no: props.contactno,
+            email: props.email,
+            date_received: props.datereceived,
+            dateinspection: (dateInspectionRef.current?.value || ''),
+            inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+            fsicno: parseInt(fsicRef.current?.value || '0', 10),
+            fsicdate: (fsicDateRef.current?.value || ''),
+            amount: parseInt(AmountRef.current?.value || '0', 10),
+            orno: parseInt(OrNoRef.current?.value || '0', 10),
+            date: (dateRef.current?.value || ''),
+            teamleader: (teamLeaderRef.current?.value || ''),
+            fireinspectors: [inputInspector],
+            recommendation: [inputrecommendation],
+            remarks: "FSIC Not Printed"
+          })
+          updateNTCNewBusiness(props.bpid,{
+            remarks: "Complied"
+          })
+        }else if (props.form === "Renewal"){
+          addrenewalBusinessPermits({
+            bspermit_no: props.business_no,
+            address: props.address,
+            permittee: props.permitee,
+            business_name: props.business_name,
+            nature_business: props.natureofbusiness,
+            type_occupancy: props.typeofoccupancy,
+            contact_no: props.contactno,
+            email: props.email,
+            date_received: props.datereceived,
+            dateinspection: (dateInspectionRef.current?.value || ''),
+            inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+            fsicno: parseInt(fsicRef.current?.value || '0', 10),
+            fsicdate: (fsicDateRef.current?.value || ''),
+            amount: parseInt(AmountRef.current?.value || '0', 10),
+            orno: parseInt(OrNoRef.current?.value || '0', 10),
+            date: (dateRef.current?.value || ''),
+            teamleader: (teamLeaderRef.current?.value || ''),
+            fireinspectors: [inputInspector],
+            recommendation: [inputrecommendation],
+            remarks: "FSIC Not Printed"
+          })
+          updateNTCRenewalBusiness(props.bpid,{
+            remarks: "Complied"
+          })
+        }
+      
     }
-    else if (props.form === "Renewal") {
-      updaterenewalBusinessPermit(props.bpid, {
-        dateinspection: (dateInspectionRef.current?.value || ''),
-        inspection_no: (inspectOrderRef.current?.value || ''),
-        fsicno: (fsicRef.current?.value || ''),
-        fsicdate: (fsicDateRef.current?.value || ''),
-        amount: (AmountRef.current?.value || 0),
-        orno: (OrNoRef.current?.value || ''),
-        date: (dateRef.current?.value || ''),
-        teamleader: (teamLeaderRef.current?.value || ''),
-        fireinspectors: [inputInspector],
-        recommendation: [inputrecommendation],
-        remarks: "FSIC Not Printed"
-      })
-      props.handleClose();
+    else if (props.activity === "NTCV Records"){
+      if(props.form === "New"){
+        addBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateNTCVNewBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }else if (props.form === "Renewal"){
+        addrenewalBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateNTCVRenewalBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }
     }
+    else if (props.activity === "Abatement Records"){
+      if(props.form === "New"){
+        addBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateAbatementNewBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }else if (props.form === "Renewal"){
+        addrenewalBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateAbatementRenewalBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }
+    }
+    else if (props.activity === "Closure Records"){
+      if(props.form === "New"){
+        addBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateClosureNewBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }else if (props.form === "Renewal"){
+        addrenewalBusinessPermits({
+          bspermit_no: props.business_no,
+          address: props.address,
+          permittee: props.permitee,
+          business_name: props.business_name,
+          nature_business: props.natureofbusiness,
+          type_occupancy: props.typeofoccupancy,
+          contact_no: props.contactno,
+          email: props.email,
+          date_received: props.datereceived,
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no:parseInt(inspectOrderRef.current?.value || '0', 10),
+          fsicno: parseInt(fsicRef.current?.value || '0', 10),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: parseInt(AmountRef.current?.value || '0', 10),
+          orno: parseInt(OrNoRef.current?.value || '0', 10),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        })
+        updateClosureRenewalBusiness(props.bpid,{
+          remarks: "Complied"
+        })
+      }
+    }
+    props.handleClose();
   }
-
-  /*const afterevalfunc = () =>{
-    if(props.activity === 'Pending'){
-      deletefunc(props.bpid);
-    }
-    else{
-      updatefunc();
-    }
-  }*/
-
-  const deletefunc = (value: number) => {
-    //function here
-    let NEW_URL = '';
-    if (props.form === 'New') {
-      NEW_URL = 'http://localhost:8080/BPPending/deletePermit/'
-    }
-    else if (props.form === 'Renewal') {
-      NEW_URL = 'http://localhost:8080/Renewal/deletePermit/'
-    }
-
-    axios.delete(NEW_URL + value).then(res => {
-      console.log(res.data);
-    }).catch(err => console.log(err))
-  }
-
-  const updatefunc = () => {
-    let new_url = '';
-    if (props.activity === 'NTC Records') {
-      if (props.form === 'New') {
-        new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
-      }
-      else if (props.form === 'Renewal') {
-        new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
-      }
-    }
-    else if (props.activity === 'NTCV Records') {
-      if (props.form === 'New') {
-        new_url = 'http://localhost:8080/newbpnoticecorrectviolation/putNewbpCorrectViolation?newncv_id=';
-      }
-      else if (props.form === 'Renewal') {
-        new_url = 'http://localhost:8080/renewalbpnoticetocorrectviolation/updateRemarksNTCV?renewao_id='
-      }
-    }
-    else if (props.activity === 'Abatement Records') {
-      if (props.form === 'New') {
-        new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
-      }
-      else if (props.form === 'Renewal') {
-        new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
-      }
-    }
-    else if (props.activity === 'Closure Records') {
-      if (props.form === 'New') {
-        new_url = 'http://localhost:8080/newbpclosureorder/updateRemarks?id=';
-      }
-      else if (props.form === 'Renewal') {
-        new_url = 'http://localhost:8080/renewalbpclosureorder/updateRemarks?id=';
-      }
-    }
-    axios.put(new_url + props.bpid,
-      {
-        remarks: "Complied",
-      }
-    )
-  }
-
 
   // Sets the values of the array and uploads data to db
   const addEvaulation = () => {

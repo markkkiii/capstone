@@ -22,7 +22,7 @@ import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Per
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness } from '../types/Users';
 import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
-import { businessPermCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection, NTCBusinessRenewalCollection, NTCVBusinessRenewalCollection, abatementBusinessRenewalCollection, closureBusinessRenewalCollection } from '../lib/controller';
+import { businessPermCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection, NTCBusinessRenewalCollection, NTCVBusinessRenewalCollection, abatementBusinessRenewalCollection, closureBusinessRenewalCollection, renewalbusinessPermCollection } from '../lib/controller';
 
 
 //Header Part
@@ -107,7 +107,7 @@ const DisapprovedRenewalList: React.FC = () => {
     useEffect(
         () => {
             if (sortBy === "Pending Records") {
-                onSnapshot(businessPermCollection, (snapshot:
+                onSnapshot(renewalbusinessPermCollection, (snapshot:
                     QuerySnapshot<DocumentData>) => {
                     setdisapprovedNewBusinessPermit(
                         snapshot.docs.map((doc) => {
@@ -839,6 +839,63 @@ const DisapprovedRenewalList: React.FC = () => {
                                             receivedby={disapprovedNewBusinessPermit.name || ''}
                                             receiveddate={disapprovedNewBusinessPermit.date || ''}
                                             handleClose={() => handleCloseViewUpdateAbatement(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <ViewUpdateClosurePopup
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            form='Renewal'
+                                            activity={selectedAction[disapprovedNewBusinessPermit.id]}
+                                            open={openViewUpdateClosure[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business || ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            inspection_no={disapprovedNewBusinessPermit.inspection_no || 0}
+                                            inspectiondate={disapprovedNewBusinessPermit.date_inspected || ''}
+                                            ntc_no={disapprovedNewBusinessPermit.ntc_no || 0}
+                                            ntc_date={disapprovedNewBusinessPermit.ntc_date || ''}
+                                            ntcv_no={disapprovedNewBusinessPermit.ntcv_no || 0}
+                                            ntcv_date={disapprovedNewBusinessPermit.ntcv_date || ''}
+                                            abatement_no={disapprovedNewBusinessPermit.abatement_no || 0}
+                                            abatement_date={disapprovedNewBusinessPermit.abatement_date || ''}
+                                            closure_no={disapprovedNewBusinessPermit.closure_no || 0}
+                                            closure_date={disapprovedNewBusinessPermit.closure_date || ''}
+                                            teamleader={disapprovedNewBusinessPermit.team_leader || ''}
+                                            fireinspectors={disapprovedNewBusinessPermit.fire_inspectors || []}
+                                            defects={disapprovedNewBusinessPermit.defects || []}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            receivedby={disapprovedNewBusinessPermit.name || ''}
+                                            receiveddate={disapprovedNewBusinessPermit.date || ''}
+                                            handleClose={() => handleCloseViewUpdateClosure(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <EvaluatePopup
+                                            form='Renewal'
+                                            activity={sortBy}
+                                           
+                                            bpid={disapprovedNewBusinessPermit.id}
+                                            open={openEvaluateBusiness[disapprovedNewBusinessPermit.id]}
+                                            business_no={disapprovedNewBusinessPermit.bspermit_no || ''}
+                                            permitee={disapprovedNewBusinessPermit.permittee || ''}
+                                            business_name={disapprovedNewBusinessPermit.business_name || ''}
+                                            address={disapprovedNewBusinessPermit.address || ''}
+                                            natureofbusiness={disapprovedNewBusinessPermit.nature_business|| ''}
+                                            typeofoccupancy={disapprovedNewBusinessPermit.type_occupancy || ''}
+                                            contactno={disapprovedNewBusinessPermit.contact_no || ''}
+                                            email={disapprovedNewBusinessPermit.email || ''}
+                                            datereceived={disapprovedNewBusinessPermit.date_received || ''}
+                                            handleClose={() => handleCloseEvaluate(disapprovedNewBusinessPermit.id)}
+                                        />
+                                        <DeleteClerkPopup
+                                            open={openDelete[disapprovedNewBusinessPermit.id]}
+                                            value={disapprovedNewBusinessPermit.id}
+                                            form="Renewal Business"
+                                            sortby={sortBy}
+                                            remarks={disapprovedNewBusinessPermit.remarks || ''}
+                                            handleClose={() => handleCloseDelete(disapprovedNewBusinessPermit.id)}
                                         />
                                         {/*<ViewRenewalApplication 
                                             open={openViewPending[applicationform.id]} 

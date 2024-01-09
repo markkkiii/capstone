@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { addClosureNewBusiness } from '../../lib/controller';
+import { addClosureNewBusiness, updateAbatementNewBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -43,7 +43,7 @@ export interface formdetails {
   abatement_date: string;
   defects: {
     date: string;
-    defects: string;  
+    defects: string;
   }[];
   open: boolean;
   handleClose: () => void;
@@ -51,7 +51,7 @@ export interface formdetails {
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function EvaluateClosurePopup(props: formdetails) {
@@ -98,7 +98,7 @@ export default function EvaluateClosurePopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -107,7 +107,7 @@ export default function EvaluateClosurePopup(props: formdetails) {
   };
 
   const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+    const newData: DefectData = { defects: defect, date: period };
     setData([...data, newData]);
     console.log(data)
   };
@@ -137,102 +137,103 @@ export default function EvaluateClosurePopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  const updateRemarks = () =>{
+  const updateRemarks = () => {
     let new_url = '';
-   if (props.form === 'New') {
-     new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
-   }
-   else if (props.form === 'Renewal') {
-     new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
-   }
-   axios.put(new_url+props.bpid,
-     {
-       remarks: "Issued Closure",
-     }
-   )
- }
+    if (props.form === 'New') {
+      new_url = 'http://localhost:8080/newbpabatementorder/putNewbpAbatementOrder?id=';
+    }
+    else if (props.form === 'Renewal') {
+      new_url = 'http://localhost:8080/renewalbpabatementorder/updateRemarks?id=';
+    }
+    axios.put(new_url + props.bpid,
+      {
+        remarks: "Issued Closure",
+      }
+    )
+  }
 
 
 
   // uploads data to db
   const evaluateClosure = async () => {
-  //   let new_url = '';
-  //   if (props.form === 'New') {
-  //     new_url = 'http://localhost:8080/newbpclosureorder/insertClosurePermit';
-  //   }
-  //   else if (props.form === 'Renewal') {
-  //     new_url = 'http://localhost:8080/renewalbpclosureorder/insertRenewalClosurePermit';
-  //   }
-  //   axios.post(new_url,
-  //     {
-  //       bspermit_no: props.bpid,
-  //       permittee: props.permitee,
-  //       business_name: props.business_name,
-  //       address: props.address,
-  //       nature_business: props.natureofbusiness,
-  //       type_occupancy: props.typeofoccupancy,
-  //       contact_no: props.contactno,
-  //       email: props.email,
-  //       date_received: props.datereceived,
-  //       date_inspected: dateInspectionRef.current?.value,
-  //       inspection_no: inspectOrderRef.current?.value,
-  //       ntc_no: props.ntc,
-  //       ntc_date: props.ntc_date,
-  //       ntcv_no: props.ntcv,
-  //       ntcv_date: props.ntcv_date,
-  //       abatement_no: props.abatement,
-  //       abatement_date: props.abatement_date,
-  //       closure_no: closureRef.current?.value,
-  //       closure_date:closureDateRef.current?.value,
-  //       remarks: "Issued Closure",
-  //       team_leader: teamLeaderRef.current?.value,
-  //       fire_inspectors: inputInspectorArray,
-  //       defects: arrayList,
-  //       name: ReceivedByRef.current?.value,
-  //       date: ReceivedDateRef.current?.value
-  //     }
-  //   ).then(res => {
-  //     console.log(res.data);
-  //     alert("Evaluation Successful!");
-  //     updateRemarks();
-  //     props.handleClose();
-  //   }).catch(err => console.log(err))
-  // }
-  const convertedTableData = tableData.map(item => ({
-    defects: item.defects,
-    date: item.date
-  }));
+    //   let new_url = '';
+    //   if (props.form === 'New') {
+    //     new_url = 'http://localhost:8080/newbpclosureorder/insertClosurePermit';
+    //   }
+    //   else if (props.form === 'Renewal') {
+    //     new_url = 'http://localhost:8080/renewalbpclosureorder/insertRenewalClosurePermit';
+    //   }
+    //   axios.post(new_url,
+    //     {
+    //       bspermit_no: props.bpid,
+    //       permittee: props.permitee,
+    //       business_name: props.business_name,
+    //       address: props.address,
+    //       nature_business: props.natureofbusiness,
+    //       type_occupancy: props.typeofoccupancy,
+    //       contact_no: props.contactno,
+    //       email: props.email,
+    //       date_received: props.datereceived,
+    //       date_inspected: dateInspectionRef.current?.value,
+    //       inspection_no: inspectOrderRef.current?.value,
+    //       ntc_no: props.ntc,
+    //       ntc_date: props.ntc_date,
+    //       ntcv_no: props.ntcv,
+    //       ntcv_date: props.ntcv_date,
+    //       abatement_no: props.abatement,
+    //       abatement_date: props.abatement_date,
+    //       closure_no: closureRef.current?.value,
+    //       closure_date:closureDateRef.current?.value,
+    //       remarks: "Issued Closure",
+    //       team_leader: teamLeaderRef.current?.value,
+    //       fire_inspectors: inputInspectorArray,
+    //       defects: arrayList,
+    //       name: ReceivedByRef.current?.value,
+    //       date: ReceivedDateRef.current?.value
+    //     }
+    //   ).then(res => {
+    //     console.log(res.data);
+    //     alert("Evaluation Successful!");
+    //     updateRemarks();
+    //     props.handleClose();
+    //   }).catch(err => console.log(err))
+    // }
+    const convertedTableData = data.map(item => ({
+      defects: item.defects,
+      date: item.date
+    }));
 
-  addClosureNewBusiness({
-    bspermit_no: bspermitNoRef.current?.value || '',
-    permittee: permitteeRef.current?.value || '',
-    business_name: businessNameRef.current?.value || '',
-    address: addressRef.current?.value || '',
-    contact_no: contactNoRef.current?.value || '',
-    date_received: ReceivedDateRef.current?.value || '',
-    administrative_fine: '',
-    date_inspected: dateInspectionRef.current?.value || '',
-    fire_inspectors: [''],
-    inspection_no: 0,
-    date: dateRef.current?.value || '',
-    email: emailRef.current?.value || '',
-    id: idRef.current?.value || '',
-    name: ReceivedByRef.current?.value || '',
-    nature_business: natureBusinessRef.current?.value || '',
-    ntc_no: 0,
-    ntc_date: NTCDateRef.current?.value || '',
-    ntcv_no: 0,
-    ntcv_date: NTCVDateRef.current?.value || '',
-    abatement_no: 0,
-    abatement_date: AbatementDateRef.current?.value || '',
-    closure_no: 0,
-    closure_date: ClosureDateRef.current?.value || '',
-    type_occupancy: contactNoRef.current?.value || '',
-    defects: convertedTableData,
-    remarks: remarksRef.current?.value || '',
-    team_leader: teamLeaderRef.current?.value || ''
+    addClosureNewBusiness({
+      bspermit_no: props.business_no,
+      permittee: props.permitee,
+      business_name: props.business_name,
+      address: props.address,
+      contact_no: props.contactno,
+      date: ReceivedDateRef.current?.value || '',
+      date_received: props.datereceived,
+      date_inspected: dateInspectionRef.current?.value || '',
+      fire_inspectors: inputInspectorArray,
+      inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+      email: props.email,
+      name: ReceivedByRef.current?.value || '',
+      nature_business: props.natureofbusiness,
+      ntc_no: props.ntc,
+      ntc_date: props.ntc_date,
+      ntcv_no: props.ntcv,
+      ntcv_date: props.ntcv_date,
+      abatement_no: props.abatement,
+      abatement_date: props.abatement_date,
+      closure_no: parseInt(ClosureRef.current?.value || '0', 10),
+      closure_date: ClosureDateRef.current?.value || '',
+      type_occupancy: props.typeofoccupancy,
+      defects: convertedTableData,
+      remarks: "Issued Closure",
+      team_leader: teamLeaderRef.current?.value || ''
     })
-  props.handleClose();
+    updateAbatementNewBusiness(props.bpid,{
+      remarks: "Issued Closure"
+    })
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db
@@ -312,7 +313,7 @@ export default function EvaluateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ?  new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -330,37 +331,37 @@ export default function EvaluateClosurePopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntc} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'>NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTCV Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.ntcv} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntcv} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }}  defaultValue={props.ntcv_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >Abatement Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }}  defaultValue={props.abatement} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.abatement} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Abatement Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }}  defaultValue={props.abatement_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.abatement_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -419,13 +420,13 @@ export default function EvaluateClosurePopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                     <DefectPopup open={openAddDefect} onClose={closeDialog} onAdd={addDefect} />
-                    <Button variant='contained' sx={{ marginTop:'10px',backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
+                    <Button variant='contained' sx={{ marginTop: '10px', backgroundColor: 'blue', borderRadius: '13px', height: '30px' }} onClick={openDialog}>
                       Add Defect
                     </Button>
                   </Grid>

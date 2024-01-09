@@ -183,7 +183,6 @@ export interface disapprovedNewBusinessPermit {
     }[],
     email?: string,
     fire_inspectors?: string[],
-    id: string,
     inspection_no?: number,
     name?: string,
     nature_business?: string,
@@ -199,6 +198,7 @@ export interface disapprovedNewBusinessPermit {
     remarks?: string,
     team_leader?: string,
     type_occupancy?: string,
+    id: string,
     
 }
 
@@ -286,7 +286,6 @@ export interface adddisapprovedOccupancyPermit {
 
 export interface NTCNewBusiness {
     address: string,
-    administrative_fine: string,
     business_name: string,
     bspermit_no: string,
     contact_no: string,
@@ -299,7 +298,6 @@ export interface NTCNewBusiness {
     }[],
     email: string,
     fire_inspectors: string[],
-    id: string,
     inspection_no: number,
     name: string,
     nature_business: string,
@@ -313,7 +311,6 @@ export interface NTCNewBusiness {
 
 export interface NTCVNewBusiness {
     address: string,
-    administrative_fine: string,
     business_name: string,
     bspermit_no: string,
     contact_no: string,
@@ -326,7 +323,6 @@ export interface NTCVNewBusiness {
     }[],
     email: string,
     fire_inspectors: string[],
-    id: string,
     inspection_no: number,
     name: string,
     nature_business: string,
@@ -342,7 +338,6 @@ export interface NTCVNewBusiness {
 
 export interface AbatementNewBusiness {
     address: string,
-    administrative_fine: string,
     business_name: string,
     bspermit_no: string,
     contact_no: string,
@@ -355,7 +350,6 @@ export interface AbatementNewBusiness {
     }[],
     email: string,
     fire_inspectors: string[],
-    id: string,
     inspection_no: number,
     name: string,
     nature_business: string,
@@ -373,7 +367,6 @@ export interface AbatementNewBusiness {
 
 export interface ClosureNewBusiness {
     address: string,
-    administrative_fine: string,
     business_name: string,
     bspermit_no: string,
     contact_no: string,
@@ -386,7 +379,6 @@ export interface ClosureNewBusiness {
     }[],
     email: string,
     fire_inspectors: string[],
-    id: string,
     inspection_no: number,
     name: string,
     nature_business: string,

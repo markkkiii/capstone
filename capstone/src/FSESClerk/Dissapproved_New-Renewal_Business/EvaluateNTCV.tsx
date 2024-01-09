@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { addNTCVNewBusiness } from '../../lib/controller';
+import { addNTCVNewBusiness, addNTCVRenewalBusiness, updateNTCNewBusiness, updateNTCRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -42,14 +42,14 @@ export interface formdetails {
   open: boolean;
   defects: {
     date: string;
-    defects: string;  
+    defects: string;
   }[];
   handleClose: () => void;
 }
 
 interface DefectData {
   defects: string;
-  period: string;
+  date: string;
 }
 
 export default function EvaluateNTCVPopup(props: formdetails) {
@@ -93,7 +93,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
 
   useEffect(() => {
     // Convert data to an array of arrays
-    setArrayList(data.map(item => [item.defects, item.period]));
+    setArrayList(data.map(item => [item.defects, item.date]));
   }, [data]);
 
   //closes add defect pop up
@@ -102,7 +102,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
   };
 
   const addDefect = (defect: string, period: string) => {
-    const newData: DefectData = { defects: defect, period: period };
+    const newData: DefectData = { defects: defect, date: period };
     setData([...data, newData]);
     console.log(data)
   };
@@ -132,15 +132,15 @@ export default function EvaluateNTCVPopup(props: formdetails) {
     setRender(prevRender => !prevRender);
   };
 
-  const updateRemarks = () =>{
-     let new_url = '';
+  const updateRemarks = () => {
+    let new_url = '';
     if (props.form === 'New') {
       new_url = 'http://localhost:8080/newbpnoticetocomply/putNewComply?id=';
     }
     else if (props.form === 'Renewal') {
       new_url = 'http://localhost:8080/renewalbpnoticetocomply/updateRemarksRenewal?renewnc_id='
     }
-    axios.put(new_url+props.bpid,
+    axios.put(new_url + props.bpid,
       {
         remarks: "Issued NTCV",
       }
@@ -187,37 +187,68 @@ export default function EvaluateNTCVPopup(props: formdetails) {
     //   updateRemarks();
     //   props.handleClose();
     // }).catch(err => console.log(err))
-    const convertedTableData = tableData.map(item => ({
+    const convertedTableData = data.map(item => ({
       defects: item.defects,
       date: item.date
     }));
 
-    addNTCVNewBusiness({
-      bspermit_no: bspermitNoRef.current?.value || '',
-      permittee: permitteeRef.current?.value || '',
-      business_name: businessNameRef.current?.value || '',
-      address: addressRef.current?.value || '',
-      contact_no: contactNoRef.current?.value || '',
-      date_received: ReceivedDateRef.current?.value || '',
-      administrative_fine: '',
-      date_inspected: dateInspectionRef.current?.value || '',
-      fire_inspectors: [''],
-      inspection_no: 0,
-      date: dateRef.current?.value || '',
-      email: emailRef.current?.value || '',
-      id: idRef.current?.value || '',
-      name: ReceivedByRef.current?.value || '',
-      nature_business: natureBusinessRef.current?.value || '',
-      ntc_no: 0,
-      ntc_date: NTCDateRef.current?.value || '',
-      ntcv_no: 0,
-      ntcv_date: NTCVDateRef.current?.value || '',
-      type_occupancy: contactNoRef.current?.value || '',
-      defects: convertedTableData,
-      remarks: remarksRef.current?.value || '',
-      team_leader: teamLeaderRef.current?.value || ''
-    })
-  props.handleClose();
+    if (props.form === 'New') {
+      addNTCVNewBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc_no,
+        ntc_date: props.ntc_date,
+        ntcv_no: parseInt(NTCVRef.current?.value || '0', 10),
+        ntcv_date: NTCVDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "For Issuance Abatement",
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      updateNTCNewBusiness(props.bpid, {
+        remarks: 'Issued NTCV'
+      })
+    }
+    else if (props.form === 'Renewal') {
+      addNTCVRenewalBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc_no,
+        ntc_date: props.ntc_date,
+        ntcv_no: parseInt(NTCVRef.current?.value || '0', 10),
+        ntcv_date: NTCVDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "For Issuance Abatement",
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      updateNTCRenewalBusiness(props.bpid, {
+        remarks: 'Issued NTCV'
+      })
+    }
+    props.handleClose();
   }
 
   // Sets the values of the array and uploads data to db
@@ -297,7 +328,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} variant='standard' disabled />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} variant='standard' disabled />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -315,13 +346,13 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' >NTC Number</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} inputRef={NTCRef} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.ntc_no} inputRef={NTCRef} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ?  new Date(props.ntc_date).toISOString().split('T')[0] : ''} readOnly/>
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date} readOnly />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -380,7 +411,7 @@ export default function EvaluateNTCVPopup(props: formdetails) {
                         {data.map((item, index) => (
                           <tr key={index}>
                             <td>{item.defects}</td>
-                            <td style={{ textAlign: "center" }}>{item.period}</td>
+                            <td style={{ textAlign: "center" }}>{item.date}</td>
                           </tr>
                         ))}
                       </tbody>
