@@ -74,29 +74,29 @@ const UpdateRenewalApplication: React.FC<formdetails> = (props: formdetails) => 
            */
         if (props.form === "New") {
             updateBusinessPermit(props.id,{
-                businessno: (buildingpermRef.current?.value || ''),
+                bspermit_no: (buildingpermRef.current?.value || ''),
                 address: (addressRef.current?.value || ''),
                 permittee: (permiteeRef.current?.value || ''),
-                businessname: (businessnameRef.current?.value || ''),
-                naturebusiness: (naturebusinessRef.current?.value || ''),
-                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
-                contactno: (contactnoRef.current?.value || ''),
+                business_name: (businessnameRef.current?.value || ''),
+                nature_business: (naturebusinessRef.current?.value || ''),
+                type_occupancy: (typeofoccupancyRef.current?.value || ''),
+                contact_no: (contactnoRef.current?.value || ''),
                 email: (emailRef.current?.value || ''),
-                datereceived: (dateReceivedRef.current?.value || ''),
+                date_received: (dateReceivedRef.current?.value || ''),
             })
             props.handleClose();
         }
         else if (props.form === "Renewal") {
             updaterenewalBusinessPermit(props.id,{
-                businessno: (buildingpermRef.current?.value || ''),
+                bspermit_no: (buildingpermRef.current?.value || ''),
                 address: (addressRef.current?.value || ''),
                 permittee: (permiteeRef.current?.value || ''),
-                businessname: (businessnameRef.current?.value || ''),
-                naturebusiness: (naturebusinessRef.current?.value || ''),
-                typeoccupancy: (typeofoccupancyRef.current?.value || ''),
-                contactno: (contactnoRef.current?.value || ''),
+                business_name: (businessnameRef.current?.value || ''),
+                nature_business: (naturebusinessRef.current?.value || ''),
+                type_occupancy: (typeofoccupancyRef.current?.value || ''),
+                contact_no: (contactnoRef.current?.value || ''),
                 email: (emailRef.current?.value || ''),
-                datereceived: (dateReceivedRef.current?.value || ''),
+                date_received: (dateReceivedRef.current?.value || ''),
             })
             props.handleClose();
         }

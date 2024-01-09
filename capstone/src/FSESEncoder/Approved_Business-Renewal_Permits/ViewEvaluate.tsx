@@ -157,15 +157,15 @@ export default function ViewEvaluate(props: formdetails) {
       )*/
     if (props.permit === "New") {
       updateBusinessPermit(props.bpid, {
-        businessno: (business_noRef.current?.value || ''),
+        bspermit_no: (business_noRef.current?.value || ''),
         address: (addressRef.current?.value || ''),
         permittee: (permiteeRef.current?.value || ''),
-        businessname: (business_nameRef.current?.value || ''),
-        naturebusiness: (natureofbusinessRef.current?.value || ''),
-        typeoccupancy: (typeofoccupancyRef.current?.value || ''),   
-        contactno: (contactnoRef.current?.value || ''),
+        business_name: (business_nameRef.current?.value || ''),
+        nature_business: (natureofbusinessRef.current?.value || ''),
+        type_occupancy: (typeofoccupancyRef.current?.value || ''),   
+        contact_no: (contactnoRef.current?.value || ''),
         email: (emailRef.current?.value || ''),
-        datereceived: (date_receivedRef.current?.value || ''),
+        date_received: (date_receivedRef.current?.value || ''),
         dateinspection: (dateInspectionRef.current?.value || ''),
         inspection_no: (inspectOrderRef.current?.value || ''),
         fsicno: (fsicRef.current?.value || ''),
@@ -182,15 +182,15 @@ export default function ViewEvaluate(props: formdetails) {
     }
     else if (props.permit === "Renewal") {
       updaterenewalBusinessPermit(props.bpid, {
-        businessno: (business_noRef.current?.value || ''),
+        bspermit_no: (business_noRef.current?.value || ''),
         address: (addressRef.current?.value || ''),
         permittee: (permiteeRef.current?.value || ''),
-        businessname: (business_nameRef.current?.value || ''),
-        naturebusiness: (natureofbusinessRef.current?.value || ''),
-        typeoccupancy: (typeofoccupancyRef.current?.value || ''),   
-        contactno: (contactnoRef.current?.value || ''),
+        business_name: (business_nameRef.current?.value || ''),
+        nature_business: (natureofbusinessRef.current?.value || ''),
+        type_occupancy: (typeofoccupancyRef.current?.value || ''),   
+        contact_no: (contactnoRef.current?.value || ''),
         email: (emailRef.current?.value || ''),
-        datereceived: (date_receivedRef.current?.value || ''),
+        date_received: (date_receivedRef.current?.value || ''),
         dateinspection: (dateInspectionRef.current?.value || ''),
         inspection_no: (inspectOrderRef.current?.value || ''),
         fsicno: (fsicRef.current?.value || ''),

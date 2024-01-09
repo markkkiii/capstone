@@ -405,7 +405,7 @@ const RenewalBusinessList: React.FC = () => {
                                     return true; // Show all records if no search text is entered
                                 } else {
                                     // Filter based on the businessPermitNo or ownerName containing the searchText
-                                    const business_no = businessPermit?.businessno || '';
+                                    const business_no = businessPermit?.bspermit_no || '';
                                     const permittee = businessPermit?.permittee || '';
                                     return (
                                         business_no.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -416,10 +416,10 @@ const RenewalBusinessList: React.FC = () => {
                             .map((businessPermit) => (
                                 <tr key={businessPermit.id}>
 
-                                    <td>{businessPermit.businessno}</td>
+                                    <td>{businessPermit.bspermit_no}</td>
                                     <td>{businessPermit.permittee}</td>
-                                    <td>{businessPermit.businessname}</td>
-                                    <td>{businessPermit.typeoccupancy}</td>
+                                    <td>{businessPermit.business_name}</td>
+                                    <td>{businessPermit.type_occupancy}</td>
                                     <td>{sortBy === 'Approved Records' ? businessPermit.fsicno :
                                         'N/A'}</td>
                                     <td style={{
@@ -446,28 +446,28 @@ const RenewalBusinessList: React.FC = () => {
                                         <ViewRenewalApplication
                                             open={openViewRenewal[businessPermit.id]}
                                             handleClose={() => handleCloseView(businessPermit.id)}
-                                            bspermit_no={businessPermit.businessno || ''}
+                                            bspermit_no={businessPermit.bspermit_no || ''}
                                             permitee={businessPermit.permittee || ''}
-                                            businessname={businessPermit.businessname || ''}
+                                            businessname={businessPermit.business_name || ''}
                                             address={businessPermit.address || ''}
-                                            natureofbusiness={businessPermit.naturebusiness || ''}
-                                            typeofoccupancy={businessPermit.typeoccupancy || ''}
-                                            contactno={businessPermit.contactno || ''}
+                                            natureofbusiness={businessPermit.nature_business || ''}
+                                            typeofoccupancy={businessPermit.type_occupancy || ''}
+                                            contactno={businessPermit.contact_no || ''}
                                             email={businessPermit.email || ''}
-                                            datereceived={businessPermit.datereceived || ''}
+                                            datereceived={businessPermit.date_received || ''}
                                         />
                                          <UpdateRenewalApplication
                                             open={openUpdateRenewal[businessPermit.id]}
                                             handleClose={() => handleCloseUpdate(businessPermit.id)}
-                                            bspermit_no={businessPermit.businessno || ''}
+                                            bspermit_no={businessPermit.bspermit_no || ''}
                                             permitee={businessPermit.permittee || ''}
-                                            businessname={businessPermit.businessname || ''}
+                                            businessname={businessPermit.business_name || ''}
                                             address={businessPermit.address || ''}
-                                            natureofbusiness={businessPermit.naturebusiness || ''}
-                                            typeofoccupancy={businessPermit.typeoccupancy || ''}
-                                            contactno={businessPermit.contactno || ''}
+                                            natureofbusiness={businessPermit.nature_business || ''}
+                                            typeofoccupancy={businessPermit.type_occupancy || ''}
+                                            contactno={businessPermit.contact_no || ''}
                                             email={businessPermit.email || ''}
-                                            datereceived={businessPermit.datereceived || ''}
+                                            datereceived={businessPermit.date_received || ''}
                                             id={businessPermit.id}
                                             form="Renewal"
                                         />
@@ -477,14 +477,14 @@ const RenewalBusinessList: React.FC = () => {
                                             activity='Pending'
                                             open={openEvaluateBusiness[businessPermit.id]}
                                             permitee={businessPermit.permittee || ''}
-                                            business_no={businessPermit.businessno || ''}
-                                            business_name={businessPermit.businessname || ''}
+                                            business_no={businessPermit.bspermit_no || ''}
+                                            business_name={businessPermit.business_name || ''}
                                             address={businessPermit.address || ''}
-                                            natureofbusiness={businessPermit.naturebusiness || ''}
-                                            typeofoccupancy={businessPermit.typeoccupancy || ''}
-                                            contactno={businessPermit.contactno || ''}
+                                            natureofbusiness={businessPermit.nature_business || ''}
+                                            typeofoccupancy={businessPermit.type_occupancy || ''}
+                                            contactno={businessPermit.contact_no || ''}
                                             email={businessPermit.email || ''}
-                                            datereceived={businessPermit.datereceived || ''}
+                                            datereceived={businessPermit.date_received || ''}
                                             handleClose={() => handleCloseEvaluate(businessPermit.id)}
                                         />
                                          <ViewEvaluate
@@ -493,15 +493,15 @@ const RenewalBusinessList: React.FC = () => {
                                             open={openViewEvaluate[businessPermit.id]}
                                             handleClose={() => handleCloseViewEval(businessPermit.id)}
                                             bpid={businessPermit.id}
-                                            business_no={businessPermit.businessno || ''}
+                                            business_no={businessPermit.bspermit_no || ''}
                                             permitee={businessPermit.permittee || ''}
-                                            business_name={businessPermit.businessname || ''}
+                                            business_name={businessPermit.business_name || ''}
                                             address={businessPermit.address || ''}
-                                            natureofbusiness={businessPermit.naturebusiness || ''}
-                                            typeofoccupancy={businessPermit.typeoccupancy || ''}
-                                            contactno={businessPermit.contactno || ''}
+                                            natureofbusiness={businessPermit.nature_business || ''}
+                                            typeofoccupancy={businessPermit.type_occupancy || ''}
+                                            contactno={businessPermit.contact_no || ''}
                                             email={businessPermit.email || ''}
-                                            date_received={businessPermit.datereceived || ''}
+                                            date_received={businessPermit.date_received || ''}
                                             date_inspection={businessPermit.dateinspection || ''}
                                             inspection_no={businessPermit.inspection_no || 0}
                                             fsic_no={businessPermit.fsicno || 0}
