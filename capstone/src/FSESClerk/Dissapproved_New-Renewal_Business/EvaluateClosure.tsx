@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, OutlinedInput, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { addClosureNewBusiness, updateAbatementNewBusiness } from '../../lib/controller';
+import { addClosureNewBusiness, addClosureRenewalBusiness, updateAbatementNewBusiness, updateAbatementRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -203,36 +203,70 @@ export default function EvaluateClosurePopup(props: formdetails) {
       date: item.date
     }));
 
-    addClosureNewBusiness({
-      bspermit_no: props.business_no,
-      permittee: props.permitee,
-      business_name: props.business_name,
-      address: props.address,
-      contact_no: props.contactno,
-      date: ReceivedDateRef.current?.value || '',
-      date_received: props.datereceived,
-      date_inspected: dateInspectionRef.current?.value || '',
-      fire_inspectors: inputInspectorArray,
-      inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
-      email: props.email,
-      name: ReceivedByRef.current?.value || '',
-      nature_business: props.natureofbusiness,
-      ntc_no: props.ntc,
-      ntc_date: props.ntc_date,
-      ntcv_no: props.ntcv,
-      ntcv_date: props.ntcv_date,
-      abatement_no: props.abatement,
-      abatement_date: props.abatement_date,
-      closure_no: parseInt(ClosureRef.current?.value || '0', 10),
-      closure_date: ClosureDateRef.current?.value || '',
-      type_occupancy: props.typeofoccupancy,
-      defects: convertedTableData,
-      remarks: "Issued Closure",
-      team_leader: teamLeaderRef.current?.value || ''
-    })
-    updateAbatementNewBusiness(props.bpid,{
-      remarks: "Issued Closure"
-    })
+    if (props.form === "New") {
+      addClosureNewBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc,
+        ntc_date: props.ntc_date,
+        ntcv_no: props.ntcv,
+        ntcv_date: props.ntcv_date,
+        abatement_no: props.abatement,
+        abatement_date: props.abatement_date,
+        closure_no: parseInt(ClosureRef.current?.value || '0', 10),
+        closure_date: ClosureDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "Issued Closure",
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      updateAbatementNewBusiness(props.bpid, {
+        remarks: "Issued Closure"
+      })
+    }
+    else if (props.form === "Renewal") {
+      addClosureRenewalBusiness({
+        bspermit_no: props.business_no,
+        permittee: props.permitee,
+        business_name: props.business_name,
+        address: props.address,
+        contact_no: props.contactno,
+        date: ReceivedDateRef.current?.value || '',
+        date_received: props.datereceived,
+        date_inspected: dateInspectionRef.current?.value || '',
+        fire_inspectors: inputInspectorArray,
+        inspection_no: parseInt(inspectOrderRef.current?.value || '0', 10),
+        email: props.email,
+        name: ReceivedByRef.current?.value || '',
+        nature_business: props.natureofbusiness,
+        ntc_no: props.ntc,
+        ntc_date: props.ntc_date,
+        ntcv_no: props.ntcv,
+        ntcv_date: props.ntcv_date,
+        abatement_no: props.abatement,
+        abatement_date: props.abatement_date,
+        closure_no: parseInt(ClosureRef.current?.value || '0', 10),
+        closure_date: ClosureDateRef.current?.value || '',
+        type_occupancy: props.typeofoccupancy,
+        defects: convertedTableData,
+        remarks: "Issued Closure",
+        team_leader: teamLeaderRef.current?.value || ''
+      })
+      updateAbatementRenewalBusiness(props.bpid, {
+        remarks: "Issued Closure"
+      })
+    }
     props.handleClose();
   }
 

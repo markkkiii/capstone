@@ -297,7 +297,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={11}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph' style={{ paddingTop: '20px' }}>Date Received</p>
-                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={DateReceivedRef} variant='standard' disabled={props.activity !== 'Update'} />
+                      <TextField fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived } inputRef={DateReceivedRef} variant='standard' disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -321,7 +321,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTC Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date ? new Date(props.ntc_date).toISOString().split('T')[0] : ''} inputRef={NTCDateRef} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntc_date } inputRef={NTCDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={6}>
@@ -333,7 +333,7 @@ export default function ViewUpdateNTCVPopup(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >NTCV Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date ? new Date(props.ntcv_date).toISOString().split('T')[0] : ''} inputRef={NTCVDateRef} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "305px" }} defaultValue={props.ntcv_date } inputRef={NTCVDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                   <Grid item xs={10} sm={11}>
