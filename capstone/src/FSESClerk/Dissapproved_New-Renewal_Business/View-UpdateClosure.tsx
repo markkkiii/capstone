@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import { Card, CardContent, DialogTitle, Grid, MenuItem, OutlinedInput, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import DefectPopup from './DefectPopup';
-import { updateClosureNewBusiness } from '../../lib/controller';
+import { updateClosureNewBusiness, updateClosureRenewalBusiness } from '../../lib/controller';
 
 
 const cardStyle = {
@@ -181,7 +181,8 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
       date: item.date
     }));
 
-    updateClosureNewBusiness(props.bpid,{
+    if(props.form === "New"){
+      updateClosureNewBusiness(props.bpid,{
         bspermit_no: BusinessNoRef.current?.value,
         permittee: PermiteeRef.current?.value,
         business_name: BusinessnameRef.current?.value,
@@ -207,7 +208,36 @@ export default function ViewUpdateClosurePopup(props: formdetails) {
         defects: convertedTableData,
         name: ReceivedByRef.current?.value,
         date: ReceivedDateRef.current?.value
-      })
+      })}
+      else if(props.form === "Renewal"){
+        updateClosureRenewalBusiness(props.bpid,{
+          bspermit_no: BusinessNoRef.current?.value,
+          permittee: PermiteeRef.current?.value,
+          business_name: BusinessnameRef.current?.value,
+          address: AddressRef.current?.value,
+          nature_business: NatureBusinessRef.current?.value,
+          type_occupancy: typeofoccupancyRef.current?.value,
+          contact_no: ContactnoRef.current?.value,
+          email: EmailRef.current?.value,
+          date_received: DateRecievedRef.current?.value,
+          date_inspected: dateInspectionRef.current?.value,
+          inspection_no: inspectOrderRef.current?.value,
+          ntc_no: NTCRef.current?.value,
+          ntc_date: NTCDateRef.current?.value,
+          ntcv_no: NTCVRef.current?.value,
+          ntcv_date: NTCVDateRef.current?.value,
+          abatement_no: AbatementRef.current?.value,
+          abatement_date: AbatementDateRef.current?.value,
+          closure_no: closureRef.current?.value,
+          closure_date: closureDateRef.current?.value,
+          remarks: props.remarks,
+          team_leader: teamLeaderRef.current?.value,
+          fire_inspectors: inputInspectorArray,
+          defects: convertedTableData,
+          name: ReceivedByRef.current?.value,
+          date: ReceivedDateRef.current?.value
+        })
+      }
       props.handleClose();
   }
 

@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
-import { deleteAbatementNewBusiness, deleteClosureNewBusiness, deleteDisapprovedOccupancyPermit, deleteNTCNewBusiness, deleteNTCVNewBusiness, deleteOccupancyPermit } from '../lib/controller';
+import { deleteAbatementNewBusiness, deleteAbatementRenewalBusiness, deleteClosureNewBusiness, deleteClosureRenewalBusiness, deleteDisapprovedOccupancyPermit, deleteNTCNewBusiness, deleteNTCRenewalBusiness, deleteNTCVNewBusiness, deleteNTCVRenewalBusiness, deleteOccupancyPermit } from '../lib/controller';
 
 interface DeleteProps {
     value: string;
@@ -86,17 +86,37 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
             else if((sortby === 'NTCV Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV Records' && remarks === 'Complied')){
               
                 deleteNTCVNewBusiness(value);
-                alert("Deleted Successfully!");
+                alert("Deleted NTCV Permit Successfully");
             }
             else if((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')){
                 deleteAbatementNewBusiness(value);
-                alert("Deleted Successfully!!!");
+                alert("Deleted Abatement Permit Successfully");
             }
             else if((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')){
                 deleteClosureNewBusiness(value);
-                alert("Deleted Successfully!!!!!!!!!!");
+                alert("Deleted Closure Permit Successfully");
             }
         }
+        else if(form === "Renewal Business"){
+            console.log(value);
+                if((sortby === 'NTC Records' && remarks === 'Issued NTCV') || (sortby === 'NTC Records' && remarks === 'For Issuance NTCV') || (sortby === 'NTC Records' && remarks === 'Complied')){
+                    deleteNTCRenewalBusiness(value);
+                    alert("Deleted NTC Permit Successfully");
+                }
+                else if((sortby === 'NTCV Records' && remarks === 'Issued Abatement') || (sortby === 'NTCV Records' &&  remarks === 'For Issuance Abatement') || (sortby === 'NTCV Records' && remarks === 'Complied')){
+                  
+                    deleteNTCVRenewalBusiness(value);
+                    alert("Deleted NTCV Permit Successfully");
+                }
+                else if((sortby === 'Abatement Records' && remarks === 'Issued Closure') || (sortby === 'Abatement Records' && remarks === 'For Issuance Closure') || (sortby === 'Abatement Records' && remarks === 'Complied')){
+                    deleteAbatementRenewalBusiness(value);
+                    alert("Deleted Abatement Permit Successfully");
+                }
+                else if((sortby === 'Closure Records' && remarks === 'Issued Closure') || (sortby === 'Closure Records' && remarks === 'Complied')){
+                    deleteClosureRenewalBusiness(value);
+                    alert("Deleted Closure Permit Successfully");
+                }
+            }
         handleClose();
     }
 
