@@ -143,7 +143,7 @@ export default function UpdateApplicationPopup(props: formdetails) {
                                     <Grid item xs={10} sm={5}>
                                         <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                                             <p className='custom-paragraph'>Date Received</p>
-                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived ? new Date(props.datereceived).toISOString().split('T')[0] : ''} inputRef={dateReceivedRef} />
+                                            <OutlinedInput fullWidth className='custom-outlined-input' sx={{ borderRadius: '11px' }} defaultValue={props.datereceived} inputRef={dateReceivedRef} />
                                         </Stack>
                                     </Grid>
                                     <Grid item xs={10} sm={6}>
