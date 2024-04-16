@@ -9,7 +9,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ViewRenewalApplication from './Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from './Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import AddApplication from './AddApplication';
-import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
+import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import DeleteEncoderPopup from './DeleteEncoderPopup';
 import { businessPermit } from '../types/Users';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
@@ -404,32 +404,21 @@ const BusinessList: React.FC = () => {
                                             handleClose={() => handleCloseDelete(businessPermit.id)}
                                         />
                                         
-                                        <ViewEvaluate
-                                            form={selectedAction[businessPermit.id]}
-                                            permit='New'
-                                            open={openViewEvaluate[businessPermit.id]}
-                                            handleClose={() => handleCloseViewEval(businessPermit.id)}
+                                        <EvaluatePopup
+                                            form='Renewal'
                                             bpid={businessPermit.id}
-                                            business_no={businessPermit.bspermit_no || ''}
+                                            activity='Pending'
+                                            open={openEvaluateBusiness[businessPermit.id]}
                                             permitee={businessPermit.permittee || ''}
+                                            business_no={businessPermit.bspermit_no || ''}
                                             business_name={businessPermit.business_name || ''}
                                             address={businessPermit.address || ''}
                                             natureofbusiness={businessPermit.nature_business || ''}
                                             typeofoccupancy={businessPermit.type_occupancy || ''}
                                             contactno={businessPermit.contact_no || ''}
                                             email={businessPermit.email || ''}
-                                            date_received={businessPermit.date_received || ''}
-                                            date_inspection={businessPermit.dateinspection || ''}
-                                            inspection_no={businessPermit.inspection_no || 0}
-                                            fsic_no={businessPermit.fsicno || 0}
-                                            fsic_date={businessPermit.fsicdate || ''}
-                                            amount={businessPermit.amount || 0}
-                                            or_no={businessPermit.orno || 0}
-                                            payment_date={businessPermit.date || ''}
-                                            remarks={businessPermit.remarks || ''}
-                                            team_leader={businessPermit.teamleader || ''}
-                                            fire_inspectors={businessPermit.fireinspectors ? ([] as string[]).concat(businessPermit.fireinspectors) : []}
-                                            recommendation={businessPermit.recommendation}
+                                            datereceived={businessPermit.date_received || ''}
+                                            handleClose={() => handleCloseEvaluate(businessPermit.id)}
                                         />
 
                                         {/* 

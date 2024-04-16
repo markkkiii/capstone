@@ -673,7 +673,7 @@ const DisapprovedRenewalList: React.FC = () => {
                                             contactno={disapprovedNewBusinessPermit.contact_no || ''}
                                             email={disapprovedNewBusinessPermit.email || ''}
                                             datereceived={disapprovedNewBusinessPermit.date_received || ''}
-                                            handleClose={() => handleCloseView(disapprovedNewBusinessPermit.id)}
+                                            handleClose={() => handleCloseEvalNTC(disapprovedNewBusinessPermit.id)}
                                             defects={[]} 
                                         />
                                         <DeleteClerkPopup
