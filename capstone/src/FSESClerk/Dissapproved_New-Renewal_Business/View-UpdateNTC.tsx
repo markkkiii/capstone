@@ -400,7 +400,7 @@ export default function ViewUpdateNTC(props: formdetails) {
                   <Grid item xs={10} sm={6}>
                     <Stack spacing={-1} sx={{ alignItems: 'flex-start' }}>
                       <p className='custom-paragraph'  >Received Date</p>
-                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.receiveddate ? new Date(props.receiveddate).toISOString().split('T')[0] : ''} inputRef={ReceivedDateRef} disabled={props.activity !== 'Update'} />
+                      <OutlinedInput className='custom-outlined-input' sx={{ borderRadius: '11px', width: "330px" }} defaultValue={props.receiveddate} inputRef={ReceivedDateRef} disabled={props.activity !== 'Update'} />
                     </Stack>
                   </Grid>
                 </Grid>
