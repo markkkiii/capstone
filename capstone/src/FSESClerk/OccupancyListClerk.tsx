@@ -14,9 +14,13 @@ import PrintClerkPopup from './PrintClerkPopup';
 import axios from 'axios';
 import ViewUpdateDisapprovedOccupancy from './Disapproved_Occupancy/ViewUpdateDisapprovedOccupancy';
 import EvaluateApprovedOccupancy from '../FSESEncoder/Approved_Occupancy/EvaluateApprovedOccupancy';
-import { OccupancyPermit } from '../types/Users';
+import { OccupancyPermit, GraphData } from '../types/Users';
 import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { DisapprovedOccupancyCollection, occupancyPermCollection } from '../lib/controller';
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -53,6 +57,12 @@ const OccupancyListClerk: React.FC = () => {
     const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
     const [occupancyPermit, setOccupancyPermit] = useState<OccupancyPermit[]>([]);
+    const [graphData, setGraphData] = useState<GraphData>({})
+
+    const collections:any = {
+        "Pending Records"       : occupancyPermCollection,
+        "Disapproved Records"   : DisapprovedOccupancyCollection,
+    }
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -91,37 +101,123 @@ const OccupancyListClerk: React.FC = () => {
 
     useEffect(
         () => {
-            if (sortBy === 'Pending Records') {
-                onSnapshot(occupancyPermCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setOccupancyPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(occupancyPermit)
+            const fetchCollection = (collection:any) => {
+                return new Promise<any>((resolve) => {
+                    let records:any = []
+
+                    onSnapshot(collection, (snapshot:
+                        QuerySnapshot<DocumentData>) => {
+                            records = snapshot.docs.map((doc) => {
+                                return {
+                                    id: doc.id,
+                                    ...doc.data(),
+                                };
+                            })
+                            setOccupancyPermit(records);
+                            resolve(records)
+                        }
+                    )
                 })
             }
-            else if (sortBy === "Disapproved Records") {
-                onSnapshot(DisapprovedOccupancyCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setOccupancyPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(occupancyPermit)
-                })
+
+            if(collections[sortBy]) {
+                fetchCollection(collections[sortBy]).then((records) => {
+                    setOccupancyPermit(records);
+                });
             }
-        }, [sortBy]
+        },[sortBy]
     )
 
+    // Triggers on first load
+    useEffect(() => {
+        // This will count only the docs with remarks == 'Pending'
+        const countPendingDocs = (collection:any) => {
+            return new Promise<any>((resolve) => {
+                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                    const count = snapshot.docs.filter(doc => doc.data().remarks == "Pending").length;
+                    resolve(count)
+                });
+            })
+        }
+
+        const countRecords = (collection:any) => {
+            return new Promise<any>((resolve) => {
+                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                    const count = snapshot.size;
+                    resolve(count)
+                });
+            })
+        }
+
+        let newGraph: GraphData = {}
+        for (const key in collections) {
+            if (collections.hasOwnProperty(key)) {
+                const collection = collections[key];
+
+                if(key == "Pending Records") {
+                    countPendingDocs(collection).then((count) => {
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    })
+                }
+                else {
+                    countRecords(collection).then((count) => {
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    })
+                }
+            }
+        }
+    },[])
+
+    const showGraph = (graphData: GraphData) => {
+        if(graphData){
+          const labels = Object.keys(graphData);
+          const data = Object.values(graphData);
+          const backgroundColor = ['#FFCA3E', '#FF6F50', '#D03454', '#9C2162', '#772F67',];
+          const barChartData: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: backgroundColor,
+                hoverBackgroundColor: backgroundColor,
+              },
+            ],
+          };
+        
+          const barChartOptions: ChartOptions<'bar'> = {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+              y: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          };
+    
+          return <>
+            <Bar data={barChartData} options={barChartOptions} />
+          </>
+        }
+    }
 
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -340,6 +436,11 @@ const OccupancyListClerk: React.FC = () => {
                     <div className="title-container">
                         <h1 className="title">Occupancy Permit List</h1>
                     </div>
+                    { graphData &&
+                        <div className='status-chart'>
+                        {showGraph(graphData)}
+                        </div>
+                    }
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>

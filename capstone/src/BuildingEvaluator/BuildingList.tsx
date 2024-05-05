@@ -12,10 +12,14 @@ import EvaluatePopup from './EvaluatePopup';
 import ViewPopup from '../BuildingEvaluator/ViewPopup';
 import UpdateApplicationPopup from './UpdateApplicationPopUp';
 import ViewEvaluatePopup from '../BuildingEvaluator/ViewEvaluatePopup';
-import { NewBusinessListPending } from '../types/Users';
+import { NewBusinessListPending, GraphData } from '../types/Users';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
 import { buildingEvalCollection } from '../lib/controller';
 import { Key } from '@mui/icons-material';
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 
 const AdditionalTab: React.FC = () => {
@@ -50,6 +54,7 @@ const BuildingApplicationListComponent: React.FC = () => {
   const [sortBy, setSortBy] = useState('Pending Records');
   const [searchText, setSearchText] = useState('');
   const [buildingEvaluator, setBuildingEvaluator] = useState<NewBusinessListPending[]>([]);
+  const [graphData, setGraphData] = useState<GraphData>({})
 
   const handleRender = () => {
     setTest(prevTest => !prevTest);
@@ -175,7 +180,13 @@ const BuildingApplicationListComponent: React.FC = () => {
             };
           })
         );
-        console.log(buildingEvaluator)
+        const statuses = snapshot.docs.map(doc => doc.data().status)
+        const newGraphData = statuses.reduce((acc, status) => {
+          acc[status] = (acc[status] || 0) + 1;
+          return acc;
+        }, {});
+        console.log("status counts: ",newGraphData)
+        setGraphData(newGraphData)
       }),
     []
   )
@@ -248,6 +259,50 @@ const BuildingApplicationListComponent: React.FC = () => {
     }
   };
 
+  const showStatusChart = (graphData: GraphData) => {
+    console.log("status counts: ",graphData)
+    if(graphData){
+      const labels = Object.keys(graphData);
+      const data = Object.values(graphData);
+      const backgroundColor = ['#FF6384', '#36A2EB', '#FFCE56'];
+      const barChartData: ChartData<"bar"> = {
+        labels: labels,
+        datasets: [
+          {
+            data: data,
+            backgroundColor: backgroundColor,
+            hoverBackgroundColor: backgroundColor,
+          },
+        ],
+      };
+    
+      const barChartOptions: ChartOptions<'bar'> = {
+        indexAxis: 'y',
+        scales: {
+          x: {
+            ticks: {
+              color: '#fff',
+            },
+          },
+          y: {
+            ticks: {
+              color: '#fff',
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      };
+
+      return <>
+        <Bar data={barChartData} options={barChartOptions} />
+      </>
+    }
+  }
+
   /*const handleLogout = () => {
     // Implement your logout logic here
     console.log('Logout');
@@ -271,6 +326,11 @@ const BuildingApplicationListComponent: React.FC = () => {
           <div className="title-container">
             <h1 className="title">Building Application List</h1>
           </div>
+          { graphData &&
+            <div className='status-chart'>
+              {showStatusChart(graphData)}
+            </div>
+          }
           <div className="sort-container">
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="">Sort By</option>

@@ -132,7 +132,8 @@ export default function EvaluatePopup(props: formdetails) {
       alert("Evaluation Successful!");
       props.handleClose()
     }).catch(err => console.log(err))*/
-    if(props.activity === "Pending Records"){
+    console.log("props: ",props)
+    if(props.activity === "Pending"){
       if (props.form === "New") {
         updateBusinessPermit(props.bpid, {
           dateinspection: (dateInspectionRef.current?.value || ''),
@@ -150,6 +151,20 @@ export default function EvaluatePopup(props: formdetails) {
         props.handleClose();
       }
       else if (props.form === "Renewal") {
+        const values = {
+          dateinspection: (dateInspectionRef.current?.value || ''),
+          inspection_no: (inspectOrderRef.current?.value || ''),
+          fsicno: (fsicRef.current?.value || ''),
+          fsicdate: (fsicDateRef.current?.value || ''),
+          amount: (AmountRef.current?.value || 0),
+          orno: (OrNoRef.current?.value || ''),
+          date: (dateRef.current?.value || ''),
+          teamleader: (teamLeaderRef.current?.value || ''),
+          fireinspectors: [inputInspector],
+          recommendation: [inputrecommendation],
+          remarks: "FSIC Not Printed"
+        }
+        console.log("renewal: ",values)
         updaterenewalBusinessPermit(props.bpid, {
           dateinspection: (dateInspectionRef.current?.value || ''),
           inspection_no: (inspectOrderRef.current?.value || ''),

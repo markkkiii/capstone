@@ -20,10 +20,13 @@ import ViewUpdateClosurePopup from './Dissapproved_New-Renewal_Business/View-Upd
 import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
-import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness } from '../types/Users';
+import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness, GraphData } from '../types/Users';
 import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { businessPermCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection, NTCBusinessRenewalCollection, NTCVBusinessRenewalCollection, abatementBusinessRenewalCollection, closureBusinessRenewalCollection, renewalbusinessPermCollection } from '../lib/controller';
-
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -66,7 +69,15 @@ const DisapprovedRenewalList: React.FC = () => {
     const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [disapprovedNewBusinessPermit, setdisapprovedNewBusinessPermit] = useState<disapprovedNewBusinessPermit[]>([]);
     const [print, setPrint] = useState(false);
+    const [graphData, setGraphData] = useState<GraphData>({})
 
+    const collections:any = {
+        "Pending Records"   : renewalbusinessPermCollection,
+        "NTC Records"       : NTCBusinessRenewalCollection,
+        "NTCV Records"      : NTCVBusinessRenewalCollection,
+        "Abatement Records" : abatementBusinessRenewalCollection,
+        "Closure Records"   : closureBusinessRenewalCollection,
+    }
 
     const [applicationform, SetApplicationForm] = useState([{
         id: 0,
@@ -106,79 +117,121 @@ const DisapprovedRenewalList: React.FC = () => {
 
     useEffect(
         () => {
-            if (sortBy === "Pending Records") {
-                onSnapshot(renewalbusinessPermCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
+            const fetchCollection = (collection:any) => {
+                return new Promise<any>((resolve) => {
+                    let records:any = []
+
+                    onSnapshot(collection, (snapshot:
+                        QuerySnapshot<DocumentData>) => {
+                            records = snapshot.docs.map((doc) => {
+                                return {
+                                    id: doc.id,
+                                    ...doc.data(),
+                                };
+                            })
+                            resolve(records)
+                        }
+                    )
                 })
             }
-            else if (sortBy === "NTC Records") {
-                onSnapshot(NTCBusinessRenewalCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "NTCV Records") {
-                onSnapshot(NTCVBusinessRenewalCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "Abatement Records") {
-                onSnapshot(abatementBusinessRenewalCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "Closure Records") {
-                onSnapshot(closureBusinessRenewalCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
+
+            fetchCollection(collections[sortBy]).then((records) => {
+                console.log("records: ",records)
+                setdisapprovedNewBusinessPermit(records);
+            });
         }, [sortBy]
     )
 
+    // Triggers on first load
+    useEffect(() => {
+        // This will count only the docs with remarks == 'Pending'
+        const countPendingDocs = (collection:any) => {
+            return new Promise<any>((resolve) => {
+                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                    const count = snapshot.docs.filter(doc => doc.data().remarks == "Pending").length;
+                    resolve(count)
+                });
+            })
+        }
+
+        const countRecords = (collection:any) => {
+            return new Promise<any>((resolve) => {
+                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                    const count = snapshot.size;
+                    resolve(count)
+                });
+            })
+        }
+
+        let newGraph: GraphData = {}
+        for (const key in collections) {
+            if (collections.hasOwnProperty(key)) {
+                const collection = collections[key];
+
+                if(key == "Pending Records") {
+                    countPendingDocs(collection).then((count) => {
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    })
+                }
+                else {
+                    countRecords(collection).then((count) => {
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    })
+                }
+            }
+        }
+    },[])
+
+    const showGraph = (graphData: GraphData) => {
+        if(graphData){
+          const labels = Object.keys(graphData);
+          const data = Object.values(graphData);
+          const backgroundColor = ['#FFCA3E', '#FF6F50', '#D03454', '#9C2162', '#772F67',];
+          const barChartData: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: backgroundColor,
+                hoverBackgroundColor: backgroundColor,
+              },
+            ],
+          };
+        
+          const barChartOptions: ChartOptions<'bar'> = {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+              y: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          };
+    
+          return <>
+            <Bar data={barChartData} options={barChartOptions} />
+          </>
+        }
+    }
 
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -546,6 +599,11 @@ const DisapprovedRenewalList: React.FC = () => {
                     <div className="title-container">
                         <h1 className="title">Business Renewal List</h1>
                     </div>
+                    { graphData &&
+                        <div className='status-chart'>
+                        {showGraph(graphData)}
+                        </div>
+                    }
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="Pending Records">Pending Records</option>

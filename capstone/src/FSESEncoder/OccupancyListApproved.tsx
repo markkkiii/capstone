@@ -14,7 +14,11 @@ import EvaluateApprovedOccupancy from './Approved_Occupancy/EvaluateApprovedOccu
 import ViewUpdateApprovedOccupancy from './Approved_Occupancy/ViewUpdateApprovedOccupancy';
 import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { businessPermCollection, occupancyPermCollection } from '../lib/controller';
-import { OccupancyPermit } from '../types/Users';
+import { OccupancyPermit, GraphData } from '../types/Users';
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -51,6 +55,7 @@ const OccupancyListApproved: React.FC = () => {
     const [print, setPrint] = useState(false);
     const [test, setTest] = useState<boolean>(false);
     const [occupancyPermit, setOccupancyPermit] = useState<OccupancyPermit[]>([]);
+    const [graphData, setGraphData] = useState<GraphData>({})
 
 
     /*const [applicationform, SetApplicationForm] = useState([{
@@ -112,6 +117,91 @@ const OccupancyListApproved: React.FC = () => {
             }),
         []
     )
+
+    useEffect(
+        () => {
+            const fetchCollection = (collection:any) => {
+                return new Promise<any>((resolve) => {
+                    let records:any = []
+
+                    onSnapshot(collection, (snapshot:
+                        QuerySnapshot<DocumentData>) => {
+                            records = snapshot.docs.map((doc) => {
+                                return {
+                                    id: doc.id,
+                                    ...doc.data(),
+                                };
+                            })
+                            resolve(records)
+                        }
+                    )
+                })
+            }
+
+            fetchCollection(occupancyPermCollection).then((records) => {
+                let pendingCount    = 0,
+                    approvedCount   = 0
+
+                records.forEach((record:any) => {
+                    if(record.remarks === 'Pending')
+                        pendingCount++
+                    else if(record.remarks === 'I.O Printed' || record.remarks === 'I.O Not Printed')
+                        approvedCount++
+                });
+
+                let newGraph: GraphData = {
+                    "Pending Records"   : pendingCount,
+                    "Approved Records"  : approvedCount
+                }
+
+                setGraphData(newGraph)
+                setOccupancyPermit(records);
+            });
+        },[]
+    )
+
+    const showGraph = (graphData: GraphData) => {
+        if(graphData){
+          const labels = Object.keys(graphData);
+          const data = Object.values(graphData);
+          const backgroundColor = ['#FFCA3E', '#FF6F50', '#D03454', '#9C2162', '#772F67',];
+          const barChartData: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: backgroundColor,
+                hoverBackgroundColor: backgroundColor,
+              },
+            ],
+          };
+        
+          const barChartOptions: ChartOptions<'bar'> = {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+              y: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          };
+    
+          return <>
+            <Bar data={barChartData} options={barChartOptions} />
+          </>
+        }
+    }
 
     const handleRender = () => {
         setTest(prevTest => !prevTest);
@@ -315,6 +405,11 @@ const OccupancyListApproved: React.FC = () => {
                     <div className="title-container">
                         <h1 className="title">Occupancy Permit List</h1>
                     </div>
+                    { graphData &&
+                        <div className='status-chart'>
+                        {showGraph(graphData)}
+                        </div>
+                    }
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="">Sort By</option>

@@ -9,11 +9,16 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ViewRenewalApplication from './Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import UpdateRenewalApplication from './Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import AddApplication from './AddApplication';
-import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import ViewEvaluate from './Approved_Business-Renewal_Permits/ViewEvaluate';
 import DeleteEncoderPopup from './DeleteEncoderPopup';
-import { businessPermit } from '../types/Users';
+import EvaluatePopup from './Approved_Business-Renewal_Permits/EvaluateApprovedApplication';
+import { businessPermit, GraphData } from '../types/Users';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
 import { businessPermCollection } from '../lib/controller';
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 //Header Part
 const AdditionalTab: React.FC = () => {
@@ -48,25 +53,93 @@ const BusinessList: React.FC = () => {
     const [openDelete, setOpenDelete] = useState<Record<string, boolean>>({});
     const [print, setPrint] = useState(false);
     const [businessPermit, setBusinessPermit] = useState<businessPermit[]>([]);
+    const [graphData, setGraphData] = useState<GraphData>({})
 
 
     useEffect(
-        () =>
-            onSnapshot(businessPermCollection, (snapshot:
-                QuerySnapshot<DocumentData>) => {
-                setBusinessPermit(
-                    snapshot.docs.map((doc) => {
-                        return {
-                            id: doc.id,
-                            ...doc.data(),
-                        };
-                    })
-                );
-                console.log(businessPermit)
-            }),
-        []
+        () => {
+            const fetchCollection = (collection:any) => {
+                return new Promise<any>((resolve) => {
+                    let records:any = []
+
+                    onSnapshot(collection, (snapshot:
+                        QuerySnapshot<DocumentData>) => {
+                            records = snapshot.docs.map((doc) => {
+                                return {
+                                    id: doc.id,
+                                    ...doc.data(),
+                                };
+                            })
+                            resolve(records)
+                        }
+                    )
+                })
+            }
+
+            fetchCollection(businessPermCollection).then((records) => {
+                let pendingCount    = 0,
+                    approvedCount   = 0
+
+                records.forEach((record:any) => {
+                    if(record.remarks === 'Pending')
+                        pendingCount++
+                    else if(record.remarks === 'FSIC Printed' || record.remarks === 'FSIC Not Printed')
+                        approvedCount++
+                });
+
+                let newGraph: GraphData = {
+                    "Pending Records"   : pendingCount,
+                    "Approved Records"  : approvedCount
+                }
+
+                setGraphData(newGraph)
+                setBusinessPermit(records);
+            });
+        },[]
     )
 
+    const showGraph = (graphData: GraphData) => {
+        if(graphData){
+          const labels = Object.keys(graphData);
+          const data = Object.values(graphData);
+          const backgroundColor = ['#FFCA3E', '#FF6F50', '#D03454', '#9C2162', '#772F67',];
+          const barChartData: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: backgroundColor,
+                hoverBackgroundColor: backgroundColor,
+              },
+            ],
+          };
+        
+          const barChartOptions: ChartOptions<'bar'> = {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+              y: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          };
+    
+          return <>
+            <Bar data={barChartData} options={barChartOptions} />
+          </>
+        }
+    }
 
 
     const handleRender = () => {
@@ -267,6 +340,11 @@ const BusinessList: React.FC = () => {
                     <div className="title-container">
                         <h1 className="title">New Business List</h1>
                     </div>
+                    { graphData &&
+                        <div className='status-chart'>
+                        {showGraph(graphData)}
+                        </div>
+                    }
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} >
                             <option value="">Sort By</option>
@@ -419,6 +497,34 @@ const BusinessList: React.FC = () => {
                                             email={businessPermit.email || ''}
                                             datereceived={businessPermit.date_received || ''}
                                             handleClose={() => handleCloseEvaluate(businessPermit.id)}
+                                        />
+                                        
+                                        <ViewEvaluate
+                                            form={selectedAction[businessPermit.id]}
+                                            permit='New'
+                                            open={openViewEvaluate[businessPermit.id]}
+                                            handleClose={() => handleCloseViewEval(businessPermit.id)}
+                                            bpid={businessPermit.id}
+                                            business_no={businessPermit.bspermit_no || ''}
+                                            permitee={businessPermit.permittee || ''}
+                                            business_name={businessPermit.business_name || ''}
+                                            address={businessPermit.address || ''}
+                                            natureofbusiness={businessPermit.nature_business || ''}
+                                            typeofoccupancy={businessPermit.type_occupancy || ''}
+                                            contactno={businessPermit.contact_no || ''}
+                                            email={businessPermit.email || ''}
+                                            date_received={businessPermit.date_received || ''}
+                                            date_inspection={businessPermit.dateinspection || ''}
+                                            inspection_no={businessPermit.inspection_no || 0}
+                                            fsic_no={businessPermit.fsicno || 0}
+                                            fsic_date={businessPermit.fsicdate || ''}
+                                            amount={businessPermit.amount || 0}
+                                            or_no={businessPermit.orno || 0}
+                                            payment_date={businessPermit.date || ''}
+                                            remarks={businessPermit.remarks || ''}
+                                            team_leader={businessPermit.teamleader || ''}
+                                            fire_inspectors={businessPermit.fireinspectors ? ([] as string[]).concat(businessPermit.fireinspectors) : []}
+                                            recommendation={businessPermit.recommendation}
                                         />
 
                                         {/* 

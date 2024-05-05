@@ -21,9 +21,12 @@ import EvaluatePopup from '../FSESEncoder/Approved_Business-Renewal_Permits/Eval
 import UpdateRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/UpdateRenewalApplication';
 import ViewRenewalApplication from '../FSESEncoder/Approved_Business-Renewal_Permits/ViewRenewalApplication';
 import { DocumentData, QuerySnapshot, onSnapshot } from 'firebase/firestore';
-import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness } from '../types/Users';
+import { disapprovedNewBusinessPermit, NTCNewBusiness, NTCVNewBusiness, AbatementNewBusiness, ClosureNewBusiness, GraphData } from '../types/Users';
 import { businessPermCollection, disapprovedNewBusinessCollection, NTCNewBusinessCollection, NTCVNewBusinessCollection, abatementNewBusinessCollection, closureNewBusinessCollection } from '../lib/controller';
-
+// Chart.js
+import "chart.js/auto";
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { ChartData, ChartOptions } from 'chart.js/auto';
 
 
 //Header Part
@@ -72,81 +75,110 @@ const DisapprovedNewBusiness: React.FC = () => {
     const [NTCVNewBusiness, setNTCVNewBusiness] = useState<NTCVNewBusiness[]>([]);
     const [AbatementNewBusiness, setAbatementNewBusiness] = useState<AbatementNewBusiness[]>([]);
     const [ClosureNewBusiness, setClosureNewBusiness] = useState<ClosureNewBusiness[]>([]);
+    const [graphData, setGraphData] = useState<GraphData>({})
+
+    const collections:any = {
+        "Pending Records"   : businessPermCollection,
+        "NTC Records"       : NTCNewBusinessCollection,
+        "NTCV Records"      : NTCVNewBusinessCollection,
+        "Abatement Records" : abatementNewBusinessCollection,
+        "Closure Records"   : closureNewBusinessCollection,
+    }
 
     useEffect(
         () => {
-            if (sortBy === "Pending Records") {
-                onSnapshot(businessPermCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
+            const fetchCollection = (collection:any) => {
+                return new Promise<any>((resolve) => {
+                    let records:any = []
+
+                    onSnapshot(collection, (snapshot:
+                        QuerySnapshot<DocumentData>) => {
+                            records = snapshot.docs.map((doc) => {
+                                return {
+                                    id: doc.id,
+                                    ...doc.data(),
+                                };
+                            })
+                            resolve(records)
+                        }
+                    )
                 })
             }
-            else if (sortBy === "NTC Records"){
-                onSnapshot(NTCNewBusinessCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                    setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "NTCV Records"){
-                onSnapshot(NTCVNewBusinessCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                        setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "Abatement Records"){
-                onSnapshot(abatementNewBusinessCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                        setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
-            else if (sortBy === "Closure Records"){
-                onSnapshot(closureNewBusinessCollection, (snapshot:
-                    QuerySnapshot<DocumentData>) => {
-                        setdisapprovedNewBusinessPermit(
-                        snapshot.docs.map((doc) => {
-                            return {
-                                id: doc.id,
-                                ...doc.data(),
-                            };
-                        })
-                    );
-                    console.log(disapprovedNewBusinessPermit)
-                })
-            }
+
+            fetchCollection(collections[sortBy]).then((records) => {
+                setdisapprovedNewBusinessPermit(records);
+            });
         },[sortBy]
     )
+
+    // Triggers on first load
+    useEffect(() => {
+        const countRecords = (collection:any) => {
+            return new Promise<any>((resolve) => {
+                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                    const count = snapshot.size;
+                    resolve(count)
+                });
+            })
+        }
+
+        let newGraph: GraphData = {}
+        for (const key in collections) {
+            if (collections.hasOwnProperty(key)) {
+                const collection = collections[key];
+                countRecords(collection).then((count) => {
+                    newGraph = {
+                        ...newGraph,
+                        [key]: count
+                    }
+                    setGraphData(newGraph)
+                })
+            }
+        }
+    },[])
+
+    const showGraph = (graphData: GraphData) => {
+        if(graphData){
+          const labels = Object.keys(graphData);
+          const data = Object.values(graphData);
+          const backgroundColor = ['#FFCA3E', '#FF6F50', '#D03454', '#9C2162', '#772F67',];
+          const barChartData: ChartData<"bar"> = {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: backgroundColor,
+                hoverBackgroundColor: backgroundColor,
+              },
+            ],
+          };
+        
+          const barChartOptions: ChartOptions<'bar'> = {
+            indexAxis: 'y',
+            scales: {
+              x: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+              y: {
+                ticks: {
+                  color: '#fff',
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          };
+    
+          return <>
+            <Bar data={barChartData} options={barChartOptions} />
+          </>
+        }
+    }
 
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
@@ -541,6 +573,11 @@ const DisapprovedNewBusiness: React.FC = () => {
                     <div className="title-container">
                         <h1 className="title">New Business List</h1>
                     </div>
+                    { graphData &&
+                        <div className='status-chart'>
+                        {showGraph(graphData)}
+                        </div>
+                    }
                     <div className="sort-container">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="Pending Records">Pending Records</option>

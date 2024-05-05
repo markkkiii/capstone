@@ -512,3 +512,6 @@ export interface ClosureBusinessRenewal {
     type_occupancy: string,
 }
 
+export interface GraphData {
+    [label: string]: number;
+}
