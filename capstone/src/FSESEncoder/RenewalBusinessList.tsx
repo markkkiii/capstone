@@ -110,45 +110,45 @@ const RenewalBusinessList: React.FC = () => {
 
     useEffect(
         () => {
-            const fetchCollection = (collection:any) => {
-                return new Promise<any>((resolve) => {
-                    let records:any = []
-
-                    onSnapshot(collection, (snapshot:
-                        QuerySnapshot<DocumentData>) => {
-                            records = snapshot.docs.map((doc) => {
-                                return {
-                                    id: doc.id,
-                                    ...doc.data(),
-                                };
-                            })
-                            resolve(records)
-                        }
-                    )
-                })
-            }
-
-            fetchCollection(renewalbusinessPermCollection).then((records) => {
-                let pendingCount    = 0,
-                    approvedCount   = 0
-
-                records.forEach((record:any) => {
-                    if(record.remarks === 'Pending')
-                        pendingCount++
-                    else if(record.remarks === 'FSIC Printed' || record.remarks === 'FSIC Not Printed')
-                        approvedCount++
-                });
-
-                let newGraph: GraphData = {
-                    "Pending Records"   : pendingCount,
-                    "Approved Records"  : approvedCount
-                }
-
-                setGraphData(newGraph)
-                setBusinessPermit(records);
-            });
+            fetchCollection(renewalbusinessPermCollection);
         },[]
     )
+
+    const fetchCollection = (collection:any) => {
+        let records:any = []
+
+        onSnapshot(collection, (snapshot:
+            QuerySnapshot<DocumentData>) => {
+                records = snapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                    };
+                })
+                setCollection(records)
+            }
+        )
+    }
+
+    const setCollection = (records:any) => {
+        let pendingCount    = 0,
+            approvedCount   = 0
+
+        records.forEach((record:any) => {
+            if(record.remarks === 'Pending')
+                pendingCount++
+            else if(record.remarks === 'FSIC Printed' || record.remarks === 'FSIC Not Printed')
+                approvedCount++
+        });
+
+        let newGraph: GraphData = {
+            "Pending Records"   : pendingCount,
+            "Approved Records"  : approvedCount
+        }
+
+        setGraphData(newGraph)
+        setBusinessPermit(records);
+    }
 
     const showGraph = (graphData: GraphData) => {
         if(graphData){

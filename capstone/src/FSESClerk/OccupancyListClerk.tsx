@@ -101,80 +101,62 @@ const OccupancyListClerk: React.FC = () => {
 
     useEffect(
         () => {
-            const fetchCollection = (collection:any) => {
-                return new Promise<any>((resolve) => {
-                    let records:any = []
-
-                    onSnapshot(collection, (snapshot:
-                        QuerySnapshot<DocumentData>) => {
-                            records = snapshot.docs.map((doc) => {
-                                return {
-                                    id: doc.id,
-                                    ...doc.data(),
-                                };
-                            })
-                            setOccupancyPermit(records);
-                            resolve(records)
-                        }
-                    )
-                })
-            }
-
             if(collections[sortBy]) {
-                fetchCollection(collections[sortBy]).then((records) => {
-                    setOccupancyPermit(records);
-                });
+                fetchCollection(collections[sortBy]);
             }
         },[sortBy]
     )
 
     // Triggers on first load
     useEffect(() => {
-        // This will count only the docs with remarks == 'Pending'
-        const countPendingDocs = (collection:any) => {
-            return new Promise<any>((resolve) => {
-                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
-                    const count = snapshot.docs.filter(doc => doc.data().remarks == "Pending").length;
-                    resolve(count)
-                });
-            })
-        }
-
-        const countRecords = (collection:any) => {
-            return new Promise<any>((resolve) => {
-                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
-                    const count = snapshot.size;
-                    resolve(count)
-                });
-            })
-        }
-
         let newGraph: GraphData = {}
         for (const key in collections) {
             if (collections.hasOwnProperty(key)) {
                 const collection = collections[key];
 
                 if(key == "Pending Records") {
-                    countPendingDocs(collection).then((count) => {
+                    onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                        const count = snapshot.docs.filter(doc => doc.data().remarks == "Pending").length;
                         newGraph = {
                             ...newGraph,
                             [key]: count
                         }
                         setGraphData(newGraph)
-                    })
+                    });
                 }
                 else {
-                    countRecords(collection).then((count) => {
+                    onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                        const count = snapshot.size;
                         newGraph = {
                             ...newGraph,
                             [key]: count
                         }
                         setGraphData(newGraph)
-                    })
+                    });
                 }
             }
         }
     },[])
+
+    const fetchCollection = (collection:any) => {
+        let records:any = []
+
+        onSnapshot(collection, (snapshot:
+            QuerySnapshot<DocumentData>) => {
+                records = snapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                    };
+                })
+                setCollection(records);
+            }
+        )
+    }
+
+    const setCollection = (records:any) => {
+        setOccupancyPermit(records);
+    }
 
     const showGraph = (graphData: GraphData) => {
         if(graphData){

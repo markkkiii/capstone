@@ -87,55 +87,55 @@ const DisapprovedNewBusiness: React.FC = () => {
 
     useEffect(
         () => {
-            const fetchCollection = (collection:any) => {
-                return new Promise<any>((resolve) => {
-                    let records:any = []
-
-                    onSnapshot(collection, (snapshot:
-                        QuerySnapshot<DocumentData>) => {
-                            records = snapshot.docs.map((doc) => {
-                                return {
-                                    id: doc.id,
-                                    ...doc.data(),
-                                };
-                            })
-                            resolve(records)
-                        }
-                    )
-                })
-            }
-
-            fetchCollection(collections[sortBy]).then((records) => {
-                setdisapprovedNewBusinessPermit(records);
-            });
+            fetchCollection(collections[sortBy]);
         },[sortBy]
     )
 
     // Triggers on first load
     useEffect(() => {
-        const countRecords = (collection:any) => {
-            return new Promise<any>((resolve) => {
-                onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
-                    const count = snapshot.size;
-                    resolve(count)
-                });
-            })
-        }
-
         let newGraph: GraphData = {}
         for (const key in collections) {
             if (collections.hasOwnProperty(key)) {
                 const collection = collections[key];
-                countRecords(collection).then((count) => {
-                    newGraph = {
-                        ...newGraph,
-                        [key]: count
-                    }
-                    setGraphData(newGraph)
-                })
+                if(key == "Pending Records") {
+                    onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                        const count = snapshot.docs.filter(doc => doc.data().remarks == "Pending").length;
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    });
+                }
+                else {
+                    onSnapshot(collection, (snapshot: QuerySnapshot<DocumentData>) => {
+                        const count = snapshot.size;
+                        newGraph = {
+                            ...newGraph,
+                            [key]: count
+                        }
+                        setGraphData(newGraph)
+                    });
+                }
             }
         }
     },[])
+
+    const fetchCollection = (collection:any) => {
+        let records:any = []
+
+        onSnapshot(collection, (snapshot:
+            QuerySnapshot<DocumentData>) => {
+                records = snapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                    };
+                })
+                setdisapprovedNewBusinessPermit(records);
+            }
+        )
+    }
 
     const showGraph = (graphData: GraphData) => {
         if(graphData){
