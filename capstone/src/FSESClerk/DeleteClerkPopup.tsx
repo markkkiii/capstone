@@ -68,11 +68,11 @@ const DeleteClerkPopup: React.FC<DeleteProps> = ({ sortby, form, remarks, value,
         //function here
         //Add additional if statements here for other permits
       if(form === 'Occupancy'){
-            if(remarks === "Pending"){
+            if(["Pending", "FSIC Not Printed", "I.O Printed"].includes(remarks)){
                 deleteOccupancyPermit(value);
                 alert("Deleted Successfully");
             }
-            else if(remarks === "Disapproved"){
+            else if(["Disapproved", "Complied"].includes(remarks)){
                 deleteDisapprovedOccupancyPermit(value);
                 alert("Deleted Successfully");
             }
